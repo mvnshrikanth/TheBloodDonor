@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">The Blood Donor</string>
+    <string name="content_desc_profile_picture">Profile Picture</string>
 </resources>
