@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">The Blood Donor</string>
-    <string name="content_desc_profile_picture">Profile Picture</string>
+    <string name="str_content_desc_profile_picture">Profile Picture</string>
+    <string name="str_btn_save">Save</string>
+    <string-array name="sex_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="blood_type_array">
+        <item>O-ve</item>
+        <item>O+ve</item>
+        <item>A+ve</item>
+        <item>A-ve</item>
+        <item>B-ve</item>
+        <item>B+ve</item>
+        <item>AB+ve</item>
+        <item>AB-ve</item>
+    </string-array>
 </resources>
