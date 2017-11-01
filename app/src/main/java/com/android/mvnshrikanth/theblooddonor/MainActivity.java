@@ -1,5 +1,6 @@
 package com.android.mvnshrikanth.theblooddonor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.spinner_sex)
     Spinner spinner_sex;
     @BindView(R.id.spinner_blood_type)
@@ -26,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayout_scrollView_container;
     @BindView(R.id.button_save)
     Button button_save;
+    @BindView(R.id.button_my_donations)
+    Button button_my_donations;
+    @BindView(R.id.button_search_donors)
+    Button button_search_donors;
 
 
     @Override
@@ -61,5 +67,14 @@ public class MainActivity extends AppCompatActivity {
                 cardView_view_only.setVisibility(View.VISIBLE);
             }
         });
+
+        button_my_donations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DonorActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
