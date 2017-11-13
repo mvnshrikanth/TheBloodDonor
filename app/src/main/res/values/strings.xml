@@ -17,4 +17,11 @@
         <item>AB-ve</item>
     </string-array>
 
+    <string name="str_item_show_profile">Show Profile</string>
+    <string name="str_item_signout">Sign Out</string>
+    <string name="str_tab_my_donations">My Donations</string>
+    <string name="str_tab_requested_donations">My Donation Requests</string>
+    <string name="str_tab_new_donations">New Donations</string>
+
+
 </resources>
