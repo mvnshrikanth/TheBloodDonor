@@ -1,4 +1,4 @@
-package com.android.mvnshrikanth.theblooddonor;
+package com.android.mvnshrikanth.theblooddonor.data;
 
 /**
  * Created by mvnsh on 11/5/2017.
@@ -6,7 +6,6 @@ package com.android.mvnshrikanth.theblooddonor;
 
 public class User {
 
-    private String userName;
     private String name;
     private String bloodType;
     private String address;
@@ -16,8 +15,7 @@ public class User {
     private int zip;
     private String sex;
 
-    public User(String userName, String name, String bloodType, String address, String city, String state, String country, int zip, String sex) {
-        this.userName = userName;
+    public User(String name, String bloodType, String address, String city, String state, String country, int zip, String sex) {
         this.name = name;
         this.bloodType = bloodType;
         this.address = address;
@@ -26,14 +24,6 @@ public class User {
         this.country = country;
         this.zip = zip;
         this.sex = sex;
-    }
-
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public void setUserName(String value) {
-        this.userName = value;
     }
 
     public String getBloodType() {

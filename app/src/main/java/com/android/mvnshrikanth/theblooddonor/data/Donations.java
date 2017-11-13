@@ -1,4 +1,4 @@
-package com.android.mvnshrikanth.theblooddonor;
+package com.android.mvnshrikanth.theblooddonor.data;
 
 /**
  * Created by mvnsh on 11/5/2017.
@@ -7,17 +7,13 @@ package com.android.mvnshrikanth.theblooddonor;
 public class Donations {
 
     private String donorName;
-    private String donorUserName;
     private String doneeName;
-    private String doneeUserName;
     private String donationDate;
     private String bloodType;
 
-    public Donations(String donorName, String donorUserName, String doneeName, String doneeUserName, String donationDate, String bloodType) {
+    public Donations(String donorName, String doneeName, String donationDate, String bloodType) {
         this.donorName = donorName;
-        this.donorUserName = donorUserName;
         this.doneeName = doneeName;
-        this.doneeUserName = doneeUserName;
         this.donationDate = donationDate;
         this.bloodType = bloodType;
     }
@@ -54,19 +50,4 @@ public class Donations {
         this.bloodType = value;
     }
 
-    public String getDonorUserName() {
-        return donorUserName;
-    }
-
-    public void setDonorUserName(String donorUserName) {
-        this.donorUserName = donorUserName;
-    }
-
-    public String getDoneeUserName() {
-        return doneeUserName;
-    }
-
-    public void setDoneeUserName(String doneeUserName) {
-        this.doneeUserName = doneeUserName;
-    }
 }
