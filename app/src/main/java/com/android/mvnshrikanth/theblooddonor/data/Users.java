@@ -5,27 +5,29 @@ package com.android.mvnshrikanth.theblooddonor.data;
  */
 
 public class Users {
-    private String name;
+    private String userName;
     private String bloodType;
     private String locationZip;
     private String gender;
     private String photoUrl;
 
-    public Users(String name, String bloodType, String locationZip, String gender, String photoUrl) {
-        this.name = name;
+    public Users() {
+    }
+
+    public Users(String userName, String bloodType, String locationZip, String gender, String photoUrl) {
+        this.userName = userName;
         this.bloodType = bloodType;
         this.locationZip = locationZip;
         this.gender = gender;
         this.photoUrl = photoUrl;
     }
 
-
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getBloodType() {
@@ -59,5 +61,6 @@ public class Users {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
 
 }

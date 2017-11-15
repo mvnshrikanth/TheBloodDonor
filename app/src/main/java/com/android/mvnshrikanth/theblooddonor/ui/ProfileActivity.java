@@ -18,11 +18,11 @@ import com.android.mvnshrikanth.theblooddonor.data.Users;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -33,29 +33,33 @@ import static com.android.mvnshrikanth.theblooddonor.ui.MainActivity.RC_SIGN_IN;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    @BindView(R.id.spinner_gender)
-    Spinner spinner_sex;
-    @BindView(R.id.spinner_blood_type)
-    Spinner spinner_blood_type;
     @BindView(R.id.cardView_view_only)
     CardView cardView_view_only;
     @BindView(R.id.cardView_editable)
     CardView cardView_editable;
     @BindView(R.id.linearLayout_scrollView_container)
     LinearLayout linearLayout_scrollView_container;
+
     @BindView(R.id.button_save)
     Button button_save;
+
+    @BindView(R.id.spinner_gender)
+    Spinner spinner_gender;
+    @BindView(R.id.spinner_blood_type)
+    Spinner spinner_blood_type;
     @BindView(R.id.editText_zip)
     EditText editTextZipCode;
+
     @BindView(R.id.textView_name)
     TextView textViewName;
     @BindView(R.id.textView_gender)
     TextView textViewGender;
-    @BindView(R.id.textView_blood_group)
-
+    @BindView(R.id.textView_blood_type)
+    TextView textViewBloodGroup;
+    @BindView(R.id.textView_zip)
+    TextView textViewZip;
 
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersDatabaseReference;
     private String mUserName;
     private String mUid;
@@ -67,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users");
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -89,11 +93,10 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         };
-
         ArrayAdapter<CharSequence> adapterGender =
                 ArrayAdapter.createFromResource(this, R.array.sex_array, R.layout.support_simple_spinner_dropdown_item);
         adapterGender.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinner_sex.setAdapter(adapterGender);
+        spinner_gender.setAdapter(adapterGender);
 
         ArrayAdapter<CharSequence> adapterBloodType =
                 ArrayAdapter.createFromResource(this, R.array.blood_type_array, R.layout.support_simple_spinner_dropdown_item);
@@ -106,6 +109,13 @@ public class ProfileActivity extends AppCompatActivity {
                 TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
                 cardView_editable.setVisibility(View.VISIBLE);
                 cardView_view_only.setVisibility(View.GONE);
+
+                if (user != null) {
+                    editTextZipCode.setText(user.getLocationZip());
+                    spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
+                    spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
+                }
+
             }
         });
 
@@ -114,13 +124,20 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
 
-                user = new Users(
-                        mUserName,
-                        spinner_blood_type.getSelectedItem().toString(),
-                        editTextZipCode.getText().toString(),
-                        spinner_sex.getSelectedItem().toString(),
-                        null);
-
+                if (user != null) {
+                    user.setUserName(mUserName);
+                    user.setBloodType(spinner_blood_type.getSelectedItem().toString());
+                    user.setLocationZip(editTextZipCode.getText().toString());
+                    user.setGender(spinner_gender.getSelectedItem().toString());
+                    user.setPhotoUrl(null);
+                } else {
+                    user = new Users(
+                            mUserName,
+                            spinner_blood_type.getSelectedItem().toString(),
+                            editTextZipCode.getText().toString(),
+                            spinner_gender.getSelectedItem().toString(),
+                            null);
+                }
                 usersDatabaseReference.child(mUid).setValue(user);
 
                 cardView_editable.setVisibility(View.GONE);
@@ -132,16 +149,44 @@ public class ProfileActivity extends AppCompatActivity {
     private void onSignedInInitialize(String displayName, String uid) {
         mUid = uid;
         mUserName = displayName;
-        usersDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        usersDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(mUid)) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                user = dataSnapshot.getValue(Users.class);
+
+                if (user != null) {
+                    textViewName.setText(mUserName);
+                    textViewBloodGroup.setText(user.getBloodType());
+                    textViewGender.setText(user.getGender());
+                    textViewZip.setText(user.getLocationZip());
+
                     cardView_editable.setVisibility(View.GONE);
                     cardView_view_only.setVisibility(View.VISIBLE);
-                    user = dataSnapshot.getValue(Users.class);
-
-
+                } else {
+                    cardView_editable.setVisibility(View.VISIBLE);
+                    cardView_view_only.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                user = dataSnapshot.getValue(Users.class);
+
+                textViewName.setText(mUserName);
+                textViewBloodGroup.setText(user.getBloodType());
+                textViewGender.setText(user.getGender());
+                textViewZip.setText(user.getLocationZip());
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -149,6 +194,30 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+//        usersDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.hasChild(mUid)) {
+//                    cardView_editable.setVisibility(View.GONE);
+//                    cardView_view_only.setVisibility(View.VISIBLE);
+//                    user = dataSnapshot.child(mUid).getValue(Users.class);
+//
+//                    textViewName.setText(mUserName);
+//                    textViewBloodGroup.setText(user.getBloodType());
+//                    textViewGender.setText(user.getGender());
+//                    textViewZip.setText(user.getLocationZip());
+//                } else {
+//                    cardView_editable.setVisibility(View.VISIBLE);
+//                    cardView_view_only.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
     @Override

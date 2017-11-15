@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.firebase.ui.auth.AuthUI;
@@ -77,11 +76,9 @@ public class MainActivity extends AppCompatActivity {
         mUsername = displayName;
         mUid = uid;
 
-
         getFragmentManager().beginTransaction()
                 .add(R.id.fragment_main_container, new MainFragment())
                 .commit();
-        Toast.makeText(MainActivity.this, "Signed In " + mUsername, Toast.LENGTH_SHORT).show();
     }
 
     @Override
