@@ -1,7 +1,7 @@
 package com.android.mvnshrikanth.theblooddonor.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.transition.TransitionManager;
@@ -15,23 +15,22 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.Users;
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Arrays;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.android.mvnshrikanth.theblooddonor.ui.MainActivity.RC_SIGN_IN;
-
 public class ProfileActivity extends AppCompatActivity {
+
+//TODO 1) Add location api for getting autfill of location in the form.
+
+    public static final String NEW_USER = "NEW_USER";
+    public static final String USERNAME = "USERNAME";
+    public static final String USER_ID = "USER_ID";
 
     @BindView(R.id.cardView_view_only)
     CardView cardView_view_only;
@@ -49,6 +48,12 @@ public class ProfileActivity extends AppCompatActivity {
     Spinner spinner_blood_type;
     @BindView(R.id.editText_zip)
     EditText editTextZipCode;
+    @BindView(R.id.editText_city)
+    EditText editTextCity;
+    @BindView(R.id.editText_country)
+    EditText editTextCountry;
+    @BindView(R.id.editText_state)
+    EditText editTextState;
 
     @BindView(R.id.textView_name)
     TextView textViewName;
@@ -58,12 +63,19 @@ public class ProfileActivity extends AppCompatActivity {
     TextView textViewBloodGroup;
     @BindView(R.id.textView_zip)
     TextView textViewZip;
+    @BindView(R.id.textView_city)
+    TextView textViewCity;
+    @BindView(R.id.textView_state)
+    TextView textViewState;
+    @BindView(R.id.textView_country)
+    TextView textViewCountry;
 
-    private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference usersDatabaseReference;
+    private ChildEventListener userChildEventListener;
     private String mUserName;
     private String mUid;
     private Users user;
+    private Boolean newUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,25 +86,19 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users");
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    onSignedInInitialize(user.getDisplayName(), user.getUid());
-                } else {
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(
-                                            Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                                    .build(),
-                            RC_SIGN_IN);
-                }
-            }
-        };
+        Intent intent = getIntent();
+        newUser = intent.getBooleanExtra(NEW_USER, false);
+        mUserName = intent.getStringExtra(USERNAME);
+        mUid = intent.getStringExtra(USER_ID);
+
+        if (newUser) {
+            showEditableCardView(true);
+        } else {
+            showEditableCardView(false);
+        }
+
+        onSignedInInitialize();
+
         ArrayAdapter<CharSequence> adapterGender =
                 ArrayAdapter.createFromResource(this, R.array.sex_array, R.layout.support_simple_spinner_dropdown_item);
         adapterGender.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -107,15 +113,16 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
-                cardView_editable.setVisibility(View.VISIBLE);
-                cardView_view_only.setVisibility(View.GONE);
+                showEditableCardView(true);
 
                 if (user != null) {
                     editTextZipCode.setText(user.getLocationZip());
+                    editTextCity.setText(user.getCity());
+                    editTextState.setText(user.getState());
+                    editTextCountry.setText(user.getCountry());
                     spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
                     spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
                 }
-
             }
         });
 
@@ -128,6 +135,9 @@ public class ProfileActivity extends AppCompatActivity {
                     user.setUserName(mUserName);
                     user.setBloodType(spinner_blood_type.getSelectedItem().toString());
                     user.setLocationZip(editTextZipCode.getText().toString());
+                    user.setCity(editTextCity.getText().toString());
+                    user.setState(editTextState.getText().toString());
+                    user.setCountry(editTextCountry.getText().toString());
                     user.setGender(spinner_gender.getSelectedItem().toString());
                     user.setPhotoUrl(null);
                 } else {
@@ -135,22 +145,22 @@ public class ProfileActivity extends AppCompatActivity {
                             mUserName,
                             spinner_blood_type.getSelectedItem().toString(),
                             editTextZipCode.getText().toString(),
+                            editTextCity.getText().toString(),
+                            editTextState.getText().toString(),
+                            editTextCountry.getText().toString(),
                             spinner_gender.getSelectedItem().toString(),
                             null);
                 }
                 usersDatabaseReference.child(mUid).setValue(user);
 
-                cardView_editable.setVisibility(View.GONE);
-                cardView_view_only.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    private void onSignedInInitialize(String displayName, String uid) {
-        mUid = uid;
-        mUserName = displayName;
+    private void onSignedInInitialize() {
 
-        usersDatabaseReference.addChildEventListener(new ChildEventListener() {
+
+        userChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(Users.class);
@@ -160,12 +170,13 @@ public class ProfileActivity extends AppCompatActivity {
                     textViewBloodGroup.setText(user.getBloodType());
                     textViewGender.setText(user.getGender());
                     textViewZip.setText(user.getLocationZip());
+                    textViewCity.setText(user.getCity());
+                    textViewState.setText(user.getState());
+                    textViewCountry.setText(user.getCountry());
 
-                    cardView_editable.setVisibility(View.GONE);
-                    cardView_view_only.setVisibility(View.VISIBLE);
+                    showEditableCardView(false);
                 } else {
-                    cardView_editable.setVisibility(View.VISIBLE);
-                    cardView_view_only.setVisibility(View.GONE);
+                    showEditableCardView(true);
                 }
             }
 
@@ -177,6 +188,11 @@ public class ProfileActivity extends AppCompatActivity {
                 textViewBloodGroup.setText(user.getBloodType());
                 textViewGender.setText(user.getGender());
                 textViewZip.setText(user.getLocationZip());
+                textViewCity.setText(user.getCity());
+                textViewState.setText(user.getState());
+                textViewCountry.setText(user.getCountry());
+
+                showEditableCardView(false);
             }
 
             @Override
@@ -193,44 +209,33 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
 
-//        usersDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.hasChild(mUid)) {
-//                    cardView_editable.setVisibility(View.GONE);
-//                    cardView_view_only.setVisibility(View.VISIBLE);
-//                    user = dataSnapshot.child(mUid).getValue(Users.class);
-//
-//                    textViewName.setText(mUserName);
-//                    textViewBloodGroup.setText(user.getBloodType());
-//                    textViewGender.setText(user.getGender());
-//                    textViewZip.setText(user.getLocationZip());
-//                } else {
-//                    cardView_editable.setVisibility(View.VISIBLE);
-//                    cardView_view_only.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        usersDatabaseReference.addChildEventListener(userChildEventListener);
+    }
+
+    private void showEditableCardView(Boolean show) {
+
+        if (show) {
+            cardView_editable.setVisibility(View.VISIBLE);
+            cardView_view_only.setVisibility(View.GONE);
+        } else {
+            cardView_editable.setVisibility(View.GONE);
+            cardView_view_only.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseAuth.getInstance().addAuthStateListener(authStateListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        FirebaseAuth.getInstance().removeAuthStateListener(authStateListener);
+        if (userChildEventListener != null) {
+            usersDatabaseReference.removeEventListener(userChildEventListener);
+            userChildEventListener = null;
+        }
     }
-
-
 }

@@ -12,10 +12,17 @@ import com.android.mvnshrikanth.theblooddonor.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.NEW_USER;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
@@ -25,10 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersDatabaseReference;
+    private ValueEventListener userValueEventListener;
+
 
     private String mUsername;
     private String mUid;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     onSignedInInitialize(user.getDisplayName(), user.getUid());
                 } else {
+                    onSignedOutCleanup();
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -59,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
     }
 
     @Override
@@ -72,13 +80,50 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void onSignedInInitialize(String displayName, String uid) {
+    private void onSignedInInitialize(String displayName, final String uid) {
         mUsername = displayName;
         mUid = uid;
 
+        attachDatabaseReadListener();
+
         getFragmentManager().beginTransaction()
-                .add(R.id.fragment_main_container, new MainFragment())
+                .replace(R.id.fragment_main_container, new MainFragment())
                 .commit();
+    }
+
+    private void onSignedOutCleanup() {
+        detachDatabaseReadListener();
+    }
+
+    private void attachDatabaseReadListener() {
+
+        userValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild(mUid)) {
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.putExtra(NEW_USER, true);
+                    intent.putExtra(USER_ID, mUid);
+                    intent.putExtra(USERNAME, mUsername);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        usersDatabaseReference.addListenerForSingleValueEvent(userValueEventListener);
+    }
+
+    private void detachDatabaseReadListener() {
+
+        if (userValueEventListener != null) {
+            usersDatabaseReference.removeEventListener(userValueEventListener);
+            userValueEventListener = null;
+        }
     }
 
     @Override
@@ -91,7 +136,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        firebaseAuth.removeAuthStateListener(authStateListener);
+        if (authStateListener != null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
+        detachDatabaseReadListener();
     }
 
     @Override
@@ -105,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_show_profile:
                 Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra(NEW_USER, false);
+                intent.putExtra(USER_ID, mUid);
+                intent.putExtra(USERNAME, mUsername);
                 startActivity(intent);
                 break;
             default:
