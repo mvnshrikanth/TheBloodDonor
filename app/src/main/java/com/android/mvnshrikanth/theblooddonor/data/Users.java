@@ -1,10 +1,14 @@
 package com.android.mvnshrikanth.theblooddonor.data;
 
+import com.google.firebase.database.Exclude;
+
 /**
  * Created by mvnsh on 11/14/2017.
  */
 
 public class Users {
+    @Exclude
+    private String uidKey;
     private String userName;
     private String bloodType;
     private String locationZip;
@@ -18,6 +22,18 @@ public class Users {
     }
 
     public Users(String userName, String bloodType, String locationZip, String city, String state, String country, String gender, String photoUrl) {
+        this.userName = userName;
+        this.bloodType = bloodType;
+        this.locationZip = locationZip;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.gender = gender;
+        this.photoUrl = photoUrl;
+    }
+
+    public Users(String uidKey, String userName, String bloodType, String locationZip, String city, String state, String country, String gender, String photoUrl) {
+        this.uidKey = uidKey;
         this.userName = userName;
         this.bloodType = bloodType;
         this.locationZip = locationZip;
@@ -93,4 +109,11 @@ public class Users {
     }
 
 
+    public String getUidKey() {
+        return uidKey;
+    }
+
+    public void setUidKey(String uidKey) {
+        this.uidKey = uidKey;
+    }
 }

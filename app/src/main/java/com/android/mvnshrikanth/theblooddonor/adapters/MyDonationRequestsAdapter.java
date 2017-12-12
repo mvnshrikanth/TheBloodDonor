@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
+import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,8 +19,10 @@ import butterknife.ButterKnife;
  * Created by mvnsh on 10/31/2017.
  */
 
-public class BloodDataAdapter extends RecyclerView.Adapter<BloodDataAdapter.MyViewHolder> {
-    private static final String LOG_TAG = BloodDataAdapter.class.getSimpleName();
+public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRequestsAdapter.MyViewHolder> {
+    private static final String LOG_TAG = MyDonationRequestsAdapter.class.getSimpleName();
+
+    private List<DonationRequest> donationRequestList;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,14 +33,18 @@ public class BloodDataAdapter extends RecyclerView.Adapter<BloodDataAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-
     }
 
+    public void prepareDonationRequest(List<DonationRequest> donationRequestList) {
+        this.donationRequestList = donationRequestList;
+        notifyDataSetChanged();
+    }
 
     //TODO Change the item count in the adapter.
     @Override
     public int getItemCount() {
-        return 1;
+        if (null == donationRequestList) return 0;
+        return donationRequestList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

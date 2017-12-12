@@ -6,7 +6,9 @@ import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.android.mvnshrikanth.theblooddonor.R;
-import com.android.mvnshrikanth.theblooddonor.ui.DonorFragment;
+import com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment;
+import com.android.mvnshrikanth.theblooddonor.ui.MyDonationsFragment;
+import com.android.mvnshrikanth.theblooddonor.ui.NewDonationsFragment;
 
 /**
  * Created by mvnsh on 11/12/2017.
@@ -23,19 +25,20 @@ public class OptionsAdapter extends FragmentPagerAdapter {
         this.context = context;
     }
 
-    //TODO create separate fragments for each type of category and replace the fragment calls.
     @Override
     public Fragment getItem(int position) {
         switch (position) {
+            //TODO 2) Create my donations fragment
+            case 0:
+                MyDonationsFragment myDonationsFragment = new MyDonationsFragment();
+                return myDonationsFragment;
             case 1:
-                DonorFragment donorFragment = new DonorFragment();
-                return donorFragment;
-            case 2:
-                DonorFragment donorFragment1 = new DonorFragment();
-                return donorFragment1;
+                MyDonationRequestsFragment myDonationRequestsFragment = new MyDonationRequestsFragment();
+                return myDonationRequestsFragment;
+            //TODO 3) Create new donation requests fragment
             default:
-                DonorFragment donorFragment2 = new DonorFragment();
-                return donorFragment2;
+                NewDonationsFragment newDonationsFragment = new NewDonationsFragment();
+                return newDonationsFragment;
         }
 
     }
