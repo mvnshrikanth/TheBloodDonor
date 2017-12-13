@@ -23,5 +23,11 @@
     <string name="str_tab_requested_donations">My Donation Requests</string>
     <string name="str_tab_new_donations">New Donations</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="str_dialog_submit_new_request">Submit Request</string>
+    <string name="str_dialog_cancel_request">Cancel</string>
+
 
 </resources>

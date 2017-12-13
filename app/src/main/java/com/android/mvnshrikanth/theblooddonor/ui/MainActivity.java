@@ -25,6 +25,7 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity {
+
     public static final int RC_SIGN_IN = 1;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private FirebaseAuth firebaseAuth;
@@ -85,9 +86,12 @@ public class MainActivity extends AppCompatActivity {
         mUid = uid;
 
         attachDatabaseReadListener();
-
+        Bundle bundle = new Bundle();
+        bundle.putString(USER_ID, mUid);
+        MainFragment mainFragment = new MainFragment();
+        mainFragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_main_container, new MainFragment())
+                .replace(R.id.fragment_main_container, mainFragment)
                 .commit();
     }
 

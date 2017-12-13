@@ -16,6 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +43,9 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, view);
-        OptionsAdapter optionsAdapter = new OptionsAdapter(view.getContext(), getChildFragmentManager());
+        savedInstanceState = this.getArguments();
+        String mUid = savedInstanceState.getString(USER_ID);
+        OptionsAdapter optionsAdapter = new OptionsAdapter(view.getContext(), getChildFragmentManager(), mUid);
         viewPager.setAdapter(optionsAdapter);
         tabLayout.setupWithViewPager(viewPager);
         return view;
