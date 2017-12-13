@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
-import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,12 +19,12 @@ import butterknife.ButterKnife;
 public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRequestsAdapter.MyViewHolder> {
     private static final String LOG_TAG = MyDonationRequestsAdapter.class.getSimpleName();
 
-    private List<DonationRequest> donationRequestList;
+    //TODO create a my donation list and supply it to the adapter.
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_blood_data, parent, false);
+                .inflate(R.layout.item_my_donation, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -35,27 +32,20 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
     public void onBindViewHolder(MyViewHolder holder, int position) {
     }
 
-    public void prepareDonationRequest(List<DonationRequest> donationRequestList) {
-        this.donationRequestList = donationRequestList;
-        notifyDataSetChanged();
-    }
-
-    //TODO Change the item count in the adapter.
     @Override
     public int getItemCount() {
-        if (null == donationRequestList) return 0;
-        return donationRequestList.size();
+        return 1;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.textView_donor_donee_name)
-        TextView textView_donor_donee_name;
-        @BindView(R.id.textView_location)
-        TextView textView_location;
-        @BindView(R.id.textView_blood_group)
-        TextView textView_blood_group;
-        @BindView(R.id.textView_date)
-        TextView textView_date;
+        @BindView(R.id.textView_donor_name)
+        TextView textViewDonorName;
+        @BindView(R.id.textView_donated_location)
+        TextView textViewDonatedLocation;
+        @BindView(R.id.textView_donated_blood_group)
+        TextView textViewDonatedBloodGroup;
+        @BindView(R.id.textView__donated_date)
+        TextView textViewDonatedDate;
 
         public MyViewHolder(View itemView) {
             super(itemView);

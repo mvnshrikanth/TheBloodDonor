@@ -3,12 +3,15 @@ package com.android.mvnshrikanth.theblooddonor.adapters;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment;
 import com.android.mvnshrikanth.theblooddonor.ui.MyDonationsFragment;
 import com.android.mvnshrikanth.theblooddonor.ui.NewDonationsFragment;
+
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
 /**
  * Created by mvnsh on 11/12/2017.
@@ -18,29 +21,30 @@ public class OptionsAdapter extends FragmentPagerAdapter {
 
     private static final String LOG_TAG = OptionsAdapter.class.getSimpleName();
     private Context context;
+    private String mUid;
 
-
-    public OptionsAdapter(Context context, FragmentManager fm) {
+    public OptionsAdapter(Context context, FragmentManager fm, String mUid) {
         super(fm);
         this.context = context;
+        this.mUid = mUid;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            //TODO 2) Create my donations fragment
             case 0:
-                MyDonationsFragment myDonationsFragment = new MyDonationsFragment();
-                return myDonationsFragment;
+                return new MyDonationsFragment();
             case 1:
                 MyDonationRequestsFragment myDonationRequestsFragment = new MyDonationRequestsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(USER_ID, mUid);
+                myDonationRequestsFragment.setArguments(bundle);
                 return myDonationRequestsFragment;
-            //TODO 3) Create new donation requests fragment
+            case 2:
+                return new NewDonationsFragment();
             default:
-                NewDonationsFragment newDonationsFragment = new NewDonationsFragment();
-                return newDonationsFragment;
+                return null;
         }
-
     }
 
     @Override

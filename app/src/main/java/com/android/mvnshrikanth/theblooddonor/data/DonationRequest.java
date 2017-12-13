@@ -1,78 +1,106 @@
 package com.android.mvnshrikanth.theblooddonor.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mvnsh on 12/11/2017.
  */
 
-public class DonationRequest {
+public class DonationRequest implements Parcelable {
 
-    private String requestersUidKey;
-    private String requestersName;
-    private String requestedBlootType;
-    private String requestersCity;
-    private String requestersdState;
-    private String requestersInZip;
+    public static final String DONATION_REQUESTS_PATH = "donationRequests";
+    public static final Creator<DonationRequest> CREATOR = new Creator<DonationRequest>() {
+        @Override
+        public DonationRequest createFromParcel(Parcel in) {
+            return new DonationRequest(in);
+        }
+
+        @Override
+        public DonationRequest[] newArray(int size) {
+            return new DonationRequest[size];
+        }
+    };
+    private String requesterUidKey;
+    private String requesterName;
+    private String requestedBloodType;
+    private String requesterCity;
+    private String requesterState;
+    private String requesterZip;
     private String requestedDate;
     private String donatedDate;
 
+    public DonationRequest() {
+    }
 
-    public DonationRequest(String requestersUidKey, String requestersName, String requestedBlootType, String requestersCity, String requestersdState, String requestersInZip, String requestedDate, String donatedDate) {
-        this.requestersUidKey = requestersUidKey;
-        this.requestersName = requestersName;
-        this.requestedBlootType = requestedBlootType;
-        this.requestersCity = requestersCity;
-        this.requestersdState = requestersdState;
-        this.requestersInZip = requestersInZip;
+    public DonationRequest(String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donatedDate) {
+        this.requesterUidKey = requesterUidKey;
+        this.requesterName = requesterName;
+        this.requestedBloodType = requestedBloodType;
+        this.requesterCity = requesterCity;
+        this.requesterState = requesterState;
+        this.requesterZip = requesterZip;
         this.requestedDate = requestedDate;
         this.donatedDate = donatedDate;
     }
 
-    public String getRequestersUidKey() {
-        return requestersUidKey;
+    protected DonationRequest(Parcel in) {
+        requesterUidKey = in.readString();
+        requesterName = in.readString();
+        requestedBloodType = in.readString();
+        requesterCity = in.readString();
+        requesterState = in.readString();
+        requesterZip = in.readString();
+        requestedDate = in.readString();
+        donatedDate = in.readString();
     }
 
-    public void setRequestersUidKey(String requestersUidKey) {
-        this.requestersUidKey = requestersUidKey;
+    public String getRequesterUidKey() {
+        return requesterUidKey;
     }
 
-    public String getRequestersName() {
-        return requestersName;
+    public void setRequesterUidKey(String requesterUidKey) {
+        this.requesterUidKey = requesterUidKey;
     }
 
-    public void setRequestersName(String requestersName) {
-        this.requestersName = requestersName;
+    public String getRequesterName() {
+        return requesterName;
     }
 
-    public String getRequestedBlootType() {
-        return requestedBlootType;
+    public void setRequesterName(String requesterName) {
+        this.requesterName = requesterName;
     }
 
-    public void setRequestedBlootType(String requestedBlootType) {
-        this.requestedBlootType = requestedBlootType;
+    public String getRequestedBloodType() {
+        return requestedBloodType;
     }
 
-    public String getRequestersCity() {
-        return requestersCity;
+    public void setRequestedBloodType(String requestedBloodType) {
+        this.requestedBloodType = requestedBloodType;
     }
 
-    public void setRequestersCity(String requestersCity) {
-        this.requestersCity = requestersCity;
+    public String getRequesterCity() {
+        return requesterCity;
     }
 
-    public String getRequestersdState() {
-        return requestersdState;
+    public void setRequesterCity(String requesterCity) {
+        this.requesterCity = requesterCity;
     }
 
-    public void setRequestersdState(String requestersdState) {
-        this.requestersdState = requestersdState;
+    public String getRequesterState() {
+        return requesterState;
     }
 
-    public String getRequestersInZip() {
-        return requestersInZip;
+    public void setRequesterState(String requesterState) {
+        this.requesterState = requesterState;
     }
 
-    public void setRequestersInZip(String requestersInZip) {
-        this.requestersInZip = requestersInZip;
+    public String getRequesterZip() {
+        return requesterZip;
+    }
+
+    public void setRequesterZip(String requesterZip) {
+        this.requesterZip = requesterZip;
     }
 
     public String getRequestedDate() {
@@ -89,5 +117,22 @@ public class DonationRequest {
 
     public void setDonatedDate(String donatedDate) {
         this.donatedDate = donatedDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(requesterUidKey);
+        dest.writeString(requesterName);
+        dest.writeString(requestedBloodType);
+        dest.writeString(requesterCity);
+        dest.writeString(requesterState);
+        dest.writeString(requesterZip);
+        dest.writeString(requestedDate);
+        dest.writeString(donatedDate);
     }
 }
