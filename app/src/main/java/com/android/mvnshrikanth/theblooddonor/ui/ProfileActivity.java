@@ -83,13 +83,13 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        usersDatabaseReference = firebaseDatabase.getReference().child("users");
-
         Intent intent = getIntent();
         newUser = intent.getBooleanExtra(NEW_USER, false);
         mUserName = intent.getStringExtra(USERNAME);
         mUid = intent.getStringExtra(USER_ID);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        usersDatabaseReference = firebaseDatabase.getReference().child("users");
 
         if (newUser) {
             showEditableCardView(true);
@@ -165,7 +165,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(Users.class);
 
-                if (user != null) {
+
+                if ((user != null) && (user.getUserName().equals(mUserName))) {
                     textViewName.setText(mUserName);
                     textViewBloodGroup.setText(user.getBloodType());
                     textViewGender.setText(user.getGender());
@@ -184,15 +185,17 @@ public class ProfileActivity extends AppCompatActivity {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(Users.class);
 
-                textViewName.setText(mUserName);
-                textViewBloodGroup.setText(user.getBloodType());
-                textViewGender.setText(user.getGender());
-                textViewZip.setText(user.getLocationZip());
-                textViewCity.setText(user.getCity());
-                textViewState.setText(user.getState());
-                textViewCountry.setText(user.getCountry());
+                if ((user != null) && (user.getUserName().equals(mUserName))) {
+                    textViewName.setText(mUserName);
+                    textViewBloodGroup.setText(user.getBloodType());
+                    textViewGender.setText(user.getGender());
+                    textViewZip.setText(user.getLocationZip());
+                    textViewCity.setText(user.getCity());
+                    textViewState.setText(user.getState());
+                    textViewCountry.setText(user.getCountry());
 
-                showEditableCardView(false);
+                    showEditableCardView(false);
+                }
             }
 
             @Override
