@@ -38,6 +38,8 @@ public class NewDonationsFragment extends Fragment {
     @BindView(R.id.recyclerView_new_donations)
     RecyclerView recyclerViewNewDonations;
     Unbinder unbinder;
+    @BindView(R.id.empty_new_donation_view)
+    View emptyView;
 
     private List<DonationRequest> donationRequestList;
 
@@ -56,20 +58,34 @@ public class NewDonationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_donations, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
+        donationRequestAdapter = new DonationRequestAdapter();
+
         if (savedInstanceState != null) {
             donationRequestList = (List<DonationRequest>) savedInstanceState.getSerializable(DONATION_REQUEST_LIST_KEY);
         } else {
             donationRequestList = new ArrayList<DonationRequest>();
         }
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
-        donationRequestAdapter = new DonationRequestAdapter();
+
+        attachDatabaseReadListener();
+
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
 
-        donationRequestAdapter.prepareDonationRequest(donationRequestList);
-        attachDatabaseReadListener();
+        toggelRecyclerView();
         return view;
+    }
+
+    private void toggelRecyclerView() {
+        if (donationRequestList.size() > 0) {
+            recyclerViewNewDonations.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        } else {
+            recyclerViewNewDonations.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void attachDatabaseReadListener() {
@@ -81,6 +97,7 @@ public class NewDonationsFragment extends Fragment {
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.add(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
+                    toggelRecyclerView();
                 }
 
                 @Override
@@ -93,6 +110,7 @@ public class NewDonationsFragment extends Fragment {
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.remove(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
+                    toggelRecyclerView();
                 }
 
                 @Override
@@ -105,6 +123,7 @@ public class NewDonationsFragment extends Fragment {
 
                 }
             };
+
             donationRequestDBReference.addChildEventListener(donationRequestChildEventListener);
         }
 

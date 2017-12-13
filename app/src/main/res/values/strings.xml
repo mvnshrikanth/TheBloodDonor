@@ -23,11 +23,15 @@
     <string name="str_tab_requested_donations">My Donation Requests</string>
     <string name="str_tab_new_donations">New Donations</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="str_dialog_submit_new_request">Submit Request</string>
     <string name="str_dialog_cancel_request">Cancel</string>
+
+    <string name="empty_view_title_text_new_donation">No donation requests &#8230;</string>
+    <string name="empty_view_title_text_donation_requests">You never requested any donations &#8230;</string>
+    <string name="empty_view_title_text_my_donation">You never made any donations &#8230;</string>
+
+    <string name="empty_view_subtitle_text">Get started by creating a new donation request</string>
+    <string name="empty_view_subtitle_text_my_donation">Get started from the New Donations TAB</string>
 
 
 </resources>
