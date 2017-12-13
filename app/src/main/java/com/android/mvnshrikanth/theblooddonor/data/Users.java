@@ -10,7 +10,7 @@ import com.google.firebase.database.Exclude;
  */
 
 public class Users implements Parcelable {
-    public static final String USERS_PATH = "users";
+
     public static final Creator<Users> CREATOR = new Creator<Users>() {
         @Override
         public Users createFromParcel(Parcel in) {

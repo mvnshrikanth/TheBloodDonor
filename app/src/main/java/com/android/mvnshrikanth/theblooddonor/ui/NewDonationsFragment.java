@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.android.mvnshrikanth.theblooddonor.data.DonationRequest.DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
 
 
 /**

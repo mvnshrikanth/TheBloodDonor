@@ -9,6 +9,11 @@ import java.util.Locale;
  */
 
 public class Utils {
+    public static final String USERS_PATH = "users";
+    public static final String DONATION_REQUESTS_PATH = "donationRequests";
+    public static final String MY_DONATION_REQUESTS_PATH = "myDonationRequests";
+
+
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);
         Date date = new Date();

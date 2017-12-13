@@ -3,13 +3,16 @@ package com.android.mvnshrikanth.theblooddonor.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by mvnsh on 12/11/2017.
  */
 
 public class DonationRequest implements Parcelable {
 
-    public static final String DONATION_REQUESTS_PATH = "donationRequests";
+
     public static final Creator<DonationRequest> CREATOR = new Creator<DonationRequest>() {
         @Override
         public DonationRequest createFromParcel(Parcel in) {
@@ -135,4 +138,19 @@ public class DonationRequest implements Parcelable {
         dest.writeString(requestedDate);
         dest.writeString(donatedDate);
     }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("requesterUidKey", requesterUidKey);
+        result.put("requesterName", requesterName);
+        result.put("requestedBloodType", requestedBloodType);
+        result.put("requesterCity", requesterCity);
+        result.put("requesterState", requesterState);
+        result.put("requesterZip", requesterZip);
+        result.put("requestedDate", requestedDate);
+        result.put("donatedDate", donatedDate);
+
+        return result;
+    }
+
 }
