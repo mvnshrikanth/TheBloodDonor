@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
 
@@ -45,7 +46,8 @@ public class MainFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         savedInstanceState = this.getArguments();
         String mUid = savedInstanceState.getString(USER_ID);
-        OptionsAdapter optionsAdapter = new OptionsAdapter(view.getContext(), getChildFragmentManager(), mUid);
+        String mUsername = savedInstanceState.getString(USERNAME);
+        OptionsAdapter optionsAdapter = new OptionsAdapter(view.getContext(), getChildFragmentManager(), mUid, mUsername);
         viewPager.setAdapter(optionsAdapter);
         tabLayout.setupWithViewPager(viewPager);
         return view;

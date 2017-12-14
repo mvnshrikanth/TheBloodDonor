@@ -14,13 +14,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- * Created by mvnsh on 10/31/2017.
+ * Created by mvnsh on 12/14/2017.
  */
 
-public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRequestsAdapter.MyViewHolder> {
-    private static final String LOG_TAG = MyDonationRequestsAdapter.class.getSimpleName();
+public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.MyViewHolder> {
+
     private List<DonationRequest> myDonationRequestList;
 
     @Override
@@ -33,23 +32,14 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewDonatedBloodGroup.setText(myDonationRequestList.get(position).getRequestedBloodType());
+        holder.textViewDonatedDate.setText(myDonationRequestList.get(position).getDonatedDate());
         String location = myDonationRequestList.get(position).getRequesterCity() + "," + myDonationRequestList.get(position).getRequesterZip();
         holder.textViewDonatedLocation.setText(location);
-        if (myDonationRequestList.get(position).getDonorName() == null) {
-            holder.textViewDonorName.setText("N/A");
-        } else {
-            holder.textViewDonorName.setText(myDonationRequestList.get(position).getDonorName());
-        }
-        if (myDonationRequestList.get(position).getDonatedDate() == null) {
-            holder.textViewDonatedDate.setText("N/A");
-        } else {
-            holder.textViewDonatedDate.setText(myDonationRequestList.get(position).getDonatedDate());
-        }
+        holder.textViewRequesterName.setText(myDonationRequestList.get(position).getRequesterName());
     }
 
-    public void preparemyDonationRequestList(List<DonationRequest> myDonationRequestList) {
+    public void prepareMyDonationList(List<DonationRequest> myDonationRequestList) {
         this.myDonationRequestList = myDonationRequestList;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -60,7 +50,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textView_donor_name)
-        TextView textViewDonorName;
+        TextView textViewRequesterName;
         @BindView(R.id.textView_donated_location)
         TextView textViewDonatedLocation;
         @BindView(R.id.textView_donated_blood_group)
