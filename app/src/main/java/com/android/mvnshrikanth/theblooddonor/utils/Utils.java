@@ -12,6 +12,7 @@ public class Utils {
     public static final String USERS_PATH = "users";
     public static final String DONATION_REQUESTS_PATH = "donationRequests";
     public static final String MY_DONATION_REQUESTS_PATH = "myDonationRequests";
+    public static final String MY_DONATIONS_PATH = "myDonations";
 
 
     public static String getCurrentDate() {

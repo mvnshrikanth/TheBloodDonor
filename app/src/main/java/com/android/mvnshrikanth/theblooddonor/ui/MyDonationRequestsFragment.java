@@ -42,6 +42,7 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
 
 public class MyDonationRequestsFragment extends Fragment {
     private static final String LOG_TAG = MyDonationRequestsFragment.class.getSimpleName();
+    private static final String MY_DONATION_REQUEST_LIST_KEY = "my_donation_request_list_key";
 
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonations;
@@ -84,8 +85,12 @@ public class MyDonationRequestsFragment extends Fragment {
         assert mUid != null;
         userDBReference = firebaseDatabase.getReference().child(USERS_PATH).child(mUid);
         myDonationRequestDBReference = firebaseDatabase.getReference().child(MY_DONATION_REQUESTS_PATH).child(mUid);
+
         myDonationRequestList = new ArrayList<DonationRequest>();
+
+
         attachDatabaseReadListener();
+
         fabRequestDonation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,7 +213,6 @@ public class MyDonationRequestsFragment extends Fragment {
             };
             myDonationRequestDBReference.addChildEventListener(myDonationRequestChildEventListener);
         }
-
     }
 
     private void toggleRecyclerView() {
