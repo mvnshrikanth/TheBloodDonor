@@ -172,13 +172,10 @@ public class MyDonationRequestsFragment extends Fragment {
             myDonationRequestChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
-                    for (DataSnapshot dataSnapShotDonation : dataSnapshot.getChildren()) {
-                        DonationRequest donationRequest = dataSnapShotDonation.getValue(DonationRequest.class);
-                        myDonationRequestList.add(donationRequest);
-                        myDonationRequestsAdapter.preparemyDonationRequestList(myDonationRequestList);
-                        toggleRecyclerView();
-                    }
+                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
+                    myDonationRequestList.add(donationRequest);
+                    myDonationRequestsAdapter.preparemyDonationRequestList(myDonationRequestList);
+                    toggleRecyclerView();
                 }
 
                 @Override
@@ -209,7 +206,7 @@ public class MyDonationRequestsFragment extends Fragment {
 
                 }
             };
-//            myDonationRequestDBReference.addChildEventListener(myDonationRequestChildEventListener);
+            myDonationRequestDBReference.addChildEventListener(myDonationRequestChildEventListener);
         }
 
     }
