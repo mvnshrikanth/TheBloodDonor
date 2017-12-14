@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
+import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,8 +21,7 @@ import butterknife.ButterKnife;
 
 public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRequestsAdapter.MyViewHolder> {
     private static final String LOG_TAG = MyDonationRequestsAdapter.class.getSimpleName();
-
-    //TODO create a my donation list and supply it to the adapter.
+    private List<DonationRequest> myDonationRequestList;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,11 +32,30 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        holder.textViewDonatedBloodGroup.setText(myDonationRequestList.get(position).getRequestedBloodType());
+        String location = myDonationRequestList.get(position).getRequesterCity() + "," + myDonationRequestList.get(position).getRequesterZip();
+        holder.textViewDonatedLocation.setText(location);
+        if (myDonationRequestList.get(position).getDonorName() == null) {
+            holder.textViewDonorName.setText("N/A");
+        } else {
+            holder.textViewDonorName.setText(myDonationRequestList.get(position).getDonorName());
+        }
+        if (myDonationRequestList.get(position).getDonatedDate() == null) {
+            holder.textViewDonatedDate.setText("N/A");
+        } else {
+            holder.textViewDonatedDate.setText(myDonationRequestList.get(position).getDonatedDate());
+        }
+    }
+
+    public void preparemyDonationRequestList(List<DonationRequest> myDonationRequestList) {
+        this.myDonationRequestList = myDonationRequestList;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        if (null == myDonationRequestList) return 0;
+        return myDonationRequestList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

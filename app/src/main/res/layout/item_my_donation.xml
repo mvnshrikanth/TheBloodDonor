@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -12,7 +13,7 @@
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Shrikanth Malarouth" />
+        tools:text="Shrikanth Malarouth" />
 
     <TextView
         android:id="@+id/textView_donated_location"
@@ -22,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="East Windsor, 06088" />
+        tools:text="East Windsor, 06088" />
 
     <TextView
         android:id="@+id/textView_donated_blood_group"
@@ -32,7 +33,7 @@
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="O+ve" />
+        tools:text="O+ve" />
 
     <TextView
         android:id="@+id/textView__donated_date"
@@ -43,5 +44,5 @@
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="04-Sep-17" />
+        tools:text="04-Sep-17" />
 </LinearLayout>

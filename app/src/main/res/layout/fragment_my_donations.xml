@@ -4,10 +4,38 @@
     android:layout_height="match_parent"
     tools:context="com.android.mvnshrikanth.theblooddonor.ui.MyDonationsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_My_Donations"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/empty_donation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/empty_blood_drop_image"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/blood_icon"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/empty_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_blood_drop_image"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-medium"
+            android:paddingTop="16dp"
+            android:text="@string/empty_view_title_text_my_donation"
+            android:textAppearance="?android:textAppearanceMedium" />
+
+    </RelativeLayout>
+
 
 </FrameLayout>

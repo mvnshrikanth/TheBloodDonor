@@ -3,13 +3,16 @@ package com.android.mvnshrikanth.theblooddonor.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by mvnsh on 12/11/2017.
  */
 
 public class DonationRequest implements Parcelable {
 
-    public static final String DONATION_REQUESTS_PATH = "donationRequests";
+
     public static final Creator<DonationRequest> CREATOR = new Creator<DonationRequest>() {
         @Override
         public DonationRequest createFromParcel(Parcel in) {
@@ -23,6 +26,7 @@ public class DonationRequest implements Parcelable {
     };
     private String requesterUidKey;
     private String requesterName;
+    private String donorName;
     private String requestedBloodType;
     private String requesterCity;
     private String requesterState;
@@ -30,12 +34,26 @@ public class DonationRequest implements Parcelable {
     private String requestedDate;
     private String donatedDate;
 
+
     public DonationRequest() {
     }
 
-    public DonationRequest(String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donatedDate) {
+    protected DonationRequest(Parcel in) {
+        requesterUidKey = in.readString();
+        requesterName = in.readString();
+        donorName = in.readString();
+        requestedBloodType = in.readString();
+        requesterCity = in.readString();
+        requesterState = in.readString();
+        requesterZip = in.readString();
+        requestedDate = in.readString();
+        donatedDate = in.readString();
+    }
+
+    public DonationRequest(String requesterUidKey, String requesterName, String donorName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donatedDate) {
         this.requesterUidKey = requesterUidKey;
         this.requesterName = requesterName;
+        this.donorName = donorName;
         this.requestedBloodType = requestedBloodType;
         this.requesterCity = requesterCity;
         this.requesterState = requesterState;
@@ -44,15 +62,22 @@ public class DonationRequest implements Parcelable {
         this.donatedDate = donatedDate;
     }
 
-    protected DonationRequest(Parcel in) {
-        requesterUidKey = in.readString();
-        requesterName = in.readString();
-        requestedBloodType = in.readString();
-        requesterCity = in.readString();
-        requesterState = in.readString();
-        requesterZip = in.readString();
-        requestedDate = in.readString();
-        donatedDate = in.readString();
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(requesterUidKey);
+        dest.writeString(requesterName);
+        dest.writeString(donorName);
+        dest.writeString(requestedBloodType);
+        dest.writeString(requesterCity);
+        dest.writeString(requesterState);
+        dest.writeString(requesterZip);
+        dest.writeString(requestedDate);
+        dest.writeString(donatedDate);
     }
 
     public String getRequesterUidKey() {
@@ -69,6 +94,14 @@ public class DonationRequest implements Parcelable {
 
     public void setRequesterName(String requesterName) {
         this.requesterName = requesterName;
+    }
+
+    public String getDonorName() {
+        return donorName;
+    }
+
+    public void setDonorName(String donorName) {
+        this.donorName = donorName;
     }
 
     public String getRequestedBloodType() {
@@ -119,20 +152,17 @@ public class DonationRequest implements Parcelable {
         this.donatedDate = donatedDate;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(requesterUidKey);
-        dest.writeString(requesterName);
-        dest.writeString(requestedBloodType);
-        dest.writeString(requesterCity);
-        dest.writeString(requesterState);
-        dest.writeString(requesterZip);
-        dest.writeString(requestedDate);
-        dest.writeString(donatedDate);
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> results = new HashMap<>();
+        results.put("requesterUidKey", requesterUidKey);
+        results.put("requesterName", requesterName);
+        results.put("donorName", donorName);
+        results.put("requestedBloodType", requestedBloodType);
+        results.put("requesterCity", requesterCity);
+        results.put("requesterState", requesterState);
+        results.put("requesterZip", requesterZip);
+        results.put("requestedDate", requestedDate);
+        results.put("donatedDate", donatedDate);
+        return results;
     }
 }
