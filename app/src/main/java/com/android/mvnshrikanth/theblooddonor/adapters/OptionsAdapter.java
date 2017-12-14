@@ -11,6 +11,7 @@ import com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment;
 import com.android.mvnshrikanth.theblooddonor.ui.MyDonationsFragment;
 import com.android.mvnshrikanth.theblooddonor.ui.NewDonationsFragment;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
 /**
@@ -22,18 +23,25 @@ public class OptionsAdapter extends FragmentPagerAdapter {
     private static final String LOG_TAG = OptionsAdapter.class.getSimpleName();
     private Context context;
     private String mUid;
+    private String mUsername;
 
-    public OptionsAdapter(Context context, FragmentManager fm, String mUid) {
+    public OptionsAdapter(Context context, FragmentManager fm, String mUid, String mUsername) {
         super(fm);
         this.context = context;
         this.mUid = mUid;
+        this.mUsername = mUsername;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new MyDonationsFragment();
+                MyDonationsFragment myDonationsFragment = new MyDonationsFragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(USER_ID, mUid);
+                bundle1.putString(USERNAME, mUsername);
+                myDonationsFragment.setArguments(bundle1);
+                return myDonationsFragment;
             case 1:
                 MyDonationRequestsFragment myDonationRequestsFragment = new MyDonationRequestsFragment();
                 Bundle bundle = new Bundle();

@@ -45,7 +45,7 @@ public class MyDonationRequestsFragment extends Fragment {
     private static final String MY_DONATION_REQUEST_LIST_KEY = "my_donation_request_list_key";
 
     @BindView(R.id.recyclerView_My_Donation_Requests)
-    RecyclerView recyclerViewMyDonations;
+    RecyclerView recyclerViewMyDonationsRequests;
     @BindView(R.id.empty_my_donation_request_view)
     View emptyView;
     @BindView(R.id.fab_request_donation)
@@ -87,7 +87,6 @@ public class MyDonationRequestsFragment extends Fragment {
         myDonationRequestDBReference = firebaseDatabase.getReference().child(MY_DONATION_REQUESTS_PATH).child(mUid);
 
         myDonationRequestList = new ArrayList<DonationRequest>();
-
 
         attachDatabaseReadListener();
 
@@ -150,8 +149,8 @@ public class MyDonationRequestsFragment extends Fragment {
 
 
         myDonationRequestsAdapter = new MyDonationRequestsAdapter();
-        recyclerViewMyDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
-        recyclerViewMyDonations.setAdapter(myDonationRequestsAdapter);
+        recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
+        recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
         toggleRecyclerView();
         return view;
     }
@@ -217,10 +216,10 @@ public class MyDonationRequestsFragment extends Fragment {
 
     private void toggleRecyclerView() {
         if (myDonationRequestList.size() > 0) {
-            recyclerViewMyDonations.setVisibility(View.VISIBLE);
+            recyclerViewMyDonationsRequests.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         } else {
-            recyclerViewMyDonations.setVisibility(View.GONE);
+            recyclerViewMyDonationsRequests.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
     }

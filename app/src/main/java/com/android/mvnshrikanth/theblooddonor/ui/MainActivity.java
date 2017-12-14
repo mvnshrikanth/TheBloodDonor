@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         attachDatabaseReadListener();
         Bundle bundle = new Bundle();
         bundle.putString(USER_ID, mUid);
+        bundle.putString(USERNAME, mUsername);
         MainFragment mainFragment = new MainFragment();
         mainFragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
