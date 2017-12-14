@@ -23,7 +23,7 @@
         app:layout_anchorGravity="bottom|right|end" />
 
     <RelativeLayout
-        android:id="@+id/empty_donation_request_view"
+        android:id="@+id/empty_my_donation_request_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

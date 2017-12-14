@@ -74,11 +74,11 @@ public class NewDonationsFragment extends Fragment {
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
 
-        toggelRecyclerView();
+        toggleRecyclerView();
         return view;
     }
 
-    private void toggelRecyclerView() {
+    private void toggleRecyclerView() {
         if (donationRequestList.size() > 0) {
             recyclerViewNewDonations.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class NewDonationsFragment extends Fragment {
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.add(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
-                    toggelRecyclerView();
+                    toggleRecyclerView();
                 }
 
                 @Override
@@ -107,10 +107,11 @@ public class NewDonationsFragment extends Fragment {
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    //TODO remove is not tested.
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.remove(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
-                    toggelRecyclerView();
+                    toggleRecyclerView();
                 }
 
                 @Override

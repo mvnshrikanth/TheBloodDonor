@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener userChildEventListener;
+    private ValueEventListener userValueEvenListener;
     private String mUserName;
     private String mUid;
     private Users user;
@@ -89,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
         mUid = intent.getStringExtra(USER_ID);
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        usersDatabaseReference = firebaseDatabase.getReference().child("users");
+        usersDatabaseReference = firebaseDatabase.getReference().child("users").child(mUid);
 
         if (newUser) {
             showEditableCardView(true);
@@ -151,38 +153,17 @@ public class ProfileActivity extends AppCompatActivity {
                             spinner_gender.getSelectedItem().toString(),
                             null);
                 }
-                usersDatabaseReference.child(mUid).setValue(user);
-
+                usersDatabaseReference.setValue(user);
+                showEditableCardView(false);
             }
         });
     }
 
     private void onSignedInInitialize() {
 
-
-        userChildEventListener = new ChildEventListener() {
+        userValueEvenListener = new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                user = dataSnapshot.getValue(Users.class);
-
-
-                if ((user != null) && (user.getUserName().equals(mUserName))) {
-                    textViewName.setText(mUserName);
-                    textViewBloodGroup.setText(user.getBloodType());
-                    textViewGender.setText(user.getGender());
-                    textViewZip.setText(user.getLocationZip());
-                    textViewCity.setText(user.getCity());
-                    textViewState.setText(user.getState());
-                    textViewCountry.setText(user.getCountry());
-
-                    showEditableCardView(false);
-                } else {
-                    showEditableCardView(true);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(Users.class);
 
                 if ((user != null) && (user.getUserName().equals(mUserName))) {
@@ -196,16 +177,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                     showEditableCardView(false);
                 }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -213,8 +184,61 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         };
+        usersDatabaseReference.addValueEventListener(userValueEvenListener);
 
-        usersDatabaseReference.addChildEventListener(userChildEventListener);
+
+//        userChildEventListener = new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                user = dataSnapshot.getValue(Users.class);
+//
+//                if ((user != null) && (user.getUserName().equals(mUserName))) {
+//                    textViewName.setText(mUserName);
+//                    textViewBloodGroup.setText(user.getBloodType());
+//                    textViewGender.setText(user.getGender());
+//                    textViewZip.setText(user.getLocationZip());
+//                    textViewCity.setText(user.getCity());
+//                    textViewState.setText(user.getState());
+//                    textViewCountry.setText(user.getCountry());
+//
+//                    showEditableCardView(false);
+//                }
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                user = dataSnapshot.getValue(Users.class);
+//
+//                if ((user != null) && (user.getUserName().equals(mUserName))) {
+//                    textViewName.setText(mUserName);
+//                    textViewBloodGroup.setText(user.getBloodType());
+//                    textViewGender.setText(user.getGender());
+//                    textViewZip.setText(user.getLocationZip());
+//                    textViewCity.setText(user.getCity());
+//                    textViewState.setText(user.getState());
+//                    textViewCountry.setText(user.getCountry());
+//
+//                    showEditableCardView(false);
+//                }
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        };
+
+//        usersDatabaseReference.addChildEventListener(userChildEventListener);
     }
 
     private void showEditableCardView(Boolean show) {
