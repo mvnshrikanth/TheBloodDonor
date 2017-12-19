@@ -13,13 +13,13 @@ public class Utils {
     public static final String DONATION_REQUESTS_PATH = "donationRequests";
     public static final String MY_DONATION_REQUESTS_PATH = "myDonationRequests";
     public static final String MY_DONATIONS_PATH = "myDonations";
-
+    public static final String CHAT_MESSAGES = "chatMessages";
+    public static final String DONATION_REQUESTS_CHATS = "donationRequestChats";
 
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);
         Date date = new Date();
-        String currDate = simpleDateFormat.format(new Date());
-        return currDate;
+        return simpleDateFormat.format(new Date());
     }
 
 }

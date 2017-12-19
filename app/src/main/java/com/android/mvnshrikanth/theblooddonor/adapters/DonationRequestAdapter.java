@@ -22,6 +22,10 @@ public class DonationRequestAdapter
         extends RecyclerView.Adapter<DonationRequestAdapter.MyViewHolder> {
 
     private List<DonationRequest> donationRequestList;
+    private DonationRequestAdapterOnClickListener mClickHandler;
+
+    public DonationRequestAdapter() {
+    }
 
     @Override
     public DonationRequestAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,7 +53,11 @@ public class DonationRequestAdapter
         return donationRequestList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public interface DonationRequestAdapterOnClickListener {
+        void onClick(DonationRequest donationRequest);
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.textView_requester_name)
         TextView textViewRequesterName;
         @BindView(R.id.textView_donation_location)
@@ -62,6 +70,13 @@ public class DonationRequestAdapter
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            DonationRequest donationRequest = donationRequestList.get(getAdapterPosition());
+            mClickHandler.onClick(donationRequest);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,17 +41,19 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATION_REQ
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
 
 
-public class MyDonationRequestsFragment extends Fragment {
+public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
+    public static final String MY_DONATION_REQUEST_LIST_KEY = "my_donation_request_list_key";
+    public static final String MY_DONATION_REQUEST_DATA = "my_donation_request_data";
     private static final String LOG_TAG = MyDonationRequestsFragment.class.getSimpleName();
-    private static final String MY_DONATION_REQUEST_LIST_KEY = "my_donation_request_list_key";
-
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
     @BindView(R.id.empty_my_donation_request_view)
     View emptyView;
     @BindView(R.id.fab_request_donation)
     FloatingActionButton fabRequestDonation;
-    MyDonationRequestsAdapter myDonationRequestsAdapter;
+
+    private MyDonationRequestsAdapter myDonationRequestsAdapter;
+    private View view;
     private Unbinder unbinder;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestsDBReference;
@@ -60,6 +63,7 @@ public class MyDonationRequestsFragment extends Fragment {
     private ValueEventListener userValueEventListener;
     private List<DonationRequest> myDonationRequestList;
     private Users users;
+    private String mUid;
 
     public MyDonationRequestsFragment() {
         // Required empty public constructor
@@ -74,11 +78,11 @@ public class MyDonationRequestsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_my_donation_requests, container, false);
+        view = inflater.inflate(R.layout.fragment_my_donation_requests, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         savedInstanceState = this.getArguments();
-        final String mUid = savedInstanceState.getString(USER_ID);
+        mUid = savedInstanceState.getString(USER_ID);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestsDBReference = firebaseDatabase.getReference();
@@ -115,8 +119,10 @@ public class MyDonationRequestsFragment extends Fragment {
                 builder.setPositiveButton(R.string.str_dialog_submit_new_request, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String key = donationRequestsDBReference.push().getKey();
                         DonationRequest donationRequest =
-                                new DonationRequest(mUid,
+                                new DonationRequest(key,
+                                        mUid,
                                         users.getUserName(),
                                         null,
                                         array[selectedBloodType[0]],
@@ -126,7 +132,6 @@ public class MyDonationRequestsFragment extends Fragment {
                                         Utils.getCurrentDate(),
                                         null);
 
-                        String key = donationRequestsDBReference.push().getKey();
                         Map<String, Object> donationValues = donationRequest.toMap();
                         Map<String, Object> childUpdates = new HashMap<>();
                         childUpdates.put("/" + DONATION_REQUESTS_PATH + "/" + key, donationValues);
@@ -148,7 +153,7 @@ public class MyDonationRequestsFragment extends Fragment {
         });
 
 
-        myDonationRequestsAdapter = new MyDonationRequestsAdapter();
+        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this);
         recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
         toggleRecyclerView();
@@ -178,7 +183,7 @@ public class MyDonationRequestsFragment extends Fragment {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     myDonationRequestList.add(donationRequest);
-                    myDonationRequestsAdapter.preparemyDonationRequestList(myDonationRequestList);
+                    myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
                     toggleRecyclerView();
                 }
 
@@ -195,7 +200,7 @@ public class MyDonationRequestsFragment extends Fragment {
                     for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()) {
                         DonationRequest donationRequest = dataSnapShot.getValue(DonationRequest.class);
                         myDonationRequestList.add(donationRequest);
-                        myDonationRequestsAdapter.preparemyDonationRequestList(myDonationRequestList);
+                        myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
                         toggleRecyclerView();
                     }
                 }
@@ -246,5 +251,13 @@ public class MyDonationRequestsFragment extends Fragment {
         super.onPause();
         myDonationRequestList.clear();
         detachDatabaseReadListener();
+    }
+
+    @Override
+    public void onClick(DonationRequest donationRequest) {
+        Intent intent = new Intent(view.getContext(), ChatActivity.class);
+        intent.putExtra(MY_DONATION_REQUEST_DATA, donationRequest);
+        intent.putExtra(USER_ID, mUid);
+        startActivity(intent);
     }
 }
