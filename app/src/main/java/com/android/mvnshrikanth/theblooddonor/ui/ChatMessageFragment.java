@@ -11,16 +11,17 @@ import android.widget.EditText;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
-import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 
-import static com.android.mvnshrikanth.theblooddonor.ui.NewDonationsFragment.DONATION_REQUEST_DATA;
+import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.CHAT_MESSAGES;
+import static com.android.mvnshrikanth.theblooddonor.utils.Utils.CHAT_MESSAGES_PATH;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,8 +39,6 @@ public class ChatMessageFragment extends Fragment {
     EditText editTextChatMessage;
 
     private View view;
-    private String mUid;
-    private String mUserName;
 
     public ChatMessageFragment() {
         // Required empty public constructor
@@ -52,23 +51,28 @@ public class ChatMessageFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_chat_message, container, false);
         savedInstanceState = this.getArguments();
-        final DonationRequest donationRequest = savedInstanceState.getParcelable(DONATION_REQUEST_DATA);
+
+        String donationRequestKey = savedInstanceState.getString(MY_DONATION_REQUEST_KEY);
+        final String mUid = savedInstanceState.getString(USER_ID);
+        final String mUserName = savedInstanceState.getString(USERNAME);
+        final String[] chatIdKey = {savedInstanceState.getString(CHAT_ID_KEY)};
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        chatMessageDatabaseReference = firebaseDatabase.getReference().child(CHAT_MESSAGES);
-
-        mUid = savedInstanceState.getString(USER_ID);
+        chatMessageDatabaseReference = firebaseDatabase.getReference().child(CHAT_MESSAGES_PATH);
 
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatMessage chatMessage = new ChatMessage(editTextChatMessage.getText().toString(), Utils.getCurrentDate(), mUid, mUserName);
-                chatMessageDatabaseReference.push().setValue(chatMessage);
+                if (chatIdKey[0] == null) {
+                    chatIdKey[0] = chatMessageDatabaseReference.push().getKey();
+                }
+
+                ChatMessage chatMessage = new ChatMessage(editTextChatMessage.getText().toString(), Utils.getCurrentDate(), mUid, mUserName, chatIdKey[0]);
+                chatMessageDatabaseReference.child(chatIdKey[0]).setValue(chatMessage);
                 editTextChatMessage.setText("");
             }
         });
 
         return view;
     }
-
 }

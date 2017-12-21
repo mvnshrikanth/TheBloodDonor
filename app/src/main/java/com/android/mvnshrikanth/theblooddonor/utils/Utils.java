@@ -13,8 +13,8 @@ public class Utils {
     public static final String DONATION_REQUESTS_PATH = "donationRequests";
     public static final String MY_DONATION_REQUESTS_PATH = "myDonationRequests";
     public static final String MY_DONATIONS_PATH = "myDonations";
-    public static final String CHAT_MESSAGES = "chatMessages";
-    public static final String DONATION_REQUESTS_CHATS = "donationRequestChats";
+    public static final String CHAT_MESSAGES_PATH = "chatMessages";
+    public static final String DONATION_REQUESTS_CHATS_PATH = "donationRequestChats";
 
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);

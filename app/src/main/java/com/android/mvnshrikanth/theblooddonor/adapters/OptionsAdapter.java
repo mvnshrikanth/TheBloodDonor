@@ -39,19 +39,20 @@ public class OptionsAdapter extends FragmentPagerAdapter {
                 MyDonationsFragment myDonationsFragment = new MyDonationsFragment();
                 Bundle bundle1 = new Bundle();
                 bundle1.putString(USER_ID, mUid);
-                bundle1.putString(USERNAME, mUsername);
                 myDonationsFragment.setArguments(bundle1);
                 return myDonationsFragment;
             case 1:
                 MyDonationRequestsFragment myDonationRequestsFragment = new MyDonationRequestsFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_ID, mUid);
+                bundle.putString(USERNAME, mUsername);
                 myDonationRequestsFragment.setArguments(bundle);
                 return myDonationRequestsFragment;
             case 2:
                 NewDonationsFragment newDonationsFragment = new NewDonationsFragment();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString(USER_ID, mUid);
+                bundle2.putString(USERNAME, mUsername);
                 newDonationsFragment.setArguments(bundle2);
                 return newDonationsFragment;
             default:

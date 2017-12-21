@@ -23,8 +23,14 @@ public class DonationRequestAdapter
 
     private List<DonationRequest> donationRequestList;
     private DonationRequestAdapterOnClickListener mClickHandler;
+    private String mUid;
+    private String mUserName;
 
-    public DonationRequestAdapter() {
+    public DonationRequestAdapter(DonationRequestAdapterOnClickListener mClickHandler, String mUid, String mUserName) {
+        this.mClickHandler = mClickHandler;
+        this.mUid = mUid;
+        this.mUserName = mUserName;
+
     }
 
     @Override
@@ -54,7 +60,7 @@ public class DonationRequestAdapter
     }
 
     public interface DonationRequestAdapterOnClickListener {
-        void onClick(DonationRequest donationRequest);
+        void onClick(String donationRequestKey, String mUid, String mUserName);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,7 +82,7 @@ public class DonationRequestAdapter
         @Override
         public void onClick(View v) {
             DonationRequest donationRequest = donationRequestList.get(getAdapterPosition());
-            mClickHandler.onClick(donationRequest);
+            mClickHandler.onClick(donationRequest.getDonationRequestKey(), mUid, mUserName);
         }
     }
 }

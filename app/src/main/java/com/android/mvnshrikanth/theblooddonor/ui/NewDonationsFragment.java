@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
 
@@ -36,22 +37,22 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUES
  */
 public class NewDonationsFragment extends Fragment implements DonationRequestAdapter.DonationRequestAdapterOnClickListener {
 
-    public static final String DONATION_REQUEST_DATA = "donation_request_data";
-    private static final String DONATION_REQUEST_LIST_KEY = "donation_request_list_key";
     @BindView(R.id.recyclerView_new_donations)
     RecyclerView recyclerViewNewDonations;
     Unbinder unbinder;
     @BindView(R.id.empty_new_donation_view)
     View emptyView;
     View view;
-    private String mUid;
 
+    private String mUid;
+    private String mUserName;
     private List<DonationRequest> donationRequestList;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestDBReference;
     private ChildEventListener donationRequestChildEventListener;
     private DonationRequestAdapter donationRequestAdapter;
+
 
     public NewDonationsFragment() {
         // Required empty public constructor
@@ -64,14 +65,15 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         view = inflater.inflate(R.layout.fragment_new_donations, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
-        donationRequestAdapter = new DonationRequestAdapter();
-
         savedInstanceState = this.getArguments();
         mUid = savedInstanceState.getString(USER_ID);
-        donationRequestList = new ArrayList<DonationRequest>();
+        mUserName = savedInstanceState.getString(USERNAME);
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
+        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
+
+        donationRequestList = new ArrayList<DonationRequest>();
 
         attachDatabaseReadListener();
 
@@ -156,16 +158,12 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(DONATION_REQUEST_LIST_KEY, (Serializable) donationRequestList);
-    }
-
-    @Override
-    public void onClick(DonationRequest donationRequest) {
+    public void onClick(String donationRequestKey, String mUid, String mUserName) {
+        //TODO get the chat id on click and pass it to the chat message activity.
         Intent intent = new Intent(view.getContext(), ChatMessage.class);
-        intent.putExtra(DONATION_REQUEST_DATA, donationRequest);
+        intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
         intent.putExtra(USER_ID, mUid);
+        intent.putExtra(USERNAME, mUserName);
         startActivity(intent);
     }
 }

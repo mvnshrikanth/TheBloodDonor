@@ -9,6 +9,7 @@ import android.os.Parcelable;
 
 public class ChatMessage implements Parcelable {
 
+
     public static final Creator<ChatMessage> CREATOR = new Creator<ChatMessage>() {
         @Override
         public ChatMessage createFromParcel(Parcel in) {
@@ -24,19 +25,25 @@ public class ChatMessage implements Parcelable {
     private String messageDate;
     private String chatUserId;
     private String chatUserName;
+    private String chatId;
 
     protected ChatMessage(Parcel in) {
         messageText = in.readString();
         messageDate = in.readString();
         chatUserId = in.readString();
         chatUserName = in.readString();
+        chatId = in.readString();
     }
 
-    public ChatMessage(String messageText, String messageDate, String chatUserId, String chatUserName) {
+    public ChatMessage(String messageText, String messageDate, String chatUserId, String chatUserName, String chatId) {
         this.messageText = messageText;
         this.messageDate = messageDate;
         this.chatUserId = chatUserId;
         this.chatUserName = chatUserName;
+        this.chatId = chatId;
+    }
+
+    public ChatMessage() {
     }
 
     @Override
@@ -50,6 +57,7 @@ public class ChatMessage implements Parcelable {
         dest.writeString(messageDate);
         dest.writeString(chatUserId);
         dest.writeString(chatUserName);
+        dest.writeString(chatId);
     }
 
     public String getMessageText() {
@@ -82,5 +90,13 @@ public class ChatMessage implements Parcelable {
 
     public void setChatUserName(String chatUserName) {
         this.chatUserName = chatUserName;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 }

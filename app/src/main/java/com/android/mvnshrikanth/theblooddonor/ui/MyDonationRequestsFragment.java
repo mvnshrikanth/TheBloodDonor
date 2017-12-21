@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATION_REQUESTS_PATH;
@@ -42,8 +43,7 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
 
 
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
-    public static final String MY_DONATION_REQUEST_LIST_KEY = "my_donation_request_list_key";
-    public static final String MY_DONATION_REQUEST_DATA = "my_donation_request_data";
+    public static final String MY_DONATION_REQUEST_KEY = "my_donation_request_key";
     private static final String LOG_TAG = MyDonationRequestsFragment.class.getSimpleName();
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
@@ -64,6 +64,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     private List<DonationRequest> myDonationRequestList;
     private Users users;
     private String mUid;
+    private String mUserName;
 
     public MyDonationRequestsFragment() {
         // Required empty public constructor
@@ -83,6 +84,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
 
         savedInstanceState = this.getArguments();
         mUid = savedInstanceState.getString(USER_ID);
+        mUserName = savedInstanceState.getString(USERNAME);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestsDBReference = firebaseDatabase.getReference();
@@ -124,13 +126,12 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                                 new DonationRequest(key,
                                         mUid,
                                         users.getUserName(),
-                                        null,
                                         array[selectedBloodType[0]],
                                         users.getCity(),
                                         users.getState(),
                                         users.getLocationZip(),
-                                        Utils.getCurrentDate(),
-                                        null);
+                                        Utils.getCurrentDate()
+                                );
 
                         Map<String, Object> donationValues = donationRequest.toMap();
                         Map<String, Object> childUpdates = new HashMap<>();
@@ -153,7 +154,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
         });
 
 
-        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this);
+        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName);
         recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
         toggleRecyclerView();
@@ -254,10 +255,11 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     }
 
     @Override
-    public void onClick(DonationRequest donationRequest) {
+    public void onClick(String donationRequestKey, String mUid, String mUserName) {
         Intent intent = new Intent(view.getContext(), ChatActivity.class);
-        intent.putExtra(MY_DONATION_REQUEST_DATA, donationRequest);
+        intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
         intent.putExtra(USER_ID, mUid);
+        intent.putExtra(USERNAME, mUserName);
         startActivity(intent);
     }
 }

@@ -55,17 +55,17 @@ public class DonationRequest implements Parcelable {
         donatedDate = in.readString();
     }
 
-    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String donorName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donatedDate) {
+    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate) {
         this.donationRequestKey = donationRequestKey;
         this.requesterUidKey = requesterUidKey;
         this.requesterName = requesterName;
-        this.donorName = donorName;
+        this.donorName = null;
         this.requestedBloodType = requestedBloodType;
         this.requesterCity = requesterCity;
         this.requesterState = requesterState;
         this.requesterZip = requesterZip;
         this.requestedDate = requestedDate;
-        this.donatedDate = donatedDate;
+        this.donatedDate = null;
     }
 
     @Exclude

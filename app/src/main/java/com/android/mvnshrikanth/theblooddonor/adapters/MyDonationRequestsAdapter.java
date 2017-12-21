@@ -23,9 +23,13 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
     private static final String LOG_TAG = MyDonationRequestsAdapter.class.getSimpleName();
     private List<DonationRequest> myDonationRequestList;
     private MyDonationRequestAdapterOnClickListener mClickHandler;
+    private String mUid;
+    private String mUserName;
 
-    public MyDonationRequestsAdapter(MyDonationRequestAdapterOnClickListener mClickHandler) {
+    public MyDonationRequestsAdapter(MyDonationRequestAdapterOnClickListener mClickHandler, String mUid, String mUserName) {
         this.mClickHandler = mClickHandler;
+        this.mUid = mUid;
+        this.mUserName = mUserName;
     }
 
     @Override
@@ -64,7 +68,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
     }
 
     public interface MyDonationRequestAdapterOnClickListener {
-        void onClick(DonationRequest donationRequest);
+        void onClick(String donationRequestKey, String mUid, String mUserName);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -86,7 +90,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
         @Override
         public void onClick(View v) {
             DonationRequest donationRequest = myDonationRequestList.get(getAdapterPosition());
-            mClickHandler.onClick(donationRequest);
+            mClickHandler.onClick(donationRequest.getDonationRequestKey(), mUid, mUserName);
         }
     }
 }

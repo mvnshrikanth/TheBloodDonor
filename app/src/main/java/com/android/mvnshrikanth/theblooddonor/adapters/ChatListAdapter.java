@@ -21,9 +21,15 @@ import butterknife.ButterKnife;
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder> {
     private List<ChatMessage> chatMessageList;
     private ChatListAdapterEventListener mClickHandler;
+    private String mUid;
+    private String mUserName;
+    private String donationRequestKey;
 
-    public ChatListAdapter(ChatListAdapterEventListener mClickHandler) {
+    public ChatListAdapter(ChatListAdapterEventListener mClickHandler, String donationRequestKey, String mUid, String mUserName) {
         this.mClickHandler = mClickHandler;
+        this.donationRequestKey = donationRequestKey;
+        this.mUid = mUid;
+        this.mUserName = mUserName;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
     }
 
     public interface ChatListAdapterEventListener {
-        void onClick(ChatMessage chatMessage);
+        void onClick(String donationRequestKey, String mUid, String mUserName, String chatIdKey);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -70,7 +76,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
         @Override
         public void onClick(View v) {
             ChatMessage chatMessage = chatMessageList.get(getAdapterPosition());
-            mClickHandler.onClick(chatMessage);
+            mClickHandler.onClick(donationRequestKey, mUid, mUserName, chatMessage.getChatId());
         }
     }
 }

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.adapters.ChatListAdapter;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
-import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,12 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_DATA;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_CHATS;
+import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_CHATS_PATH;
 
 public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAdapterEventListener {
 
+    public static final String CHAT_ID_KEY = "chat_id_key";
     @BindView(R.id.recyclerView_user_chat_list)
     RecyclerView recyclerViewUserChatList;
     private View view;
@@ -41,7 +42,6 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
     private List<ChatMessage> chatMessageList;
     private ChatListAdapter chatListAdapter;
 
-    private String mUid;
     private Unbinder unbinder;
 
     public ChatFragment() {
@@ -56,17 +56,18 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
         unbinder = ButterKnife.bind(this, view);
 
         savedInstanceState = this.getArguments();
-        DonationRequest donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST_DATA);
-        mUid = savedInstanceState.getString(USER_ID);
+        String donationRequestKey = savedInstanceState.getString(MY_DONATION_REQUEST_KEY);
+        String mUid = savedInstanceState.getString(USER_ID);
+        String mUserName = savedInstanceState.getString(USERNAME);
 
         chatMessageList = new ArrayList<ChatMessage>();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        assert donationRequest != null;
-        donationRequestsChatsDatabaseReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_CHATS).child(donationRequest.getDonationRequestKey());
+        assert donationRequestKey != null;
+        donationRequestsChatsDatabaseReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_CHATS_PATH).child(donationRequestKey);
 
         attachDatabaseReadListener();
-        chatListAdapter = new ChatListAdapter(ChatFragment.this);
+        chatListAdapter = new ChatListAdapter(ChatFragment.this, donationRequestKey, mUid, mUserName);
         recyclerViewUserChatList.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewUserChatList.setAdapter(chatListAdapter);
         return view;
@@ -129,9 +130,14 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
         }
     }
 
+
     @Override
-    public void onClick(ChatMessage chatMessage) {
+    public void onClick(String donationRequestKey, String mUid, String mUserName, String chatIdKey) {
         Intent intent = new Intent(view.getContext(), ChatMessageActivity.class);
+        intent.putExtra(CHAT_ID_KEY, chatIdKey);
+        intent.putExtra(USER_ID, mUid);
+        intent.putExtra(USERNAME, mUserName);
+        intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
         startActivity(intent);
     }
 }
