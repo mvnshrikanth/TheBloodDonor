@@ -22,6 +22,15 @@ import butterknife.ButterKnife;
 public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRequestsAdapter.MyViewHolder> {
     private static final String LOG_TAG = MyDonationRequestsAdapter.class.getSimpleName();
     private List<DonationRequest> myDonationRequestList;
+    private MyDonationRequestAdapterOnClickListener mClickHandler;
+    private String mUid;
+    private String mUserName;
+
+    public MyDonationRequestsAdapter(MyDonationRequestAdapterOnClickListener mClickHandler, String mUid, String mUserName) {
+        this.mClickHandler = mClickHandler;
+        this.mUid = mUid;
+        this.mUserName = mUserName;
+    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,7 +56,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
         }
     }
 
-    public void preparemyDonationRequestList(List<DonationRequest> myDonationRequestList) {
+    public void prepareMyDonationRequestList(List<DonationRequest> myDonationRequestList) {
         this.myDonationRequestList = myDonationRequestList;
         notifyDataSetChanged();
     }
@@ -58,7 +67,11 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
         return myDonationRequestList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public interface MyDonationRequestAdapterOnClickListener {
+        void onClick(String donationRequestKey, String mUid, String mUserName);
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.textView_donor_name)
         TextView textViewDonorName;
         @BindView(R.id.textView_donated_location)
@@ -71,6 +84,13 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            DonationRequest donationRequest = myDonationRequestList.get(getAdapterPosition());
+            mClickHandler.onClick(donationRequest.getDonationRequestKey(), mUid, mUserName);
         }
     }
 }

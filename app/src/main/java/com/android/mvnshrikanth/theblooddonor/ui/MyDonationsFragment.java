@@ -26,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATIONS_PATH;
 
@@ -60,7 +59,6 @@ public class MyDonationsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         savedInstanceState = this.getArguments();
         String mUid = savedInstanceState.getString(USER_ID);
-        String mUsername = savedInstanceState.getString(USERNAME);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         assert mUid != null;

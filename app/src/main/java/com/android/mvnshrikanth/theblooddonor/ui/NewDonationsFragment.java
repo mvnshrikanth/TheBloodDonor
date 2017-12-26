@@ -1,7 +1,9 @@
 package com.android.mvnshrikanth.theblooddonor.ui;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,22 +26,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
+import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewDonationsFragment extends Fragment {
-
-    private static final String DONATION_REQUEST_LIST_KEY = "donation_request_list_key";
+public class NewDonationsFragment extends Fragment implements DonationRequestAdapter.DonationRequestAdapterOnClickListener {
 
     @BindView(R.id.recyclerView_new_donations)
     RecyclerView recyclerViewNewDonations;
     Unbinder unbinder;
     @BindView(R.id.empty_new_donation_view)
     View emptyView;
+    View view;
 
+    private String mUid;
+    private String mUserName;
     private List<DonationRequest> donationRequestList;
 
     private FirebaseDatabase firebaseDatabase;
@@ -56,21 +62,21 @@ public class NewDonationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new_donations, container, false);
+        view = inflater.inflate(R.layout.fragment_new_donations, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        savedInstanceState = this.getArguments();
+        mUid = savedInstanceState.getString(USER_ID);
+        mUserName = savedInstanceState.getString(USERNAME);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
-        donationRequestAdapter = new DonationRequestAdapter();
 
-        if (savedInstanceState != null) {
-            donationRequestList = (List<DonationRequest>) savedInstanceState.getSerializable(DONATION_REQUEST_LIST_KEY);
-        } else {
-            donationRequestList = new ArrayList<DonationRequest>();
-        }
+        donationRequestList = new ArrayList<DonationRequest>();
 
         attachDatabaseReadListener();
 
+        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
 
@@ -152,8 +158,16 @@ public class NewDonationsFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(DONATION_REQUEST_LIST_KEY, (Serializable) donationRequestList);
+    public void onClick(String donationRequestKey, String donationRequestmUid, String mUid, String mUserName) {
+        if (!donationRequestmUid.equals(mUid)) {
+            Intent intent = new Intent(view.getContext(), ChatMessageActivity.class);
+            intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
+            intent.putExtra(USER_ID, mUid);
+            intent.putExtra(USERNAME, mUserName);
+            intent.putExtra(CHAT_ID_KEY, (String) null);
+            startActivity(intent);
+        } else {
+            Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

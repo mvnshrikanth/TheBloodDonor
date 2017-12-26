@@ -20,7 +20,8 @@
         android:src="@drawable/blood_icon"
         app:fabSize="auto"
         app:layout_anchor="@id/recyclerView_My_Donation_Requests"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end"
+        app:srcCompat="@drawable/blood_icon" />
 
     <RelativeLayout
         android:id="@+id/empty_my_donation_request_view"

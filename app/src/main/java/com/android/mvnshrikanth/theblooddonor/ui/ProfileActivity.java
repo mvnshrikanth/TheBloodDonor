@@ -186,59 +186,6 @@ public class ProfileActivity extends AppCompatActivity {
         };
         usersDatabaseReference.addValueEventListener(userValueEvenListener);
 
-
-//        userChildEventListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                user = dataSnapshot.getValue(Users.class);
-//
-//                if ((user != null) && (user.getUserName().equals(mUserName))) {
-//                    textViewName.setText(mUserName);
-//                    textViewBloodGroup.setText(user.getBloodType());
-//                    textViewGender.setText(user.getGender());
-//                    textViewZip.setText(user.getLocationZip());
-//                    textViewCity.setText(user.getCity());
-//                    textViewState.setText(user.getState());
-//                    textViewCountry.setText(user.getCountry());
-//
-//                    showEditableCardView(false);
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                user = dataSnapshot.getValue(Users.class);
-//
-//                if ((user != null) && (user.getUserName().equals(mUserName))) {
-//                    textViewName.setText(mUserName);
-//                    textViewBloodGroup.setText(user.getBloodType());
-//                    textViewGender.setText(user.getGender());
-//                    textViewZip.setText(user.getLocationZip());
-//                    textViewCity.setText(user.getCity());
-//                    textViewState.setText(user.getState());
-//                    textViewCountry.setText(user.getCountry());
-//
-//                    showEditableCardView(false);
-//                }
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        };
-
-//        usersDatabaseReference.addChildEventListener(userChildEventListener);
     }
 
     private void showEditableCardView(Boolean show) {
