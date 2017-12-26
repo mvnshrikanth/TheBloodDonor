@@ -15,6 +15,8 @@ public class Utils {
     public static final String MY_DONATIONS_PATH = "myDonations";
     public static final String CHAT_MESSAGES_PATH = "chatMessages";
     public static final String DONATION_REQUESTS_CHATS_PATH = "donationRequestChats";
+    public static final String DONATION_CHAT_USER_PATH = "donationChatUser";
+
 
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);

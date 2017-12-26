@@ -33,13 +33,14 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUES
 public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAdapterEventListener {
 
     public static final String CHAT_ID_KEY = "chat_id_key";
+    public static final String CHAT_LIST = "chat_list";
     @BindView(R.id.recyclerView_user_chat_list)
     RecyclerView recyclerViewUserChatList;
     private View view;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestsChatsDatabaseReference;
     private ChildEventListener donationRequestsChatsChildEventListener;
-    private List<ChatMessage> chatMessageList;
+    private List<ChatMessage> chatList;
     private ChatListAdapter chatListAdapter;
 
     private Unbinder unbinder;
@@ -60,7 +61,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
         String mUid = savedInstanceState.getString(USER_ID);
         String mUserName = savedInstanceState.getString(USERNAME);
 
-        chatMessageList = new ArrayList<ChatMessage>();
+        chatList = new ArrayList<ChatMessage>();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         assert donationRequestKey != null;
@@ -82,8 +83,8 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
-                    chatMessageList.add(chatMessage);
-                    chatListAdapter.prepareChatListAdapter(chatMessageList);
+                    chatList.add(chatMessage);
+                    chatListAdapter.prepareChatListAdapter(chatList);
                 }
 
                 @Override
@@ -114,12 +115,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        chatMessageList.clear();
+        chatList.clear();
         detachDatabaseReadListener();
     }
 

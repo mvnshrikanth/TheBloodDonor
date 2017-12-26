@@ -3,6 +3,9 @@ package com.android.mvnshrikanth.theblooddonor.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by mvnsh on 12/14/2017.
  */
@@ -99,4 +102,15 @@ public class ChatMessage implements Parcelable {
     public void setChatId(String chatId) {
         this.chatId = chatId;
     }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> results = new HashMap<>();
+        results.put("messageText", messageText);
+        results.put("messageDate", messageDate);
+        results.put("chatUserId", chatUserId);
+        results.put("chatUserName", chatUserName);
+        results.put("chatId", chatId);
+        return results;
+    }
+
 }

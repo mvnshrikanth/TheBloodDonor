@@ -47,6 +47,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
 
     public void prepareChatListAdapter(List<ChatMessage> chatMessageList) {
         this.chatMessageList = chatMessageList;
+        notifyDataSetChanged();
     }
 
     @Override

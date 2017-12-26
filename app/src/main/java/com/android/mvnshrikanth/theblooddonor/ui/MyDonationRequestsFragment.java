@@ -121,7 +121,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                 builder.setPositiveButton(R.string.str_dialog_submit_new_request, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String key = donationRequestsDBReference.push().getKey();
+                        String key = donationRequestsDBReference.child(DONATION_REQUESTS_PATH).push().getKey();
                         DonationRequest donationRequest =
                                 new DonationRequest(key,
                                         mUid,
@@ -245,11 +245,6 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
         myDonationRequestList.clear();
         detachDatabaseReadListener();
     }

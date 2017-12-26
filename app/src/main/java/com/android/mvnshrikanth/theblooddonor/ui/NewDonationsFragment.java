@@ -3,6 +3,7 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.adapters.DonationRequestAdapter;
-import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
 import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
@@ -53,7 +54,6 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     private ChildEventListener donationRequestChildEventListener;
     private DonationRequestAdapter donationRequestAdapter;
 
-
     public NewDonationsFragment() {
         // Required empty public constructor
     }
@@ -71,12 +71,12 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
-        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
 
         donationRequestList = new ArrayList<DonationRequest>();
 
         attachDatabaseReadListener();
 
+        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
 
@@ -158,12 +158,16 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     }
 
     @Override
-    public void onClick(String donationRequestKey, String mUid, String mUserName) {
-        //TODO get the chat id on click and pass it to the chat message activity.
-        Intent intent = new Intent(view.getContext(), ChatMessage.class);
-        intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
-        intent.putExtra(USER_ID, mUid);
-        intent.putExtra(USERNAME, mUserName);
-        startActivity(intent);
+    public void onClick(String donationRequestKey, String donationRequestmUid, String mUid, String mUserName) {
+        if (!donationRequestmUid.equals(mUid)) {
+            Intent intent = new Intent(view.getContext(), ChatMessageActivity.class);
+            intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
+            intent.putExtra(USER_ID, mUid);
+            intent.putExtra(USERNAME, mUserName);
+            intent.putExtra(CHAT_ID_KEY, (String) null);
+            startActivity(intent);
+        } else {
+            Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
+        }
     }
 }
