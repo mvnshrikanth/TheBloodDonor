@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
+import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<MyDonationRe
         if (myDonationRequestList.get(position).getDonatedDate() == null) {
             holder.textViewDonatedDate.setText("N/A");
         } else {
-            holder.textViewDonatedDate.setText(myDonationRequestList.get(position).getDonatedDate());
+            holder.textViewDonatedDate.setText(Utils.getDateAndTimeForDisplay(myDonationRequestList.get(position).getDonatedDate()));
         }
     }
 
