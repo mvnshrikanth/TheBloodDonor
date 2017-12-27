@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
+import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewMessage.setText(chatMessageList.get(position).getMessageText());
-//        holder.textViewName.setText(chatMessageList.get(position).getChatUserName());
+        holder.textViewDateTime.setText(Utils.getTimeForDisplay(chatMessageList.get(position).getMessageDate()));
     }
 
     @Override
@@ -52,8 +53,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
         @BindView(R.id.messageTextView)
         TextView textViewMessage;
-//        @BindView(R.id.nameTextView)
-//        TextView textViewName;
+        @BindView(R.id.dateTimeTextView)
+        TextView textViewDateTime;
 
         public MyViewHolder(View itemView) {
             super(itemView);

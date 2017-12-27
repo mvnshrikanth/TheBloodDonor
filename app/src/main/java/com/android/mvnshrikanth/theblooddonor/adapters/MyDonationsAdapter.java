@@ -34,7 +34,7 @@ public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewDonatedBloodGroup.setText(myDonationRequestList.get(position).getRequestedBloodType());
         holder.textViewDonatedDate.setText(Utils.getDateAndTimeForDisplay(myDonationRequestList.get(position).getDonatedDate()));
-        String location = myDonationRequestList.get(position).getRequesterCity() + "," + myDonationRequestList.get(position).getRequesterZip();
+        String location = myDonationRequestList.get(position).getRequesterCity() + "," + myDonationRequestList.get(position).getRequesterState();
         holder.textViewDonatedLocation.setText(location);
         holder.textViewRequesterName.setText(myDonationRequestList.get(position).getRequesterName());
     }

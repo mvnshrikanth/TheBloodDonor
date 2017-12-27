@@ -113,7 +113,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    //TODO remove is not tested.
+                    //TODO 2) remove is not tested.
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.remove(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
@@ -167,6 +167,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
             intent.putExtra(CHAT_ID_KEY, (String) null);
             startActivity(intent);
         } else {
+            //TODO 1) Modify the message to a shorter message.
             Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
         }
     }

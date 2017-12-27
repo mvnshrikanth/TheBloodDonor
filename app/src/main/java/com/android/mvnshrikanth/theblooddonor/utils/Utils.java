@@ -2,9 +2,9 @@ package com.android.mvnshrikanth.theblooddonor.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Created by mvnsh on 12/12/2017.
@@ -26,26 +26,24 @@ public class Utils {
     }
 
     public static String getDateAndTimeForDisplay(String date) {
-        //TODO 1) Change to show based on date.
         String displayString = null;
 
         try {
+            SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);
+            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.US);
 
-            Date endDate = simpleDateFormat.parse(simpleDateFormat.format(date));
-//            Date startDate = simpleDateTimeFormat.parse(new Date());
+            Date endDate = simpleDateFormat.parse(date);
 
-//            long diffMillisec = startDate.getTime() - endDate.getTime();
-//
-//            long diffSeconds = diffMillisec / 1000 % 60;
-//            long diffMinutes = diffMillisec / (60 * 1000) % 60;
-//            long diffHours = diffMillisec / (60 * 60 * 1000) % 24;
-//            long diffDays = diffMillisec / (24 * 60 * 60 * 1000);
-            if (Objects.equals(simpleDateFormat.format(endDate), simpleDateFormat.format(new Date()))) {
-                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.US);
-                displayString = simpleTimeFormat.format(date);
-            } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+
+            if (simpleDateFormat.format(endDate).equals(simpleDateFormat.format(new Date()))) {
+                displayString = simpleTimeFormat.format(simpleDateTimeFormat.parse(date));
+            } else if (simpleDateFormat.format(endDate).equals(simpleDateFormat.format(calendar.getTime()))) {
                 displayString = "Yesterday";
+            } else {
+                displayString = simpleDateFormat.format(endDate);
             }
 
 
@@ -54,5 +52,20 @@ public class Utils {
         }
         return displayString;
     }
+
+    public static String getTimeForDisplay(String date) {
+        String displayString = null;
+        try {
+            SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
+            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+            Date endDate = simpleDateTimeFormat.parse(date);
+
+            displayString = simpleTimeFormat.format(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return displayString;
+    }
+
 
 }

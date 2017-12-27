@@ -43,7 +43,7 @@ public class DonationRequestAdapter
 
     @Override
     public void onBindViewHolder(DonationRequestAdapter.MyViewHolder holder, int position) {
-        holder.textViewDonationLocation.setText((donationRequestList.get(position).getRequesterCity() + ", " + donationRequestList.get(position).getRequesterZip()));
+        holder.textViewDonationLocation.setText((donationRequestList.get(position).getRequesterCity() + ", " + donationRequestList.get(position).getRequesterState()));
         holder.textViewRequestDate.setText(Utils.getDateAndTimeForDisplay(donationRequestList.get(position).getRequestedDate()));
         holder.textViewRequestedBloodGroup.setText(donationRequestList.get(position).getRequestedBloodType());
         holder.textViewRequesterName.setText(donationRequestList.get(position).getRequesterName());
