@@ -43,7 +43,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewChatUserName.setText(chatMessageList.get(position).getChatUserName());
         holder.textViewLastChatMessage.setText(chatMessageList.get(position).getMessageText());
-        holder.textViewLastTime.setText(Utils.getDateAndTimeForDisplay(chatMessageList.get(position).getMessageDate())); // TODO Convert the date to today yesterday and time in hours if needed in Utils class.
+        holder.textViewLastTime.setText(Utils.getDateAndTimeForDisplay(chatMessageList.get(position).getMessageDate()));
     }
 
     public void prepareChatListAdapter(List<ChatMessage> chatMessageList) {

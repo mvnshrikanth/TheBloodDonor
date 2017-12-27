@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by mvnsh on 12/12/2017.
@@ -25,25 +26,24 @@ public class Utils {
     }
 
     public static String getDateAndTimeForDisplay(String date) {
+        //TODO 1) Change to show based on date.
         String displayString = null;
 
         try {
-            SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);
 
-            Date endDate = simpleDateTimeFormat.parse(date);
-            Date startDate = simpleDateTimeFormat.parse(getCurrentDate());
+            Date endDate = simpleDateFormat.parse(simpleDateFormat.format(date));
+//            Date startDate = simpleDateTimeFormat.parse(new Date());
 
-            long diffMillisec = startDate.getTime() - endDate.getTime();
-
-            long diffSeconds = diffMillisec / 1000 % 60;
-            long diffMinutes = diffMillisec / (60 * 1000) % 60;
-            long diffHours = diffMillisec / (60 * 60 * 1000) % 24;
-            long diffDays = diffMillisec / (24 * 60 * 60 * 1000);
-
-            if (diffHours < 24) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
-                String date12 = simpleDateFormat.format(endDate);
-                displayString = date12;
+//            long diffMillisec = startDate.getTime() - endDate.getTime();
+//
+//            long diffSeconds = diffMillisec / 1000 % 60;
+//            long diffMinutes = diffMillisec / (60 * 1000) % 60;
+//            long diffHours = diffMillisec / (60 * 60 * 1000) % 24;
+//            long diffDays = diffMillisec / (24 * 60 * 60 * 1000);
+            if (Objects.equals(simpleDateFormat.format(endDate), simpleDateFormat.format(new Date()))) {
+                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+                displayString = simpleTimeFormat.format(date);
             } else {
                 displayString = "Yesterday";
             }

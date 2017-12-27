@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
@@ -40,7 +39,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewMessage.setText(chatMessageList.get(position).getMessageText());
-        holder.textViewName.setText(chatMessageList.get(position).getChatUserName());
+//        holder.textViewName.setText(chatMessageList.get(position).getChatUserName());
     }
 
     @Override
@@ -50,12 +49,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.photoImageView)
-        ImageView imageViewPhoto;
+
         @BindView(R.id.messageTextView)
         TextView textViewMessage;
-        @BindView(R.id.nameTextView)
-        TextView textViewName;
+//        @BindView(R.id.nameTextView)
+//        TextView textViewName;
 
         public MyViewHolder(View itemView) {
             super(itemView);
