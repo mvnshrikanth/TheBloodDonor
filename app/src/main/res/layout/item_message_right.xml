@@ -10,7 +10,7 @@
         android:id="@+id/textView_message_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_rectangle_right"
         android:maxWidth="240dp"
         android:padding="8dp"

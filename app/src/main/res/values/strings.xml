@@ -34,6 +34,7 @@
     <string name="empty_view_subtitle_text_my_donation">Get started from the New Donations TAB</string>
 
     <string name="str_send_button_label">Send</string>
+    <string name="str_profile_image_content_desc">Profile Image</string>
 
 
 </resources>

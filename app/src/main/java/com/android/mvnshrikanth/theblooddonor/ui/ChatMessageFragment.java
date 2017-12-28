@@ -94,7 +94,7 @@ public class ChatMessageFragment extends Fragment {
         chatUserDatabaseReference = firebaseDatabase.getReference().child(DONATION_CHAT_USER_PATH).child(donationRequestKey);
 
         blnNewChatId = false;
-        getChatIdKey();
+        attachDatabaseReadListener();
 
         chatMessageList = new ArrayList<ChatMessage>();
 
@@ -158,7 +158,7 @@ public class ChatMessageFragment extends Fragment {
         return view;
     }
 
-    private void getChatIdKey() {
+    private void attachDatabaseReadListener() {
         if (chatUserValueEventListener == null) {
             chatUserValueEventListener = new ValueEventListener() {
                 @Override
@@ -173,7 +173,7 @@ public class ChatMessageFragment extends Fragment {
                         blnNewChatId = true;
                     }
                     chatMessagesDatabaseReference = firebaseDatabase.getReference().child(CHAT_MESSAGES_PATH).child(chatIdKey);
-                    attachDatabaseReadListener();
+                    attachChatMessagesDatabaseReadListener();
                 }
 
                 @Override
@@ -185,7 +185,7 @@ public class ChatMessageFragment extends Fragment {
         }
     }
 
-    private void attachDatabaseReadListener() {
+    private void attachChatMessagesDatabaseReadListener() {
 
         if (chatMessagesChildEventListener == null) {
             chatMessagesChildEventListener = new ChildEventListener() {

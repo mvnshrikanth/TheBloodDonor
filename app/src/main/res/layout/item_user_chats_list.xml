@@ -1,48 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/image_message_profile"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/ic_account_circle_black_24dp"
+        android:contentDescription="@string/str_profile_image_content_desc"
+        app:layout_constraintBottom_toTopOf="@id/view_grey_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_chat_user_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/image_message_profile"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Name" />
 
-        <TextView
-            android:id="@+id/textView_chat_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000"
-            tools:text="Name" />
-
-        <TextView
-            android:id="@+id/textView_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/textView_chat_user_name"
-            android:layout_alignParentEnd="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:text="Yesterday" />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/textView_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_chat_user_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Yesterday" />
 
     <TextView
         android:id="@+id/textView_last_chat_message"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:paddingBottom="8dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/view_grey_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_message_profile"
+        app:layout_constraintTop_toBottomOf="@+id/textView_chat_user_name"
         tools:text="Old message" />
 
     <View
-        android:layout_width="match_parent"
+        android:id="@+id/view_grey_line"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_message_profile" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
+
