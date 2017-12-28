@@ -151,7 +151,7 @@ public class ChatMessageFragment extends Fragment {
             }
         });
 
-        chatMessageAdapter = new ChatMessageAdapter();
+        chatMessageAdapter = new ChatMessageAdapter(mUid);
         recyclerViewChatMessage.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewChatMessage.setAdapter(chatMessageAdapter);
 
