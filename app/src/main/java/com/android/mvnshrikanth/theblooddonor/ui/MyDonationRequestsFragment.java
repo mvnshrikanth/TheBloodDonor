@@ -154,7 +154,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
         });
 
 
-        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName);
+        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
         toggleRecyclerView();

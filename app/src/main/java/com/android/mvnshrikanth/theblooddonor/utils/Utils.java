@@ -67,5 +67,19 @@ public class Utils {
         return displayString;
     }
 
+    public static String getDateForDisplay(String date) {
+        String displayString = null;
+        try {
+            SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);
+            Date endDate = simpleDateTimeFormat.parse(date);
+
+            displayString = simpleDateFormat.format(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return displayString;
+    }
+
 
 }

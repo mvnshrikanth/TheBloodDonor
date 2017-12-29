@@ -35,6 +35,11 @@
 
     <string name="str_send_button_label">Send</string>
     <string name="str_profile_image_content_desc">Profile Image</string>
+    <string name="str_requested_on_label">On:</string>
+    <string name="str_donated_by_label">By:</string>
+    <string name="str_responses_label">Responses:</string>
+    <string name="str_location_label">Location</string>
+    <string name="str_requested_by_label">By:</string>
 
 
 </resources>

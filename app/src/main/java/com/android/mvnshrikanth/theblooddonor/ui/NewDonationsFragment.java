@@ -167,7 +167,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
             intent.putExtra(CHAT_ID_KEY, (String) null);
             startActivity(intent);
         } else {
-            //TODO 1) Modify the message to a shorter message.
+            //TODO 3) Modify the message to a shorter message.
             Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
         }
     }

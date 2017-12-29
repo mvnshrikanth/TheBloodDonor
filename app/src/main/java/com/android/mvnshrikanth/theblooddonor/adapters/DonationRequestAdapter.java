@@ -65,9 +65,9 @@ public class DonationRequestAdapter
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.textView_requester_name)
+        @BindView(R.id.textView_requested_by)
         TextView textViewRequesterName;
-        @BindView(R.id.textView_donation_location)
+        @BindView(R.id.textView_location)
         TextView textViewDonationLocation;
         @BindView(R.id.textView_requested_blood_group)
         TextView textViewRequestedBloodGroup;
