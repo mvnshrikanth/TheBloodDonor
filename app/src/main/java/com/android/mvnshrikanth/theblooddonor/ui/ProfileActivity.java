@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 
 public class ProfileActivity extends AppCompatActivity {
 
-//TODO 1) Add location api for getting autfill of location in the form.
+//TODO 2) Add location api for getting autofill of location in the form.
 
     public static final String NEW_USER = "new_user";
     public static final String USERNAME = "username";

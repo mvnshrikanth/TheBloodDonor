@@ -33,9 +33,10 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUES
 public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAdapterEventListener {
 
     public static final String CHAT_ID_KEY = "chat_id_key";
-    public static final String CHAT_LIST = "chat_list";
+
     @BindView(R.id.recyclerView_user_chat_list)
     RecyclerView recyclerViewUserChatList;
+
     private View view;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestsChatsDatabaseReference;

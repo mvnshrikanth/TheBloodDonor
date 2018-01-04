@@ -1,5 +1,6 @@
 package com.android.mvnshrikanth.theblooddonor.ui;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -46,18 +47,19 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUES
  */
 public class ChatMessageFragment extends Fragment {
 
-    public static final String CHAT_MESSAGE_LIST = "chat_message_list";
-
     @BindView(R.id.recyclerView_chat_messages)
     RecyclerView recyclerViewChatMessage;
     @BindView(R.id.sendButton)
     Button buttonSend;
     @BindView(R.id.messageEditText)
     EditText editTextChatMessage;
+    @BindView(R.id.button_approve_donor)
+    Button buttonApproveDonor;
+
     private Unbinder unbinder;
 
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference chatDatabaseReference;
+    private DatabaseReference databaseReference;
     private DatabaseReference chatMessagesDatabaseReference;
     private DatabaseReference chatUserDatabaseReference;
     private ValueEventListener chatUserValueEventListener;
@@ -90,7 +92,7 @@ public class ChatMessageFragment extends Fragment {
         chatIdKey = savedInstanceState.getString(CHAT_ID_KEY);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        chatDatabaseReference = firebaseDatabase.getReference();
+        databaseReference = firebaseDatabase.getReference();
         chatUserDatabaseReference = firebaseDatabase.getReference().child(DONATION_CHAT_USER_PATH).child(donationRequestKey);
 
         blnNewChatId = false;
@@ -121,14 +123,14 @@ public class ChatMessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String messageIdKey = chatDatabaseReference.child(CHAT_MESSAGES_PATH).child(chatIdKey).push().getKey();
+                String messageIdKey = databaseReference.child(CHAT_MESSAGES_PATH).child(chatIdKey).push().getKey();
                 ChatMessage chatMessage = new ChatMessage(editTextChatMessage.getText().toString(),
                         Utils.getCurrentDate(), mUid, mUserName, chatIdKey);
                 Map<String, Object> chatValues = chatMessage.toMap();
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put("/" + CHAT_MESSAGES_PATH + "/" + chatIdKey + "/" + messageIdKey, chatValues);
                 childUpdates.put("/" + DONATION_REQUESTS_CHATS_PATH + "/" + donationRequestKey + "/" + chatIdKey, chatValues);
-                chatDatabaseReference.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                databaseReference.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if (databaseError != null) {
@@ -140,7 +142,7 @@ public class ChatMessageFragment extends Fragment {
                                 assert mUid != null;
                                 Map<String, String> chatUserValue = new HashMap<>();
                                 chatUserValue.put(chatIdKey, "true");
-                                chatDatabaseReference.child(DONATION_CHAT_USER_PATH).child(donationRequestKey).child(mUid).setValue(chatUserValue);
+                                ChatMessageFragment.this.databaseReference.child(DONATION_CHAT_USER_PATH).child(donationRequestKey).child(mUid).setValue(chatUserValue);
                             }
                         }
                     }
@@ -148,6 +150,16 @@ public class ChatMessageFragment extends Fragment {
 
                 editTextChatMessage.setText("");
                 buttonSend.setEnabled(false);
+            }
+        });
+
+        buttonApproveDonor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//TODO 5) Complete the donation request completion button.
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                        .setTitle("Complete Donation Request")
+                        .setMessage(" will be the donor for your requested blood type ");
             }
         });
 
@@ -169,7 +181,7 @@ public class ChatMessageFragment extends Fragment {
                         }
                     }
                     if (chatIdKey == null) {
-                        chatIdKey = chatDatabaseReference.child(CHAT_MESSAGES_PATH).push().getKey();
+                        chatIdKey = databaseReference.child(CHAT_MESSAGES_PATH).push().getKey();
                         blnNewChatId = true;
                     }
                     chatMessagesDatabaseReference = firebaseDatabase.getReference().child(CHAT_MESSAGES_PATH).child(chatIdKey);

@@ -44,13 +44,15 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
 
 
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
+
     public static final String MY_DONATION_REQUEST_KEY = "my_donation_request_key";
-    private static final String LOG_TAG = MyDonationRequestsFragment.class.getSimpleName();
+
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
     @BindView(R.id.empty_my_donation_request_view)
     View emptyView;
     @BindView(R.id.fab_request_donation)
+
     FloatingActionButton fabRequestDonation;
 
     private MyDonationRequestsAdapter myDonationRequestsAdapter;
@@ -199,7 +201,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    //TODO donation request remove is not tested.
+                    //TODO 1) donation request remove is not tested.
                     if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
                     for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()) {
                         DonationRequest donationRequest = dataSnapShot.getValue(DonationRequest.class);

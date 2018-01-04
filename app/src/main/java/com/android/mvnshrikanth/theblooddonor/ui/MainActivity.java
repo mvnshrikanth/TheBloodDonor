@@ -27,7 +27,6 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 public class MainActivity extends AppCompatActivity {
 
     public static final int RC_SIGN_IN = 1;
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 

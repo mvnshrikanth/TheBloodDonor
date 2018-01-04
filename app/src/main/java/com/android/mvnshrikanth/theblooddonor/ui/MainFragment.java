@@ -25,7 +25,6 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
  */
 public class MainFragment extends Fragment {
 
-    private static final String LOG_TAG = MainFragment.class.getSimpleName();
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.tabLayout_options)

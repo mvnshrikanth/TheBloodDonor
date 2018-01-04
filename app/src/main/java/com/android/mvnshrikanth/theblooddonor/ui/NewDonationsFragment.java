@@ -44,8 +44,8 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     Unbinder unbinder;
     @BindView(R.id.empty_new_donation_view)
     View emptyView;
-    View view;
 
+    private View view;
     private String mUid;
     private String mUserName;
     private List<DonationRequest> donationRequestList;
@@ -116,7 +116,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    //TODO 2) remove is not tested.
+                    //TODO 3) remove is not tested.
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.remove(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
@@ -170,7 +170,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
             intent.putExtra(CHAT_ID_KEY, (String) null);
             startActivity(intent);
         } else {
-            //TODO 3) Modify the message to a shorter message.
+            //TODO 4) Modify the message to a shorter message.
             Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
         }
     }
