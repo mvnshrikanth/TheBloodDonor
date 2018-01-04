@@ -54,7 +54,7 @@ public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.
         TextView textViewRequesterName;
         @BindView(R.id.textView_donated_location)
         TextView textViewDonatedLocation;
-        @BindView(R.id.textView_donated_blood_group)
+        @BindView(R.id.textView_requested_blood_group)
         TextView textViewDonatedBloodGroup;
         @BindView(R.id.textView_donated_date)
         TextView textViewDonatedDate;

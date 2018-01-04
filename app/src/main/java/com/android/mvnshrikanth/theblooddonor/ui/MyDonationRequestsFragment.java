@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -157,6 +158,8 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
         myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerViewMyDonationsRequests.addItemDecoration(dividerItemDecoration);
         toggleRecyclerView();
         return view;
     }

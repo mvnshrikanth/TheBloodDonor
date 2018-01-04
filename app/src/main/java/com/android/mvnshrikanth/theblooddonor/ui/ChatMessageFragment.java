@@ -194,6 +194,7 @@ public class ChatMessageFragment extends Fragment {
                     ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
                     chatMessageList.add(chatMessage);
                     chatMessageAdapter.prepareChatMessageList(chatMessageList);
+                    recyclerViewChatMessage.smoothScrollToPosition(chatMessageList.size());
                 }
 
                 @Override

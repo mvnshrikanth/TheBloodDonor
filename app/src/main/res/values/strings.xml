@@ -21,7 +21,7 @@
     <string name="str_item_signout">Sign Out</string>
     <string name="str_tab_my_donations">My Donations</string>
     <string name="str_tab_requested_donations">My Requests</string>
-    <string name="str_tab_new_donations">New Donations</string>
+    <string name="str_tab_new_donations">All Requests</string>
 
     <string name="str_dialog_submit_new_request">Submit Request</string>
     <string name="str_dialog_cancel_request">Cancel</string>
@@ -36,10 +36,11 @@
     <string name="str_send_button_label">Send</string>
     <string name="str_profile_image_content_desc">Profile Image</string>
     <string name="str_requested_on_label">On:</string>
-    <string name="str_donated_by_label">By:</string>
+    <string name="str_donated_by_label">Donated By:</string>
     <string name="str_responses_label">Responses:</string>
     <string name="str_location_label">Location</string>
     <string name="str_requested_by_label">By:</string>
+    <string name="str_status_message_content_desc">status message</string>
 
 
 </resources>
