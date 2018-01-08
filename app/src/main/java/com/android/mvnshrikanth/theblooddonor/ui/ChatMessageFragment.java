@@ -2,6 +2,7 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.adapters.ChatMessageAdapter;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
+import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.CHAT_MESSAGES_PATH;
@@ -54,7 +57,7 @@ public class ChatMessageFragment extends Fragment {
     @BindView(R.id.messageEditText)
     EditText editTextChatMessage;
     @BindView(R.id.button_approve_donor)
-    Button buttonApproveDonor;
+    ImageButton imageButtonApproveDonor;
 
     private Unbinder unbinder;
 
@@ -86,7 +89,9 @@ public class ChatMessageFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         savedInstanceState = this.getArguments();
 
-        donationRequestKey = savedInstanceState.getString(MY_DONATION_REQUEST_KEY);
+        final DonationRequest donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST);
+        assert donationRequest != null;
+        donationRequestKey = donationRequest.getDonationRequestKey();
         mUid = savedInstanceState.getString(USER_ID);
         mUserName = savedInstanceState.getString(USERNAME);
         chatIdKey = savedInstanceState.getString(CHAT_ID_KEY);
@@ -95,25 +100,30 @@ public class ChatMessageFragment extends Fragment {
         databaseReference = firebaseDatabase.getReference();
         chatUserDatabaseReference = firebaseDatabase.getReference().child(DONATION_CHAT_USER_PATH).child(donationRequestKey);
 
+        if (donationRequest.getRequesterUidKey().equals(mUid)) {
+            imageButtonApproveDonor.setVisibility(View.VISIBLE);
+        }
+
         blnNewChatId = false;
         attachDatabaseReadListener();
 
         chatMessageList = new ArrayList<ChatMessage>();
 
         editTextChatMessage.addTextChangedListener(new TextWatcher() {
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().length() > 0) {
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().length() > 0) {
                     buttonSend.setEnabled(true);
                 }
             }
@@ -153,13 +163,29 @@ public class ChatMessageFragment extends Fragment {
             }
         });
 
-        buttonApproveDonor.setOnClickListener(new View.OnClickListener() {
+        imageButtonApproveDonor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//TODO 5) Complete the donation request completion button.
+                //TODO 5) Complete the donation request completion button.
+                //3 places to update the donation request with the donor details, DONATION_REQUESTS_PATH, MY_DONATION_REQUESTS_PATH, MY_DONATIONS_PATH.
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("Complete Donation Request")
-                        .setMessage(" will be the donor for your requested blood type ");
+                        .setMessage(" will be the donor for your requested blood type ")
+                        .setNegativeButton(R.string.str_dialog_cancel_request, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setPositiveButton(R.string.str_dialog_complete_request, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+
             }
         });
 

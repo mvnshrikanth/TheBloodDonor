@@ -45,7 +45,7 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
 
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
 
-    public static final String MY_DONATION_REQUEST_KEY = "my_donation_request_key";
+    public static final String MY_DONATION_REQUEST = "my_donation_request";
 
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
@@ -133,7 +133,8 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                                         users.getCity(),
                                         users.getState(),
                                         users.getLocationZip(),
-                                        Utils.getCurrentDate()
+                                        Utils.getCurrentDate(),
+                                        null, null, null
                                 );
 
                         Map<String, Object> donationValues = donationRequest.toMap();
@@ -255,9 +256,9 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     }
 
     @Override
-    public void onClick(String donationRequestKey, String mUid, String mUserName) {
+    public void onClick(DonationRequest donationRequest, String mUid, String mUserName) {
         Intent intent = new Intent(view.getContext(), ChatActivity.class);
-        intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
+        intent.putExtra(MY_DONATION_REQUEST, donationRequest);
         intent.putExtra(USER_ID, mUid);
         intent.putExtra(USERNAME, mUserName);
         startActivity(intent);

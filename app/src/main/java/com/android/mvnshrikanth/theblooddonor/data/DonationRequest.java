@@ -26,46 +26,67 @@ public class DonationRequest implements Parcelable {
             return new DonationRequest[size];
         }
     };
-    @Exclude
     private String donationRequestKey;
     private String requesterUidKey;
     private String requesterName;
-    private String donorName;
     private String requestedBloodType;
     private String requesterCity;
     private String requesterState;
     private String requesterZip;
     private String requestedDate;
+    private String donorName;
+    private String donorUidKey;
     private String donatedDate;
 
-
     public DonationRequest() {
+    }
+
+    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donorName, String donorUidKey, String donatedDate) {
+        this.donationRequestKey = donationRequestKey;
+        this.requesterUidKey = requesterUidKey;
+        this.requesterName = requesterName;
+        this.requestedBloodType = requestedBloodType;
+        this.requesterCity = requesterCity;
+        this.requesterState = requesterState;
+        this.requesterZip = requesterZip;
+        this.requestedDate = requestedDate;
+        this.donorName = donorName;
+        this.donorUidKey = donorUidKey;
+        this.donatedDate = donatedDate;
     }
 
     protected DonationRequest(Parcel in) {
         donationRequestKey = in.readString();
         requesterUidKey = in.readString();
         requesterName = in.readString();
-        donorName = in.readString();
         requestedBloodType = in.readString();
         requesterCity = in.readString();
         requesterState = in.readString();
         requesterZip = in.readString();
         requestedDate = in.readString();
+        donorName = in.readString();
+        donorUidKey = in.readString();
         donatedDate = in.readString();
     }
 
-    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate) {
-        this.donationRequestKey = donationRequestKey;
-        this.requesterUidKey = requesterUidKey;
-        this.requesterName = requesterName;
-        this.donorName = null;
-        this.requestedBloodType = requestedBloodType;
-        this.requesterCity = requesterCity;
-        this.requesterState = requesterState;
-        this.requesterZip = requesterZip;
-        this.requestedDate = requestedDate;
-        this.donatedDate = null;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(donationRequestKey);
+        dest.writeString(requesterUidKey);
+        dest.writeString(requesterName);
+        dest.writeString(requestedBloodType);
+        dest.writeString(requesterCity);
+        dest.writeString(requesterState);
+        dest.writeString(requesterZip);
+        dest.writeString(requestedDate);
+        dest.writeString(donorName);
+        dest.writeString(donorUidKey);
+        dest.writeString(donatedDate);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Exclude
@@ -74,34 +95,17 @@ public class DonationRequest implements Parcelable {
         results.put("donationRequestKey", donationRequestKey);
         results.put("requesterUidKey", requesterUidKey);
         results.put("requesterName", requesterName);
-        results.put("donorName", donorName);
         results.put("requestedBloodType", requestedBloodType);
         results.put("requesterCity", requesterCity);
         results.put("requesterState", requesterState);
         results.put("requesterZip", requesterZip);
         results.put("requestedDate", requestedDate);
+        results.put("donorName", donorName);
+        results.put("donorUidKey", donorUidKey);
         results.put("donatedDate", donatedDate);
         return results;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(donationRequestKey);
-        dest.writeString(requesterUidKey);
-        dest.writeString(requesterName);
-        dest.writeString(donorName);
-        dest.writeString(requestedBloodType);
-        dest.writeString(requesterCity);
-        dest.writeString(requesterState);
-        dest.writeString(requesterZip);
-        dest.writeString(requestedDate);
-        dest.writeString(donatedDate);
-    }
 
     public String getDonationRequestKey() {
         return donationRequestKey;
@@ -125,14 +129,6 @@ public class DonationRequest implements Parcelable {
 
     public void setRequesterName(String requesterName) {
         this.requesterName = requesterName;
-    }
-
-    public String getDonorName() {
-        return donorName;
-    }
-
-    public void setDonorName(String donorName) {
-        this.donorName = donorName;
     }
 
     public String getRequestedBloodType() {
@@ -173,6 +169,22 @@ public class DonationRequest implements Parcelable {
 
     public void setRequestedDate(String requestedDate) {
         this.requestedDate = requestedDate;
+    }
+
+    public String getDonorName() {
+        return donorName;
+    }
+
+    public void setDonorName(String donorName) {
+        this.donorName = donorName;
+    }
+
+    public String getDonorUidKey() {
+        return donorUidKey;
+    }
+
+    public void setDonorUidKey(String donorUidKey) {
+        this.donorUidKey = donorUidKey;
     }
 
     public String getDonatedDate() {

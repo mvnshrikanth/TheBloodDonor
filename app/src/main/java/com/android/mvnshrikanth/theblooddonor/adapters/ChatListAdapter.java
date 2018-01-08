@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
+import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 
 import java.util.List;
@@ -24,11 +25,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
     private ChatListAdapterEventListener mClickHandler;
     private String mUid;
     private String mUserName;
-    private String donationRequestKey;
+    private DonationRequest donationRequest;
 
-    public ChatListAdapter(ChatListAdapterEventListener mClickHandler, String donationRequestKey, String mUid, String mUserName) {
+    public ChatListAdapter(ChatListAdapterEventListener mClickHandler, DonationRequest donationRequest, String mUid, String mUserName) {
         this.mClickHandler = mClickHandler;
-        this.donationRequestKey = donationRequestKey;
+        this.donationRequest = donationRequest;
         this.mUid = mUid;
         this.mUserName = mUserName;
     }
@@ -58,7 +59,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
     }
 
     public interface ChatListAdapterEventListener {
-        void onClick(String donationRequestKey, String mUid, String mUserName, String chatIdKey);
+        void onClick(DonationRequest donationRequest, String mUid, String mUserName, String chatIdKey);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -78,7 +79,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.MyView
         @Override
         public void onClick(View v) {
             ChatMessage chatMessage = chatMessageList.get(getAdapterPosition());
-            mClickHandler.onClick(donationRequestKey, mUid, mUserName, chatMessage.getChatId());
+            mClickHandler.onClick(donationRequest, mUid, mUserName, chatMessage.getChatId());
         }
     }
 }

@@ -24,6 +24,7 @@
     <string name="str_tab_new_donations">All Requests</string>
 
     <string name="str_dialog_submit_new_request">Submit Request</string>
+    <string name="str_dialog_complete_request">Complete Request</string>
     <string name="str_dialog_cancel_request">Cancel</string>
 
     <string name="empty_view_title_text_new_donation">No donation requests &#8230;</string>

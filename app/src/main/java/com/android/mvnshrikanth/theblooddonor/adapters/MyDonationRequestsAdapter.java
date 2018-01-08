@@ -72,7 +72,6 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<RecyclerView
                 ((MyViewHolderInProgress) holder).textViewRequestedDate.setText(Utils.getDateAndTimeForDisplay(myDonationRequestList.get(position).getRequestedDate()));
                 break;
         }
-
     }
 
     @Override
@@ -96,7 +95,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public interface MyDonationRequestAdapterOnClickListener {
-        void onClick(String donationRequestKey, String mUid, String mUserName);
+        void onClick(DonationRequest donationRequest, String mUid, String mUserName);
     }
 
     public class MyViewHolderCompleted extends RecyclerView.ViewHolder {
@@ -132,7 +131,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<RecyclerView
         @Override
         public void onClick(View v) {
             DonationRequest donationRequest = myDonationRequestList.get(getAdapterPosition());
-            mClickHandler.onClick(donationRequest.getDonationRequestKey(), mUid, mUserName);
+            mClickHandler.onClick(donationRequest, mUid, mUserName);
         }
     }
 

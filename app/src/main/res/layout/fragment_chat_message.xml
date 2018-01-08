@@ -26,7 +26,8 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/blood_icon" />
+            android:src="@drawable/blood_icon"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/messageEditText"

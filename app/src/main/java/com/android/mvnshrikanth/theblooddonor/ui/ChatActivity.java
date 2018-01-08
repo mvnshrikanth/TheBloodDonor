@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.mvnshrikanth.theblooddonor.R;
+import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
@@ -16,13 +17,13 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        String donationRequestKey = this.getIntent().getStringExtra(MY_DONATION_REQUEST_KEY);
+        DonationRequest donationRequest = this.getIntent().getParcelableExtra(MY_DONATION_REQUEST);
         String mUid = this.getIntent().getStringExtra(USER_ID);
         String mUserName = this.getIntent().getStringExtra(USERNAME);
 
         ChatFragment chatFragment = new ChatFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(MY_DONATION_REQUEST_KEY, donationRequestKey);
+        bundle.putParcelable(MY_DONATION_REQUEST, donationRequest);
         bundle.putString(USER_ID, mUid);
         bundle.putString(USERNAME, mUserName);
         chatFragment.setArguments(bundle);
