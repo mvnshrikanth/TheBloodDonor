@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
+import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textViewDonatedBloodGroup.setText(myDonationRequestList.get(position).getRequestedBloodType());
-        holder.textViewDonatedDate.setText(myDonationRequestList.get(position).getDonatedDate());
-        String location = myDonationRequestList.get(position).getRequesterCity() + "," + myDonationRequestList.get(position).getRequesterZip();
+        holder.textViewDonatedDate.setText(Utils.getDateAndTimeForDisplay(myDonationRequestList.get(position).getDonatedDate()));
+        String location = myDonationRequestList.get(position).getRequesterCity() + "," + myDonationRequestList.get(position).getRequesterState();
         holder.textViewDonatedLocation.setText(location);
         holder.textViewRequesterName.setText(myDonationRequestList.get(position).getRequesterName());
     }
@@ -53,7 +54,7 @@ public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.
         TextView textViewRequesterName;
         @BindView(R.id.textView_donated_location)
         TextView textViewDonatedLocation;
-        @BindView(R.id.textView_donated_blood_group)
+        @BindView(R.id.textView_requested_blood_group)
         TextView textViewDonatedBloodGroup;
         @BindView(R.id.textView_donated_date)
         TextView textViewDonatedDate;

@@ -35,12 +35,12 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATIONS_PA
  */
 public class MyDonationsFragment extends Fragment {
 
-    List<DonationRequest> myDonationList;
     @BindView(R.id.recyclerView_My_Donations)
     RecyclerView recyclerViewMyDonations;
     @BindView(R.id.empty_donation_view)
     View emptyView;
-    Unbinder unbinder;
+    private List<DonationRequest> myDonationList;
+    private Unbinder unbinder;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference myDonationsDatabaseReference;
     private ChildEventListener myDonationsChildEventListener;

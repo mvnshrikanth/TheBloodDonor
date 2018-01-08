@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
+import com.android.mvnshrikanth.theblooddonor.utils.Utils;
 
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class DonationRequestAdapter
 
     @Override
     public void onBindViewHolder(DonationRequestAdapter.MyViewHolder holder, int position) {
-        holder.textViewDonationLocation.setText((donationRequestList.get(position).getRequesterCity() + ", " + donationRequestList.get(position).getRequesterZip()));
-        holder.textViewRequestDate.setText(donationRequestList.get(position).getRequestedDate());
+        holder.textViewDonationLocation.setText((donationRequestList.get(position).getRequesterCity() + ", " + donationRequestList.get(position).getRequesterState()));
+        holder.textViewRequestDate.setText(Utils.getDateAndTimeForDisplay(donationRequestList.get(position).getRequestedDate()));
         holder.textViewRequestedBloodGroup.setText(donationRequestList.get(position).getRequestedBloodType());
         holder.textViewRequesterName.setText(donationRequestList.get(position).getRequesterName());
     }
@@ -60,13 +61,13 @@ public class DonationRequestAdapter
     }
 
     public interface DonationRequestAdapterOnClickListener {
-        void onClick(String donationRequestKey, String donationRequesterUid, String mUid, String mUserName);
+        void onClick(DonationRequest donationRequest, String donationRequesterUid, String mUid, String mUserName);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.textView_requester_name)
+        @BindView(R.id.textView_requested_by)
         TextView textViewRequesterName;
-        @BindView(R.id.textView_donation_location)
+        @BindView(R.id.textView_location)
         TextView textViewDonationLocation;
         @BindView(R.id.textView_requested_blood_group)
         TextView textViewRequestedBloodGroup;
@@ -82,7 +83,7 @@ public class DonationRequestAdapter
         @Override
         public void onClick(View v) {
             DonationRequest donationRequest = donationRequestList.get(getAdapterPosition());
-            mClickHandler.onClick(donationRequest.getDonationRequestKey(), donationRequest.getRequesterUidKey(), mUid, mUserName);
+            mClickHandler.onClick(donationRequest, donationRequest.getRequesterUidKey(), mUid, mUserName);
         }
     }
 }

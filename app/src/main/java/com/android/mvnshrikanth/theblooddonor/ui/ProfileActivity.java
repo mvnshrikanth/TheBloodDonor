@@ -27,11 +27,11 @@ import butterknife.ButterKnife;
 
 public class ProfileActivity extends AppCompatActivity {
 
-//TODO 1) Add location api for getting autfill of location in the form.
+//TODO 2) Add location api for getting autofill of location in the form.
 
-    public static final String NEW_USER = "NEW_USER";
-    public static final String USERNAME = "USERNAME";
-    public static final String USER_ID = "USER_ID";
+    public static final String NEW_USER = "new_user";
+    public static final String USERNAME = "username";
+    public static final String USER_ID = "user_id";
 
     @BindView(R.id.cardView_view_only)
     CardView cardView_view_only;

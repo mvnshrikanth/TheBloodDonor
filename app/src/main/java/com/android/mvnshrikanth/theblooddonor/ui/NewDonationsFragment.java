@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_KEY;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
@@ -43,8 +44,8 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     Unbinder unbinder;
     @BindView(R.id.empty_new_donation_view)
     View emptyView;
-    View view;
 
+    private View view;
     private String mUid;
     private String mUserName;
     private List<DonationRequest> donationRequestList;
@@ -79,6 +80,8 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
 
         toggleRecyclerView();
         return view;
@@ -113,7 +116,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    //TODO remove is not tested.
+                    //TODO 3) remove is not tested.
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     donationRequestList.remove(donationRequest);
                     donationRequestAdapter.prepareDonationRequest(donationRequestList);
@@ -158,15 +161,16 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     }
 
     @Override
-    public void onClick(String donationRequestKey, String donationRequestmUid, String mUid, String mUserName) {
+    public void onClick(DonationRequest donationRequest, String donationRequestmUid, String mUid, String mUserName) {
         if (!donationRequestmUid.equals(mUid)) {
             Intent intent = new Intent(view.getContext(), ChatMessageActivity.class);
-            intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
+            intent.putExtra(MY_DONATION_REQUEST, donationRequest);
             intent.putExtra(USER_ID, mUid);
             intent.putExtra(USERNAME, mUserName);
             intent.putExtra(CHAT_ID_KEY, (String) null);
             startActivity(intent);
         } else {
+            //TODO 4) Modify the message to a shorter message.
             Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
         }
     }

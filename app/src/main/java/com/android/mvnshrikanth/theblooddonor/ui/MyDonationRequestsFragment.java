@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,13 +44,15 @@ import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
 
 
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
-    public static final String MY_DONATION_REQUEST_KEY = "my_donation_request_key";
-    private static final String LOG_TAG = MyDonationRequestsFragment.class.getSimpleName();
+
+    public static final String MY_DONATION_REQUEST = "my_donation_request";
+
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
     @BindView(R.id.empty_my_donation_request_view)
     View emptyView;
     @BindView(R.id.fab_request_donation)
+
     FloatingActionButton fabRequestDonation;
 
     private MyDonationRequestsAdapter myDonationRequestsAdapter;
@@ -130,7 +133,8 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                                         users.getCity(),
                                         users.getState(),
                                         users.getLocationZip(),
-                                        Utils.getCurrentDate()
+                                        Utils.getCurrentDate(),
+                                        null, null, null
                                 );
 
                         Map<String, Object> donationValues = donationRequest.toMap();
@@ -154,9 +158,11 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
         });
 
 
-        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName);
+        myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerViewMyDonationsRequests.addItemDecoration(dividerItemDecoration);
         toggleRecyclerView();
         return view;
     }
@@ -196,7 +202,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    //TODO donation request remove is not tested.
+                    //TODO 1) donation request remove is not tested.
                     if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
                     for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()) {
                         DonationRequest donationRequest = dataSnapShot.getValue(DonationRequest.class);
@@ -250,9 +256,9 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     }
 
     @Override
-    public void onClick(String donationRequestKey, String mUid, String mUserName) {
+    public void onClick(DonationRequest donationRequest, String mUid, String mUserName) {
         Intent intent = new Intent(view.getContext(), ChatActivity.class);
-        intent.putExtra(MY_DONATION_REQUEST_KEY, donationRequestKey);
+        intent.putExtra(MY_DONATION_REQUEST, donationRequest);
         intent.putExtra(USER_ID, mUid);
         intent.putExtra(USERNAME, mUserName);
         startActivity(intent);
