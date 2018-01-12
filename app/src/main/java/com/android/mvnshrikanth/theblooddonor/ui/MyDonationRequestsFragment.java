@@ -196,20 +196,16 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
+                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
+                    myDonationRequestList.add(donationRequest);
+                    myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
+                    toggleRecyclerView();
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    //TODO 1) donation request remove is not tested.
-                    if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
-                    for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()) {
-                        DonationRequest donationRequest = dataSnapShot.getValue(DonationRequest.class);
-                        myDonationRequestList.add(donationRequest);
-                        myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
-                        toggleRecyclerView();
-                    }
                 }
 
                 @Override
