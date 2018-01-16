@@ -104,23 +104,28 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
-                    donationRequestList.add(donationRequest);
-                    donationRequestAdapter.prepareDonationRequest(donationRequestList);
-                    toggleRecyclerView();
+                    assert donationRequest != null;
+                    if (donationRequest.getDonatedDate() == null) {
+                        donationRequestList.add(donationRequest);
+                        donationRequestAdapter.prepareDonationRequest(donationRequestList);
+                        toggleRecyclerView();
+                    }
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
+                    assert donationRequest != null;
+                    if (donationRequest.getDonatedDate() != null) {
+                        donationRequestList.remove(donationRequest);
+                        donationRequestAdapter.prepareDonationRequest(donationRequestList);
+                        toggleRecyclerView();
+                    }
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    //TODO 3) remove is not tested.
-                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
-                    donationRequestList.remove(donationRequest);
-                    donationRequestAdapter.prepareDonationRequest(donationRequestList);
-                    toggleRecyclerView();
+
                 }
 
                 @Override

@@ -204,7 +204,7 @@ public class ChatMessageFragment extends Fragment {
                                 donationRequest.setDonorUidKey(mDonorId);
                                 Map<String, Object> donorDetails = donationRequest.toMap();
                                 Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put("/" + MY_DONATIONS_PATH + "/" + mDonorId, donorDetails);
+                                childUpdates.put("/" + MY_DONATIONS_PATH + "/" + mDonorId + "/" + donationRequestKey, donorDetails);
                                 childUpdates.put("/" + MY_DONATION_REQUESTS_PATH + "/" + mUid + "/" + donationRequestKey, donorDetails);
                                 childUpdates.put("/" + DONATION_REQUESTS_PATH + "/" + donationRequestKey, donorDetails);
                                 databaseReference.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
@@ -293,6 +293,7 @@ public class ChatMessageFragment extends Fragment {
         }
 
         if (mUid.equals(donationRequest.getRequesterUidKey())) {
+
             Query query = chatUserIDDatabaseReference.orderByChild("chatIdKey").equalTo(chatIdKey);
 
             chatUserIDvalueEventListener = new ValueEventListener() {

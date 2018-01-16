@@ -3,15 +3,12 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.Users;
@@ -33,10 +30,10 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String USERNAME = "username";
     public static final String USER_ID = "user_id";
 
-    @BindView(R.id.cardView_view_only)
-    CardView cardView_view_only;
-    @BindView(R.id.cardView_editable)
-    CardView cardView_editable;
+    //    @BindView(R.id.cardView_view_only)
+//    CardView cardView_view_only;
+//    @BindView(R.id.cardView_editable)
+//    CardView cardView_editable;
     @BindView(R.id.linearLayout_scrollView_container)
     LinearLayout linearLayout_scrollView_container;
 
@@ -56,20 +53,20 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(R.id.editText_state)
     EditText editTextState;
 
-    @BindView(R.id.textView_name)
-    TextView textViewName;
-    @BindView(R.id.textView_gender)
-    TextView textViewGender;
-    @BindView(R.id.textView_blood_type)
-    TextView textViewBloodGroup;
-    @BindView(R.id.textView_zip)
-    TextView textViewZip;
-    @BindView(R.id.textView_city)
-    TextView textViewCity;
-    @BindView(R.id.textView_state)
-    TextView textViewState;
-    @BindView(R.id.textView_country)
-    TextView textViewCountry;
+//    @BindView(R.id.textView_name)
+//    TextView textViewName;
+//    @BindView(R.id.textView_gender)
+//    TextView textViewGender;
+//    @BindView(R.id.textView_blood_type)
+//    TextView textViewBloodGroup;
+//    @BindView(R.id.textView_zip)
+//    TextView textViewZip;
+//    @BindView(R.id.textView_city)
+//    TextView textViewCity;
+//    @BindView(R.id.textView_state)
+//    TextView textViewState;
+//    @BindView(R.id.textView_country)
+//    TextView textViewCountry;
 
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener userChildEventListener;
@@ -93,11 +90,11 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users").child(mUid);
 
-        if (newUser) {
-            showEditableCardView(true);
-        } else {
-            showEditableCardView(false);
-        }
+//        if (newUser) {
+//            showEditableCardView(true);
+//        } else {
+//            showEditableCardView(false);
+//        }
 
         onSignedInInitialize();
 
@@ -111,27 +108,28 @@ public class ProfileActivity extends AppCompatActivity {
         adapterBloodType.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner_blood_type.setAdapter(adapterBloodType);
 
-        cardView_view_only.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
-                showEditableCardView(true);
+//        cardView_view_only.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
+//                showEditableCardView(true);
 
-                if (user != null) {
-                    editTextZipCode.setText(user.getLocationZip());
-                    editTextCity.setText(user.getCity());
-                    editTextState.setText(user.getState());
-                    editTextCountry.setText(user.getCountry());
-                    spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
-                    spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
-                }
-            }
-        });
+//        if (user != null) {
+//            editTextZipCode.setText(user.getLocationZip());
+//            editTextCity.setText(user.getCity());
+//            editTextState.setText(user.getState());
+//            editTextCountry.setText(user.getCountry());
+//            spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
+//            spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
+//        }
+//            }
+//        });
 
         button_save.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
+//                TransitionManager.beginDelayedTransition(linearLayout_scrollView_container);
 
                 if (user != null) {
                     user.setUserName(mUserName);
@@ -154,7 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
                             null);
                 }
                 usersDatabaseReference.setValue(user);
-                showEditableCardView(false);
+//                showEditableCardView(false);
             }
         });
     }
@@ -167,15 +165,22 @@ public class ProfileActivity extends AppCompatActivity {
                 user = dataSnapshot.getValue(Users.class);
 
                 if ((user != null) && (user.getUserName().equals(mUserName))) {
-                    textViewName.setText(mUserName);
-                    textViewBloodGroup.setText(user.getBloodType());
-                    textViewGender.setText(user.getGender());
-                    textViewZip.setText(user.getLocationZip());
-                    textViewCity.setText(user.getCity());
-                    textViewState.setText(user.getState());
-                    textViewCountry.setText(user.getCountry());
+//                    textViewName.setText(mUserName);
+//                    textViewBloodGroup.setText(user.getBloodType());
+//                    textViewGender.setText(user.getGender());
+//                    textViewZip.setText(user.getLocationZip());
+//                    textViewCity.setText(user.getCity());
+//                    textViewState.setText(user.getState());
+//                    textViewCountry.setText(user.getCountry());
 
-                    showEditableCardView(false);
+                    editTextCity.setText(user.getCity());
+                    editTextState.setText(user.getState());
+                    editTextCountry.setText(user.getCountry());
+                    editTextZipCode.setText(user.getLocationZip());
+                    spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
+                    spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
+
+//                    showEditableCardView(false);
                 }
             }
 
@@ -188,16 +193,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void showEditableCardView(Boolean show) {
-
-        if (show) {
-            cardView_editable.setVisibility(View.VISIBLE);
-            cardView_view_only.setVisibility(View.GONE);
-        } else {
-            cardView_editable.setVisibility(View.GONE);
-            cardView_view_only.setVisibility(View.VISIBLE);
-        }
-    }
+//    private void showEditableCardView(Boolean show) {
+//
+//        if (show) {
+//            cardView_editable.setVisibility(View.VISIBLE);
+//            cardView_view_only.setVisibility(View.GONE);
+//        } else {
+//            cardView_editable.setVisibility(View.GONE);
+//            cardView_view_only.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     @Override
     protected void onResume() {
