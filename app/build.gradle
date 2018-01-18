@@ -31,6 +31,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
 
     // Firebase
     compile 'com.google.firebase:firebase-database:11.4.2'

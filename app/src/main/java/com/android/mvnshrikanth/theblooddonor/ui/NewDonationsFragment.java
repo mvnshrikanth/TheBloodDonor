@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -77,11 +76,12 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
         attachDatabaseReadListener();
 
-        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
+        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
-        recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
+        //TODO 5) Work on animation and item divider
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
+//        recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
 
         toggleRecyclerView();
         return view;

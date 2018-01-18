@@ -131,14 +131,16 @@ public class ChatMessageFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                if (charSequence.toString().trim().length() > 0) {
+                    buttonSend.setEnabled(true);
+                } else {
+                    buttonSend.setEnabled(false);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString().length() > 0) {
-                    buttonSend.setEnabled(true);
-                }
+
             }
         });
 
@@ -184,8 +186,6 @@ public class ChatMessageFragment extends Fragment {
         imageButtonApproveDonor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 5) Complete the donation request completion button.
-                //3 places to update the donation request with the donor details, DONATION_REQUESTS_PATH, MY_DONATION_REQUESTS_PATH, MY_DONATIONS_PATH.
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("Complete Donation Request")

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
@@ -91,6 +92,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView textViewMessageLeft;
         @BindView(R.id.textView_date_time_left)
         TextView textViewDateTimeLeft;
+        @BindView(R.id.image_message_profile)
+        ImageView imageViewMessageProfile;
 
         public MyViewHolderLeft(View itemView) {
             super(itemView);
