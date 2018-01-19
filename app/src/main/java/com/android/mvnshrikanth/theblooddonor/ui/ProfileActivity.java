@@ -3,6 +3,7 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,8 +15,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.android.mvnshrikanth.theblooddonor.R;
+import com.android.mvnshrikanth.theblooddonor.data.Location;
 import com.android.mvnshrikanth.theblooddonor.data.Users;
-import com.android.mvnshrikanth.theblooddonor.utils.Utils;
+import com.android.mvnshrikanth.theblooddonor.utilities.Utils;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -28,13 +30,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -75,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Users user;
     private Boolean newUser;
     private String userPhotoUrl;
+    private Location locationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +124,8 @@ public class ProfileActivity extends AppCompatActivity {
                 } else {
                     user = new Users(
                             mUserName,
-                            spinner_blood_type.getSelectedItem().toString(),
-                            editTextZipCode.getText().toString(),
+                            spinner_blood_type.getSelectedItem().toString().trim(),
+                            editTextZipCode.getText().toString().trim(),
                             editTextCity.getText().toString(),
                             editTextState.getText().toString(),
                             editTextCountry.getText().toString(),
@@ -142,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() == 5) {
-                    loadLocationInfo();
+                    loadLocationInfo(charSequence.toString().trim());
                 }
             }
 
@@ -163,10 +167,10 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void loadLocationInfo() {
+    private void loadLocationInfo(String zipCode) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        HttpUrl.Builder builder = HttpUrl.parse(Utils.ZIP_CODE_API_BASE_URL).newBuilder();
-        String url = builder.toString();
+        String url = Utils.ZIP_CODE_API_BASE_URL + "/info.json/" + zipCode + "/radians";
+        locationData = null;
 
         final Request request = new Request.Builder()
                 .url(url)
@@ -174,27 +178,42 @@ public class ProfileActivity extends AppCompatActivity {
 
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
 
                 final String responseData = response.body().string();
 
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
+                if (response.isSuccessful()) {
+                    try {
+                        locationData = Utils.getCityStateFromJSONString(responseData);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-//                } else {
-//                    try {
-//                        //Get the data from the JSON
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLocation(locationData);
+                    }
+                });
             }
         });
+    }
+
+    private void showLocation(Location location) {
+        if (location == null) {
+            editTextCity.setText(" ");
+            editTextState.setText(" ");
+            editTextCountry.setText(" ");
+        } else {
+            editTextCity.setText(location.getCity());
+            editTextState.setText(location.getState());
+            editTextCountry.setText("USA");
+        }
     }
 
     @Override
@@ -203,6 +222,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == RC_PHOTO_PICKER) {
             Uri selectedImageUri = data.getData();
             // Get a reference to store file at chat_photos/<FILENAME>
+            assert selectedImageUri != null;
             StorageReference photoRef = userPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
 
             photoRef.putFile(selectedImageUri)

@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATIONS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.MY_DONATIONS_PATH;
 
 
 /**

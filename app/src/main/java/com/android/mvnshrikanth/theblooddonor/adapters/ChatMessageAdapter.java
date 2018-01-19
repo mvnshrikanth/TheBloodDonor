@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
-import com.android.mvnshrikanth.theblooddonor.utils.Utils;
+import com.android.mvnshrikanth.theblooddonor.utilities.Utils;
 
 import java.util.List;
 

@@ -29,7 +29,7 @@ import butterknife.Unbinder;
 import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_CHATS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_CHATS_PATH;
 
 public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAdapterEventListener {
 

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,7 +31,7 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY
 import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_PATH;
 
 
 /**
@@ -79,9 +80,10 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
+
         //TODO 5) Work on animation and item divider
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
-//        recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
 
         toggleRecyclerView();
         return view;

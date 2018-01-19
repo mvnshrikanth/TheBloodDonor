@@ -21,7 +21,7 @@ import com.android.mvnshrikanth.theblooddonor.adapters.ChatMessageAdapter;
 import com.android.mvnshrikanth.theblooddonor.data.ChatMessage;
 import com.android.mvnshrikanth.theblooddonor.data.ChatUser;
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
-import com.android.mvnshrikanth.theblooddonor.utils.Utils;
+import com.android.mvnshrikanth.theblooddonor.utilities.Utils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,12 +43,12 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY
 import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.CHAT_MESSAGES_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_CHAT_USER_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_CHATS_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATIONS_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.CHAT_MESSAGES_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_CHAT_USER_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_CHATS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.MY_DONATIONS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.MY_DONATION_REQUESTS_PATH;
 
 /**
  * A simple {@link Fragment} subclass.

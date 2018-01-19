@@ -1,4 +1,9 @@
-package com.android.mvnshrikanth.theblooddonor.utils;
+package com.android.mvnshrikanth.theblooddonor.utilities;
+
+import com.android.mvnshrikanth.theblooddonor.data.Location;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,9 +24,7 @@ public class Utils {
     public static final String DONATION_REQUESTS_CHATS_PATH = "donationRequestChats";
     public static final String DONATION_CHAT_USER_PATH = "donationChatUser";
     public static final String ZIP_CODE_API_KEY = "hfkV4NMoQjXfJn4vXKPDhgCu9g1OTXw32zCKj4iYCrK919tgqT5kZuOcr4Cgt1y9";
-    public static final String ZIP_CODE_API_BASE_URL = "https://www.zipcodeapi.com/rest/hfkV4NMoQjXfJn4vXKPDhgCu9g1OTXw32zCKj4iYCrK919tgqT5kZuOcr4Cgt1y9/info.json/06088/radians";
-
-
+    public static final String ZIP_CODE_API_BASE_URL = "https://www.zipcodeapi.com/rest/" + ZIP_CODE_API_KEY;
 
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
@@ -82,6 +85,12 @@ public class Utils {
             e.printStackTrace();
         }
         return displayString;
+    }
+
+    public static Location getCityStateFromJSONString(String locationInfoStr) throws JSONException {
+        JSONObject jsonObjectLocationInfo = new JSONObject(locationInfoStr);
+        return new Location(jsonObjectLocationInfo.getString("city"),
+                jsonObjectLocationInfo.getString("state"));
     }
 
 
