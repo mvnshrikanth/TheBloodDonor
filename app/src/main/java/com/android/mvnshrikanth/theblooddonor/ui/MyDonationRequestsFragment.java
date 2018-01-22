@@ -19,7 +19,7 @@ import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.adapters.MyDonationRequestsAdapter;
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.android.mvnshrikanth.theblooddonor.data.Users;
-import com.android.mvnshrikanth.theblooddonor.utils.Utils;
+import com.android.mvnshrikanth.theblooddonor.utilities.Utils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,9 +38,9 @@ import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATION_REQUESTS_PATH;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.USERS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.MY_DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USERS_PATH;
 
 
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
@@ -196,20 +196,16 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
+                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
+                    myDonationRequestList.add(donationRequest);
+                    myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
+                    toggleRecyclerView();
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    //TODO 1) donation request remove is not tested.
-                    if (myDonationRequestList.size() > 0) myDonationRequestList.clear();
-                    for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()) {
-                        DonationRequest donationRequest = dataSnapShot.getValue(DonationRequest.class);
-                        myDonationRequestList.add(donationRequest);
-                        myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
-                        toggleRecyclerView();
-                    }
                 }
 
                 @Override

@@ -31,7 +31,7 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY
 import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.DONATION_REQUESTS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_PATH;
 
 
 /**
@@ -77,9 +77,11 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
         attachDatabaseReadListener();
 
-        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName);
+        donationRequestAdapter = new DonationRequestAdapter(NewDonationsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
+
+        //TODO 5) Work on animation and item divider
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
         recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
 
@@ -104,23 +106,28 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
-                    donationRequestList.add(donationRequest);
-                    donationRequestAdapter.prepareDonationRequest(donationRequestList);
-                    toggleRecyclerView();
+                    assert donationRequest != null;
+                    if (donationRequest.getDonatedDate() == null) {
+                        donationRequestList.add(donationRequest);
+                        donationRequestAdapter.prepareDonationRequest(donationRequestList);
+                        toggleRecyclerView();
+                    }
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
+                    assert donationRequest != null;
+                    if (donationRequest.getDonatedDate() != null) {
+                        donationRequestList.remove(donationRequest);
+                        donationRequestAdapter.prepareDonationRequest(donationRequestList);
+                        toggleRecyclerView();
+                    }
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    //TODO 3) remove is not tested.
-                    DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
-                    donationRequestList.remove(donationRequest);
-                    donationRequestAdapter.prepareDonationRequest(donationRequestList);
-                    toggleRecyclerView();
+
                 }
 
                 @Override

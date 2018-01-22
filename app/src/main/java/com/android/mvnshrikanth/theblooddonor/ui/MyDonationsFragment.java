@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
-import static com.android.mvnshrikanth.theblooddonor.utils.Utils.MY_DONATIONS_PATH;
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.MY_DONATIONS_PATH;
 
 
 /**
@@ -45,6 +45,7 @@ public class MyDonationsFragment extends Fragment {
     private DatabaseReference myDonationsDatabaseReference;
     private ChildEventListener myDonationsChildEventListener;
     private MyDonationsAdapter myDonationsAdapter;
+    private String mUid;
 
     public MyDonationsFragment() {
         // Required empty public constructor
@@ -58,14 +59,14 @@ public class MyDonationsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_donations, container, false);
         unbinder = ButterKnife.bind(this, view);
         savedInstanceState = this.getArguments();
-        String mUid = savedInstanceState.getString(USER_ID);
+        mUid = savedInstanceState.getString(USER_ID);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        assert mUid != null;
-        myDonationsDatabaseReference = firebaseDatabase.getReference().child(MY_DONATIONS_PATH).child(mUid);
+
 
         myDonationList = new ArrayList<DonationRequest>();
-
+        assert mUid != null;
+        myDonationsDatabaseReference = firebaseDatabase.getReference().child(MY_DONATIONS_PATH).child(mUid);
         attachDatabaseReadListener();
         myDonationsAdapter = new MyDonationsAdapter();
         recyclerViewMyDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
@@ -75,7 +76,7 @@ public class MyDonationsFragment extends Fragment {
     }
 
     private void attachDatabaseReadListener() {
-        if (myDonationsChildEventListener != null) {
+        if (myDonationsChildEventListener == null) {
             myDonationsChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
