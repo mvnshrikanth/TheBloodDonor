@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.mvnshrikanth.theblooddonor.R;
 import com.android.mvnshrikanth.theblooddonor.data.Location;
@@ -67,6 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
     EditText editTextState;
     @BindView(R.id.imageButton_profile_picture)
     ImageButton imageButtonProfilePicture;
+    @BindView(R.id.textView_name)
+    TextView textViewName;
 
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener userChildEventListener;
@@ -94,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users").child(mUid);
-        userPhotosStorageReference = firebaseStorage.getReference().child("chat_photos");
+        userPhotosStorageReference = firebaseStorage.getReference().child("user_profile_photos");
 
         ArrayAdapter<CharSequence> adapterGender =
                 ArrayAdapter.createFromResource(this, R.array.sex_array, R.layout.support_simple_spinner_dropdown_item);
@@ -112,28 +116,31 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (user != null) {
-                    user.setUserName(mUserName);
-                    user.setBloodType(spinner_blood_type.getSelectedItem().toString());
-                    user.setLocationZip(editTextZipCode.getText().toString());
-                    user.setCity(editTextCity.getText().toString());
-                    user.setState(editTextState.getText().toString());
-                    user.setCountry(editTextCountry.getText().toString());
-                    user.setGender(spinner_gender.getSelectedItem().toString());
-                    user.setPhotoUrl(userPhotoUrl);
-                } else {
-                    user = new Users(
-                            mUserName,
-                            spinner_blood_type.getSelectedItem().toString().trim(),
-                            editTextZipCode.getText().toString().trim(),
-                            editTextCity.getText().toString(),
-                            editTextState.getText().toString(),
-                            editTextCountry.getText().toString(),
-                            spinner_gender.getSelectedItem().toString(),
-                            userPhotoUrl);
+
+                if (verifyUserInputs()) {
+                    if (user != null) {
+                        user.setUserName(mUserName);
+                        user.setBloodType(spinner_blood_type.getSelectedItem().toString());
+                        user.setLocationZip(editTextZipCode.getText().toString());
+                        user.setCity(editTextCity.getText().toString());
+                        user.setState(editTextState.getText().toString());
+                        user.setCountry(editTextCountry.getText().toString());
+                        user.setGender(spinner_gender.getSelectedItem().toString());
+                        user.setPhotoUrl(userPhotoUrl);
+                    } else {
+                        user = new Users(
+                                mUserName,
+                                spinner_blood_type.getSelectedItem().toString().trim(),
+                                editTextZipCode.getText().toString().trim(),
+                                editTextCity.getText().toString(),
+                                editTextState.getText().toString(),
+                                editTextCountry.getText().toString(),
+                                spinner_gender.getSelectedItem().toString(),
+                                userPhotoUrl);
+                    }
+                    usersDatabaseReference.setValue(user);
+                    finish();
                 }
-                usersDatabaseReference.setValue(user);
-                finish();
             }
         });
 
@@ -165,6 +172,33 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
             }
         });
+    }
+
+    private Boolean verifyUserInputs() {
+        String toastMessage = "";
+        if (spinner_blood_type.getSelectedItem().toString().trim().length() == 0) {
+            toastMessage = "Blood type";
+        }
+        if (editTextZipCode.getText().toString().trim().length() != 5) {
+            toastMessage = toastMessage + ", " + "Zip code";
+        }
+        if (editTextCity.getText().toString().length() == 0) {
+            toastMessage = toastMessage + ", " + "City";
+        }
+        if (editTextState.getText().toString().length() == 0) {
+            toastMessage = toastMessage + ", " + "State";
+        }
+        if (editTextCountry.getText().toString().length() == 0) {
+            toastMessage = toastMessage + ", " + "Country";
+        }
+        if (spinner_gender.getSelectedItem().toString().length() == 0) {
+            toastMessage = toastMessage + ", " + "Gender";
+        }
+        if (toastMessage.length() > 0) {
+            Toast.makeText(ProfileActivity.this, "Please fill the listed information, " + toastMessage, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void loadLocationInfo(String zipCode) {
@@ -206,9 +240,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showLocation(Location location) {
         if (location == null) {
-            editTextCity.setText(" ");
-            editTextState.setText(" ");
-            editTextCountry.setText(" ");
+            editTextCity.setText("");
+            editTextState.setText("");
+            editTextCountry.setText("");
         } else {
             editTextCity.setText(location.getCity());
             editTextState.setText(location.getState());
@@ -219,11 +253,11 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_PHOTO_PICKER) {
+        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            // Get a reference to store file at chat_photos/<FILENAME>
+            // Get a reference to store file at user_photos/<FILENAME>
             assert selectedImageUri != null;
-            StorageReference photoRef = userPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+            StorageReference photoRef = userPhotosStorageReference.child(mUid);
 
             photoRef.putFile(selectedImageUri)
                     .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -259,7 +293,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(Users.class);
-
+                textViewName.setText(mUserName);
                 if ((user != null) && (user.getUserName().equals(mUserName))) {
                     editTextCity.setText(user.getCity());
                     editTextState.setText(user.getState());
