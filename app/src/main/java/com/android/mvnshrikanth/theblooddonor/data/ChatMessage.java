@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class ChatMessage implements Parcelable {
 
-
     public static final Creator<ChatMessage> CREATOR = new Creator<ChatMessage>() {
         @Override
         public ChatMessage createFromParcel(Parcel in) {
@@ -29,6 +28,11 @@ public class ChatMessage implements Parcelable {
     private String chatUserId;
     private String chatUserName;
     private String chatId;
+    private String donorId;
+    private String donorName;
+
+    public ChatMessage() {
+    }
 
     protected ChatMessage(Parcel in) {
         messageText = in.readString();
@@ -36,22 +40,18 @@ public class ChatMessage implements Parcelable {
         chatUserId = in.readString();
         chatUserName = in.readString();
         chatId = in.readString();
+        donorId = in.readString();
+        donorName = in.readString();
     }
 
-    public ChatMessage(String messageText, String messageDate, String chatUserId, String chatUserName, String chatId) {
+    public ChatMessage(String messageText, String messageDate, String chatUserId, String chatUserName, String chatId, String donorId, String donorName) {
         this.messageText = messageText;
         this.messageDate = messageDate;
         this.chatUserId = chatUserId;
         this.chatUserName = chatUserName;
         this.chatId = chatId;
-    }
-
-    public ChatMessage() {
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        this.donorId = donorId;
+        this.donorName = donorName;
     }
 
     @Override
@@ -61,6 +61,33 @@ public class ChatMessage implements Parcelable {
         dest.writeString(chatUserId);
         dest.writeString(chatUserName);
         dest.writeString(chatId);
+        dest.writeString(donorId);
+        dest.writeString(donorName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public String getDonorName() {
+        return donorName;
+    }
+
+    public void setDonorName(String donorName) {
+        this.donorName = donorName;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> results = new HashMap<>();
+        results.put("messageText", messageText);
+        results.put("messageDate", messageDate);
+        results.put("chatUserId", chatUserId);
+        results.put("chatUserName", chatUserName);
+        results.put("chatId", chatId);
+        results.put("donorId", donorId);
+        results.put("donorName", donorName);
+        return results;
     }
 
     public String getMessageText() {
@@ -103,14 +130,11 @@ public class ChatMessage implements Parcelable {
         this.chatId = chatId;
     }
 
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> results = new HashMap<>();
-        results.put("messageText", messageText);
-        results.put("messageDate", messageDate);
-        results.put("chatUserId", chatUserId);
-        results.put("chatUserName", chatUserName);
-        results.put("chatId", chatId);
-        return results;
+    public String getDonorId() {
+        return donorId;
     }
 
+    public void setDonorId(String donorId) {
+        this.donorId = donorId;
+    }
 }

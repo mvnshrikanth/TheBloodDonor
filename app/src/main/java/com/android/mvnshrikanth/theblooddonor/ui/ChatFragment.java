@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,7 +76,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
         donationRequestsChatsDatabaseReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_CHATS_PATH).child(donationRequestKey);
 
         attachDatabaseReadListener();
-        chatListAdapter = new ChatListAdapter(ChatFragment.this, donationRequest, mUid, mUserName);
+        chatListAdapter = new ChatListAdapter(ChatFragment.this, donationRequest, mUid, mUserName, view.getContext());
         recyclerViewUserChatList.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewUserChatList.setAdapter(chatListAdapter);
         return view;
@@ -96,7 +97,16 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
 
+                    for (ListIterator<ChatMessage> listIterator = chatList.listIterator(); listIterator.hasNext(); ) {
+                        ChatMessage chatMessage1 = listIterator.next();
+                        if (chatMessage1.getChatUserId().equals(chatMessage.getChatUserId()) && chatMessage1.getChatUserName().equals(chatMessage.getChatUserName())) {
+                            listIterator.remove();
+                            listIterator.add(chatMessage);
+                        }
+                    }
+                    chatListAdapter.prepareChatListAdapter(chatList);
                 }
 
                 @Override

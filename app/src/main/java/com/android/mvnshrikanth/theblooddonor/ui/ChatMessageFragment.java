@@ -119,11 +119,9 @@ public class ChatMessageFragment extends Fragment {
 
         blnNewChatId = false;
         attachDatabaseReadListener();
-
         chatMessageList = new ArrayList<ChatMessage>();
 
         editTextChatMessage.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -147,14 +145,26 @@ public class ChatMessageFragment extends Fragment {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String messageIdKey = databaseReference.child(CHAT_MESSAGES_PATH).child(chatIdKey).push().getKey();
+                String donorId;
+                String donorName;
+
+                if (!mUid.equals(donationRequest.getRequesterUidKey())) {
+                    donorId = mUid;
+                    donorName = mUserName;
+                } else {
+                    donorId = mDonorId;
+                    donorName = mDonorName;
+                }
+
                 ChatMessage chatMessage = new ChatMessage(
                         editTextChatMessage.getText().toString(),
                         Utils.getCurrentDate(),
                         mUid,
                         mUserName,
-                        chatIdKey);
+                        chatIdKey,
+                        donorId,
+                        donorName);
 
                 Map<String, Object> chatValues = chatMessage.toMap();
                 Map<String, Object> childUpdates = new HashMap<>();
@@ -186,14 +196,13 @@ public class ChatMessageFragment extends Fragment {
         imageButtonApproveDonor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("Complete Donation Request")
                         .setMessage(mDonorName + " will be the donor for your requested blood type.")
                         .setNegativeButton(R.string.str_dialog_cancel_request, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
+                                //TODO 1) add cancellation message.
                             }
                         })
                         .setPositiveButton(R.string.str_dialog_complete_request, new DialogInterface.OnClickListener() {
@@ -223,7 +232,7 @@ public class ChatMessageFragment extends Fragment {
             }
         });
 
-        chatMessageAdapter = new ChatMessageAdapter(mUid);
+        chatMessageAdapter = new ChatMessageAdapter(mUid, mView.getContext());
         recyclerViewChatMessage.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewChatMessage.setAdapter(chatMessageAdapter);
 

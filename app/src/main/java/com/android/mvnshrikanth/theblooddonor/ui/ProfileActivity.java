@@ -44,6 +44,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USER_PROFILE_PICTURES_STORAGE_PATH;
+
 public class ProfileActivity extends AppCompatActivity {
 
 //TODO 2) Add location api for getting autofill of location in the form.
@@ -98,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users").child(mUid);
-        userPhotosStorageReference = firebaseStorage.getReference().child("user_profile_photos");
+        userPhotosStorageReference = firebaseStorage.getReference().child(USER_PROFILE_PICTURES_STORAGE_PATH);
 
         ArrayAdapter<CharSequence> adapterGender =
                 ArrayAdapter.createFromResource(this, R.array.sex_array, R.layout.support_simple_spinner_dropdown_item);
