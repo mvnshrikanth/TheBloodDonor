@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_DATA;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_PATH;
@@ -171,7 +171,7 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     public void onClick(DonationRequest donationRequest, String donationRequestmUid, String mUid, String mUserName) {
         if (!donationRequestmUid.equals(mUid)) {
             Intent intent = new Intent(view.getContext(), ChatMessageActivity.class);
-            intent.putExtra(MY_DONATION_REQUEST, donationRequest);
+            intent.putExtra(MY_DONATION_REQUEST_DATA, donationRequest);
             intent.putExtra(USER_ID, mUid);
             intent.putExtra(USERNAME, mUserName);
             intent.putExtra(CHAT_ID_KEY, (String) null);

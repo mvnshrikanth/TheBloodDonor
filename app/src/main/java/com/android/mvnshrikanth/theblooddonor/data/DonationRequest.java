@@ -37,22 +37,9 @@ public class DonationRequest implements Parcelable {
     private String donorName;
     private String donorUidKey;
     private String donatedDate;
+    private String donorResponseCount;
 
     public DonationRequest() {
-    }
-
-    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donorName, String donorUidKey, String donatedDate) {
-        this.donationRequestKey = donationRequestKey;
-        this.requesterUidKey = requesterUidKey;
-        this.requesterName = requesterName;
-        this.requestedBloodType = requestedBloodType;
-        this.requesterCity = requesterCity;
-        this.requesterState = requesterState;
-        this.requesterZip = requesterZip;
-        this.requestedDate = requestedDate;
-        this.donorName = donorName;
-        this.donorUidKey = donorUidKey;
-        this.donatedDate = donatedDate;
     }
 
     protected DonationRequest(Parcel in) {
@@ -67,6 +54,22 @@ public class DonationRequest implements Parcelable {
         donorName = in.readString();
         donorUidKey = in.readString();
         donatedDate = in.readString();
+        donorResponseCount = in.readString();
+    }
+
+    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donorName, String donorUidKey, String donatedDate, String donorResponseCount) {
+        this.donationRequestKey = donationRequestKey;
+        this.requesterUidKey = requesterUidKey;
+        this.requesterName = requesterName;
+        this.requestedBloodType = requestedBloodType;
+        this.requesterCity = requesterCity;
+        this.requesterState = requesterState;
+        this.requesterZip = requesterZip;
+        this.requestedDate = requestedDate;
+        this.donorName = donorName;
+        this.donorUidKey = donorUidKey;
+        this.donatedDate = donatedDate;
+        this.donorResponseCount = donorResponseCount;
     }
 
     @Override
@@ -82,6 +85,7 @@ public class DonationRequest implements Parcelable {
         dest.writeString(donorName);
         dest.writeString(donorUidKey);
         dest.writeString(donatedDate);
+        dest.writeString(donorResponseCount);
     }
 
     @Override
@@ -103,9 +107,9 @@ public class DonationRequest implements Parcelable {
         results.put("donorName", donorName);
         results.put("donorUidKey", donorUidKey);
         results.put("donatedDate", donatedDate);
+        results.put("donorResponseCount", donorResponseCount);
         return results;
     }
-
 
     public String getDonationRequestKey() {
         return donationRequestKey;
@@ -193,5 +197,13 @@ public class DonationRequest implements Parcelable {
 
     public void setDonatedDate(String donatedDate) {
         this.donatedDate = donatedDate;
+    }
+
+    public String getDonorResponseCount() {
+        return donorResponseCount;
+    }
+
+    public void setDonorResponseCount(String donorResponseCount) {
+        this.donorResponseCount = donorResponseCount;
     }
 }

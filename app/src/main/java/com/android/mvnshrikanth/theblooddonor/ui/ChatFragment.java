@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_DATA;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.DONATION_REQUESTS_CHATS_PATH;
@@ -62,7 +62,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
 
         savedInstanceState = this.getArguments();
         String donationRequestKey;
-        donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST);
+        donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST_DATA);
 
         assert donationRequest != null;
         donationRequestKey = donationRequest.getDonationRequestKey();
@@ -150,7 +150,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
         intent.putExtra(CHAT_ID_KEY, chatIdKey);
         intent.putExtra(USER_ID, mUid);
         intent.putExtra(USERNAME, mUserName);
-        intent.putExtra(MY_DONATION_REQUEST, donationRequest);
+        intent.putExtra(MY_DONATION_REQUEST_DATA, donationRequest);
         startActivity(intent);
     }
 }

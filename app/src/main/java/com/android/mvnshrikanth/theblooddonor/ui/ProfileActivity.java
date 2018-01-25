@@ -48,8 +48,6 @@ import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USER_PROFIL
 
 public class ProfileActivity extends AppCompatActivity {
 
-//TODO 2) Add location api for getting autofill of location in the form.
-
     public static final String NEW_USER = "new_user";
     public static final String USERNAME = "username";
     public static final String USER_ID = "user_id";

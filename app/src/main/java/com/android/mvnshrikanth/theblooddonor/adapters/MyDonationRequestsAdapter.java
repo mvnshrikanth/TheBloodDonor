@@ -67,7 +67,7 @@ public class MyDonationRequestsAdapter extends RecyclerView.Adapter<RecyclerView
                 ((MyViewHolderCompleted) holder).textViewDonatedDate.setText(Utils.getDateAndTimeForDisplay(myDonationRequestList.get(position).getDonatedDate()));
                 break;
             case 1:
-                ((MyViewHolderInProgress) holder).textViewDonorResponseCount.setText("2");
+                ((MyViewHolderInProgress) holder).textViewDonorResponseCount.setText(myDonationRequestList.get(position).getDonorResponseCount());
                 ((MyViewHolderInProgress) holder).textViewRequestedBloodGroup.setText(myDonationRequestList.get(position).getRequestedBloodType());
                 ((MyViewHolderInProgress) holder).textViewRequestedDate.setText(Utils.getDateAndTimeForDisplay(myDonationRequestList.get(position).getRequestedDate()));
                 break;
