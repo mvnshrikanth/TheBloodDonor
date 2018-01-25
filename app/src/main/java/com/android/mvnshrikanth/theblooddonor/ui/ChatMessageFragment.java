@@ -27,7 +27,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.android.mvnshrikanth.theblooddonor.ui.ChatFragment.CHAT_ID_KEY;
-import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST;
+import static com.android.mvnshrikanth.theblooddonor.ui.MyDonationRequestsFragment.MY_DONATION_REQUEST_DATA;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.CHAT_MESSAGES_PATH;
@@ -99,7 +101,7 @@ public class ChatMessageFragment extends Fragment {
         unbinder = ButterKnife.bind(this, mView);
         savedInstanceState = this.getArguments();
 
-        donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST);
+        donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST_DATA);
         assert donationRequest != null;
         donationRequestKey = donationRequest.getDonationRequestKey();
         mUid = savedInstanceState.getString(USER_ID);
@@ -146,7 +148,7 @@ public class ChatMessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String messageIdKey = databaseReference.child(CHAT_MESSAGES_PATH).child(chatIdKey).push().getKey();
-                String donorId;
+                final String donorId;
                 String donorName;
 
                 if (!mUid.equals(donationRequest.getRequesterUidKey())) {
@@ -183,6 +185,24 @@ public class ChatMessageFragment extends Fragment {
                                 ChatUser chatUser = new ChatUser(chatIdKey, mUid, mUserName);
                                 Map<String, Object> chatUserValue = chatUser.toMap();
                                 ChatMessageFragment.this.databaseReference.child(DONATION_CHAT_USER_PATH).child(donationRequestKey).child(mUid).setValue(chatUserValue);
+                                databaseReference.child(MY_DONATION_REQUESTS_PATH).child(donationRequest.getRequesterUidKey()).child(donationRequestKey).runTransaction(new Transaction.Handler() {
+                                    @Override
+                                    public Transaction.Result doTransaction(MutableData mutableData) {
+                                        DonationRequest donationRequest = mutableData.getValue(DonationRequest.class);
+                                        if (donationRequest == null) {
+                                            return Transaction.success(mutableData);
+                                        }
+                                        int count = Integer.parseInt(donationRequest.getDonorResponseCount()) + 1;
+                                        donationRequest.setDonorResponseCount(String.valueOf(count));
+                                        mutableData.setValue(donationRequest);
+                                        return Transaction.success(mutableData);
+                                    }
+
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                                    }
+                                });
                             }
                         }
                     }
@@ -235,7 +255,6 @@ public class ChatMessageFragment extends Fragment {
         chatMessageAdapter = new ChatMessageAdapter(mUid, mView.getContext());
         recyclerViewChatMessage.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewChatMessage.setAdapter(chatMessageAdapter);
-
         return mView;
     }
 
@@ -302,9 +321,7 @@ public class ChatMessageFragment extends Fragment {
         }
 
         if (mUid.equals(donationRequest.getRequesterUidKey())) {
-
             Query query = chatUserIDDatabaseReference.orderByChild("chatIdKey").equalTo(chatIdKey);
-
             chatUserIDvalueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -323,7 +340,6 @@ public class ChatMessageFragment extends Fragment {
             };
             query.addListenerForSingleValueEvent(chatUserIDvalueEventListener);
         }
-
     }
 
     @Override

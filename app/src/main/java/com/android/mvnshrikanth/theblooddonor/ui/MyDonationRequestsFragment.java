@@ -45,7 +45,7 @@ import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USERS_PATH;
 
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
 
-    public static final String MY_DONATION_REQUEST = "my_donation_request";
+    public static final String MY_DONATION_REQUEST_DATA = "my_donation_request";
 
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
@@ -134,7 +134,10 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                                         users.getState(),
                                         users.getLocationZip(),
                                         Utils.getCurrentDate(),
-                                        null, null, null
+                                        null,
+                                        null,
+                                        null,
+                                        "0"
                                 );
 
                         Map<String, Object> donationValues = donationRequest.toMap();
@@ -157,7 +160,6 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
             }
         });
 
-
         myDonationRequestsAdapter = new MyDonationRequestsAdapter(MyDonationRequestsFragment.this, mUid, mUserName, view.getContext());
         recyclerViewMyDonationsRequests.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonationsRequests.setAdapter(myDonationRequestsAdapter);
@@ -168,7 +170,6 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     }
 
     private void attachDatabaseReadListener() {
-
         if (userValueEventListener == null) {
             userValueEventListener = new ValueEventListener() {
                 @Override
@@ -254,7 +255,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     @Override
     public void onClick(DonationRequest donationRequest, String mUid, String mUserName) {
         Intent intent = new Intent(view.getContext(), ChatActivity.class);
-        intent.putExtra(MY_DONATION_REQUEST, donationRequest);
+        intent.putExtra(MY_DONATION_REQUEST_DATA, donationRequest);
         intent.putExtra(USER_ID, mUid);
         intent.putExtra(USERNAME, mUserName);
         startActivity(intent);
