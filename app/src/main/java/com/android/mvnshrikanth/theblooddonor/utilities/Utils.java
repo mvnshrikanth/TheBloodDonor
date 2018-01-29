@@ -16,6 +16,7 @@ import java.util.Locale;
  */
 
 public class Utils {
+
     public static final String USERS_PATH = "users";
     public static final String DONATION_REQUESTS_PATH = "donationRequests";
     public static final String MY_DONATION_REQUESTS_PATH = "myDonationRequests";
@@ -78,7 +79,7 @@ public class Utils {
         String displayString = null;
         try {
             SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM, yy", Locale.US);
             Date endDate = simpleDateTimeFormat.parse(date);
 
             displayString = simpleDateFormat.format(endDate);
@@ -93,6 +94,5 @@ public class Utils {
         return new Location(jsonObjectLocationInfo.getString("city"),
                 jsonObjectLocationInfo.getString("state"));
     }
-
 
 }
