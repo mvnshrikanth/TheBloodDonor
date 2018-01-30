@@ -1,25 +1,41 @@
 package com.android.mvnshrikanth.theblooddonor.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.android.mvnshrikanth.theblooddonor.R;
+import com.android.mvnshrikanth.theblooddonor.ui.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class DonorAppWidget extends AppWidgetProvider {
 
+    public static final String KEY_POSITION = "position";
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.donor_app_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
 
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+
+        Intent intentDonationRequestsListWidget = new Intent(context, MyDonationRequestListWidgetService.class);
+        intentDonationRequestsListWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        intentDonationRequestsListWidget.putExtra("Random", Math.random() * 1000); // Add a random integer to stop the Intent being ignored.  This is needed for some API levels due to intent caching
+        intentDonationRequestsListWidget.setData(Uri.parse(intentDonationRequestsListWidget.toUri(Intent.URI_INTENT_SCHEME)));
+
+        views.setRemoteAdapter(R.id.listView_widget_my_donation_requests, intentDonationRequestsListWidget);
+        views.setEmptyView(R.id.listView_widget_my_donation_requests, R.id.empty_view);
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.listView_widget_my_donation_requests);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

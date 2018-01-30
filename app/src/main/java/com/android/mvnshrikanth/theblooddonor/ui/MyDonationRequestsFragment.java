@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,12 +22,14 @@ import com.android.mvnshrikanth.theblooddonor.adapters.MyDonationRequestsAdapter
 import com.android.mvnshrikanth.theblooddonor.data.DonationRequest;
 import com.android.mvnshrikanth.theblooddonor.data.Users;
 import com.android.mvnshrikanth.theblooddonor.utilities.Utils;
+import com.android.mvnshrikanth.theblooddonor.widget.DonorAppWidget;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +50,7 @@ import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USERS_PATH;
 public class MyDonationRequestsFragment extends Fragment implements MyDonationRequestsAdapter.MyDonationRequestAdapterOnClickListener {
 
     public static final String MY_DONATION_REQUEST_DATA = "my_donation_request";
+    public static final String MY_DONATION_REQUEST_SHARED_PREF_KEY = "my_donation_request_shared_pref_key";
 
     @BindView(R.id.recyclerView_My_Donation_Requests)
     RecyclerView recyclerViewMyDonationsRequests;
@@ -68,6 +73,8 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     private Users users;
     private String mUid;
     private String mUserName;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public MyDonationRequestsFragment() {
         // Required empty public constructor
@@ -84,6 +91,8 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_my_donation_requests, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
 
         savedInstanceState = this.getArguments();
         mUid = savedInstanceState.getString(USER_ID);
@@ -192,6 +201,14 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     myDonationRequestList.add(donationRequest);
                     myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
+
+                    editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(myDonationRequestList);
+                    editor.putString(MY_DONATION_REQUEST_SHARED_PREF_KEY, json);
+                    editor.apply();
+                    sendBroadcast();
+
                     toggleRecyclerView();
                 }
 
@@ -201,6 +218,14 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                     DonationRequest donationRequest = dataSnapshot.getValue(DonationRequest.class);
                     myDonationRequestList.add(donationRequest);
                     myDonationRequestsAdapter.prepareMyDonationRequestList(myDonationRequestList);
+
+                    editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(myDonationRequestList);
+                    editor.putString(MY_DONATION_REQUEST_SHARED_PREF_KEY, json);
+                    editor.apply();
+                    sendBroadcast();
+
                     toggleRecyclerView();
                 }
 
@@ -259,5 +284,11 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
         intent.putExtra(USER_ID, mUid);
         intent.putExtra(USERNAME, mUserName);
         startActivity(intent);
+    }
+
+    private void sendBroadcast() {
+        Intent intent = new Intent(view.getContext(), DonorAppWidget.class);
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE\"");
+        view.getContext().sendBroadcast(intent);
     }
 }
