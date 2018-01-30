@@ -54,8 +54,19 @@ public class MyDonationRequestListWidgetService extends RemoteViewsService {
                 DonationRequest donationRequest = myDonationRequestList.get(i);
 
                 remoteViews.setTextViewText(R.id.textView_widget_blood_type, donationRequest.getRequestedBloodType());
-                remoteViews.setTextViewText(R.id.textView_widget_requested_date, Utils.getDateForDisplay(donationRequest.getRequestedDate()));
-                remoteViews.setTextViewText(R.id.textView_widget_response_count, donationRequest.getDonorResponseCount());
+
+                if (donationRequest.getDonatedDate() == null) {
+                    remoteViews.setImageViewResource(R.id.imageView_status_line_widget, R.color.blue);
+                    remoteViews.setTextViewText(R.id.textView_widget_requested_date, Utils.getDateForDisplay(donationRequest.getRequestedDate()));
+                    remoteViews.setTextViewText(R.id.textView_widget_response_count, donationRequest.getDonorResponseCount());
+                } else {
+                    remoteViews.setImageViewResource(R.id.imageView_status_line_widget, R.color.green);
+                    remoteViews.setTextViewText(R.id.textView_widget_requested_date_view, "Donor name: ");
+                    remoteViews.setTextViewText(R.id.textView_widget_response_count, "Donor date: ");
+                    remoteViews.setTextViewText(R.id.textView_widget_response_count, Utils.getDateForDisplay(donationRequest.getDonatedDate()));
+                    remoteViews.setTextViewText(R.id.textView_widget_requested_date, donationRequest.getDonorName());
+                }
+
 
                 return remoteViews;
             }
