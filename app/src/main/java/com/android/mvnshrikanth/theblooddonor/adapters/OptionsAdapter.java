@@ -14,10 +14,6 @@ import com.android.mvnshrikanth.theblooddonor.ui.NewDonationsFragment;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USERNAME;
 import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
-/**
- * Created by mvnsh on 11/12/2017.
- */
-
 public class OptionsAdapter extends FragmentPagerAdapter {
 
     private static final String LOG_TAG = OptionsAdapter.class.getSimpleName();

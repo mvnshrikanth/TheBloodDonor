@@ -57,13 +57,11 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     @BindView(R.id.empty_my_donation_request_view)
     View emptyView;
     @BindView(R.id.fab_request_donation)
-
     FloatingActionButton fabRequestDonation;
 
     private MyDonationRequestsAdapter myDonationRequestsAdapter;
     private View view;
     private Unbinder unbinder;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestsDBReference;
     private DatabaseReference myDonationRequestDBReference;
     private ChildEventListener myDonationRequestChildEventListener;
@@ -72,17 +70,11 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
     private List<DonationRequest> myDonationRequestList;
     private Users users;
     private String mUid;
-    private String mUserName;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
     public MyDonationRequestsFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -96,15 +88,15 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
 
         savedInstanceState = this.getArguments();
         mUid = savedInstanceState.getString(USER_ID);
-        mUserName = savedInstanceState.getString(USERNAME);
+        String mUserName = savedInstanceState.getString(USERNAME);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestsDBReference = firebaseDatabase.getReference();
         assert mUid != null;
         userDBReference = firebaseDatabase.getReference().child(USERS_PATH).child(mUid);
         myDonationRequestDBReference = firebaseDatabase.getReference().child(MY_DONATION_REQUESTS_PATH).child(mUid);
 
-        myDonationRequestList = new ArrayList<DonationRequest>();
+        myDonationRequestList = new ArrayList<>();
 
         attachDatabaseReadListener();
 
@@ -142,11 +134,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                                         users.getCity(),
                                         users.getState(),
                                         users.getLocationZip(),
-                                        Utils.getCurrentDate(),
-                                        null,
-                                        null,
-                                        null,
-                                        "0"
+                                        Utils.getCurrentDate()
                                 );
 
                         Map<String, Object> donationValues = donationRequest.toMap();

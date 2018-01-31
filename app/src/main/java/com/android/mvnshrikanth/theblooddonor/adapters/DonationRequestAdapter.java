@@ -18,10 +18,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by mvnsh on 12/12/2017.
- */
-
 public class DonationRequestAdapter
         extends RecyclerView.Adapter<DonationRequestAdapter.MyViewHolder> {
 

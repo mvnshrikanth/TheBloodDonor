@@ -26,16 +26,11 @@ import butterknife.ButterKnife;
 
 import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USER_PROFILE_PICTURES_STORAGE_PATH;
 
-/**
- * Created by mvnsh on 12/22/2017.
- */
-
 public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ChatMessage> chatMessageList;
     private String mUid;
     private Context context;
-    private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private Boolean currentUser;
 
@@ -47,7 +42,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void prepareChatMessageList(List<ChatMessage> chatMessageList) {
         this.chatMessageList = chatMessageList;
         notifyDataSetChanged();
-        firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference().child(USER_PROFILE_PICTURES_STORAGE_PATH);
     }
 
@@ -78,7 +73,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Glide.with(context)
-                                        .load(context.getResources().getDrawable(R.drawable.ic_account_circle_black_24dp))
+                                        .load(R.drawable.ic_account_circle_black_24dp)
                                         .into(((MyViewHolderLeft) holder).imageViewMessageProfile);
                             }
                         });

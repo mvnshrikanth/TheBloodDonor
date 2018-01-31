@@ -26,11 +26,10 @@ import static com.android.mvnshrikanth.theblooddonor.ui.ProfileActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int RC_SIGN_IN = 1;
+    private static final int RC_SIGN_IN = 1;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersDatabaseReference;
     private ValueEventListener userValueEventListener;
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users");
 
         authStateListener = new FirebaseAuth.AuthStateListener() {

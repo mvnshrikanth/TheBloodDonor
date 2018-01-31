@@ -12,10 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by mvnsh on 12/12/2017.
- */
-
 public class Utils {
 
     public static final String USERS_PATH = "users";
@@ -81,7 +77,7 @@ public class Utils {
         String displayString = null;
         try {
             SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM, yy", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yy", Locale.US);
             Date endDate = simpleDateTimeFormat.parse(date);
 
             displayString = simpleDateFormat.format(endDate);

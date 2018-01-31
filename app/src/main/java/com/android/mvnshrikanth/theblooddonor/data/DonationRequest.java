@@ -4,15 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by mvnsh on 12/11/2017.
- */
-@IgnoreExtraProperties
 public class DonationRequest implements Parcelable {
 
     public static final Creator<DonationRequest> CREATOR = new Creator<DonationRequest>() {
@@ -57,7 +52,7 @@ public class DonationRequest implements Parcelable {
         donorResponseCount = in.readString();
     }
 
-    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate, String donorName, String donorUidKey, String donatedDate, String donorResponseCount) {
+    public DonationRequest(String donationRequestKey, String requesterUidKey, String requesterName, String requestedBloodType, String requesterCity, String requesterState, String requesterZip, String requestedDate) {
         this.donationRequestKey = donationRequestKey;
         this.requesterUidKey = requesterUidKey;
         this.requesterName = requesterName;
@@ -66,10 +61,10 @@ public class DonationRequest implements Parcelable {
         this.requesterState = requesterState;
         this.requesterZip = requesterZip;
         this.requestedDate = requestedDate;
-        this.donorName = donorName;
-        this.donorUidKey = donorUidKey;
-        this.donatedDate = donatedDate;
-        this.donorResponseCount = donorResponseCount;
+        this.donorName = null;
+        this.donorUidKey = null;
+        this.donatedDate = null;
+        this.donorResponseCount = "0";
     }
 
     @Override

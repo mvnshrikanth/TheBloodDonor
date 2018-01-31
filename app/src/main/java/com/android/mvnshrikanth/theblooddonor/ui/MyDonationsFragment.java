@@ -41,11 +41,9 @@ public class MyDonationsFragment extends Fragment {
     View emptyView;
     private List<DonationRequest> myDonationList;
     private Unbinder unbinder;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference myDonationsDatabaseReference;
     private ChildEventListener myDonationsChildEventListener;
     private MyDonationsAdapter myDonationsAdapter;
-    private String mUid;
 
     public MyDonationsFragment() {
         // Required empty public constructor
@@ -59,16 +57,16 @@ public class MyDonationsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_donations, container, false);
         unbinder = ButterKnife.bind(this, view);
         savedInstanceState = this.getArguments();
-        mUid = savedInstanceState.getString(USER_ID);
+        String mUid = savedInstanceState.getString(USER_ID);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
 
-        myDonationList = new ArrayList<DonationRequest>();
+        myDonationList = new ArrayList<>();
         assert mUid != null;
         myDonationsDatabaseReference = firebaseDatabase.getReference().child(MY_DONATIONS_PATH).child(mUid);
         attachDatabaseReadListener();
-        myDonationsAdapter = new MyDonationsAdapter();
+        myDonationsAdapter = new MyDonationsAdapter(view.getContext());
         recyclerViewMyDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayout.VERTICAL, false));
         recyclerViewMyDonations.setAdapter(myDonationsAdapter);
         toggleRecyclerView();
@@ -120,7 +118,7 @@ public class MyDonationsFragment extends Fragment {
         }
     }
 
-    public void detachDatabaseReadListener() {
+    private void detachDatabaseReadListener() {
         if (myDonationsChildEventListener != null) {
             myDonationsDatabaseReference.removeEventListener(myDonationsChildEventListener);
             myDonationsChildEventListener = null;

@@ -40,16 +40,12 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
     @BindView(R.id.recyclerView_new_donations)
     RecyclerView recyclerViewNewDonations;
-    Unbinder unbinder;
     @BindView(R.id.empty_new_donation_view)
     View emptyView;
-
+    private Unbinder unbinder;
     private View view;
-    private String mUid;
-    private String mUserName;
     private List<DonationRequest> donationRequestList;
 
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestDBReference;
     private ChildEventListener donationRequestChildEventListener;
     private DonationRequestAdapter donationRequestAdapter;
@@ -66,13 +62,13 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         unbinder = ButterKnife.bind(this, view);
 
         savedInstanceState = this.getArguments();
-        mUid = savedInstanceState.getString(USER_ID);
-        mUserName = savedInstanceState.getString(USERNAME);
+        String mUid = savedInstanceState.getString(USER_ID);
+        String mUserName = savedInstanceState.getString(USERNAME);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
 
-        donationRequestList = new ArrayList<DonationRequest>();
+        donationRequestList = new ArrayList<>();
 
         attachDatabaseReadListener();
 

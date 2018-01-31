@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
-/**
- * Created by mvnsh on 11/14/2017.
- */
 
 public class Users implements Parcelable {
 

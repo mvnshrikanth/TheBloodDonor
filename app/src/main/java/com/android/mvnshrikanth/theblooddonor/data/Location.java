@@ -1,9 +1,5 @@
 package com.android.mvnshrikanth.theblooddonor.data;
 
-/**
- * Created by mvnsh on 1/18/2018.
- */
-
 public class Location {
     private String city;
     private String state;

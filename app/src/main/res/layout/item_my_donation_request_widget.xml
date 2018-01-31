@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="horizontal">
 
     <ImageView
@@ -27,7 +28,6 @@
             tools:text="AB-ve" />
 
         <ImageView
-            android:id="@+id/view_line"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textView_widget_requested_date_view"
-                android:text="Response count: " />
+                android:text="Donor Responses: " />
 
             <TextView
                 android:id="@+id/textView_widget_response_count"

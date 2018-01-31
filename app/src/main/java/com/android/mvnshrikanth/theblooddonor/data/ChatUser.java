@@ -6,10 +6,6 @@ import android.os.Parcelable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by mvnsh on 1/9/2018.
- */
-
 public class ChatUser implements Parcelable {
 
     public static final Creator<ChatUser> CREATOR = new Creator<ChatUser>() {
