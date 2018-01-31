@@ -61,7 +61,7 @@ public class ChatMessageFragment extends Fragment {
     RecyclerView recyclerViewChatMessage;
     @BindView(R.id.sendButton)
     Button buttonSend;
-    @BindView(R.id.messageEditText)
+    @BindView(R.id.editText_message)
     EditText editTextChatMessage;
     @BindView(R.id.button_approve_donor)
     ImageButton imageButtonApproveDonor;
@@ -121,7 +121,7 @@ public class ChatMessageFragment extends Fragment {
 
         blnNewChatId = false;
         attachDatabaseReadListener();
-        chatMessageList = new ArrayList<ChatMessage>();
+        chatMessageList = new ArrayList<>();
 
         editTextChatMessage.addTextChangedListener(new TextWatcher() {
             @Override
@@ -222,7 +222,7 @@ public class ChatMessageFragment extends Fragment {
                         .setNegativeButton(R.string.str_dialog_cancel_request, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //TODO 1) add cancellation message.
+
                             }
                         })
                         .setPositiveButton(R.string.str_dialog_complete_request, new DialogInterface.OnClickListener() {

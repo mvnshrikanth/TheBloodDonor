@@ -1,5 +1,6 @@
 package com.android.mvnshrikanth.theblooddonor.utilities;
 
+import com.android.mvnshrikanth.theblooddonor.BuildConfig;
 import com.android.mvnshrikanth.theblooddonor.data.Location;
 
 import org.json.JSONException;
@@ -11,10 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by mvnsh on 12/12/2017.
- */
-
 public class Utils {
 
     public static final String USERS_PATH = "users";
@@ -25,7 +22,8 @@ public class Utils {
     public static final String DONATION_REQUESTS_CHATS_PATH = "donationRequestChats";
     public static final String DONATION_CHAT_USER_PATH = "donationChatUser";
     public static final String USER_PROFILE_PICTURES_STORAGE_PATH = "user_profile_photos";
-    private static final String ZIP_CODE_API_KEY = "hfkV4NMoQjXfJn4vXKPDhgCu9g1OTXw32zCKj4iYCrK919tgqT5kZuOcr4Cgt1y9";
+    private static final String ZIP_CODE_API_KEY = BuildConfig.API_KEY;
+
     public static final String ZIP_CODE_API_BASE_URL = "https://www.zipcodeapi.com/rest/" + ZIP_CODE_API_KEY;
 
     public static String getCurrentDate() {
@@ -79,7 +77,7 @@ public class Utils {
         String displayString = null;
         try {
             SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM, yy", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yy", Locale.US);
             Date endDate = simpleDateTimeFormat.parse(date);
 
             displayString = simpleDateFormat.format(endDate);

@@ -74,13 +74,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener userChildEventListener;
-    private ValueEventListener userValueEvenListener;
     private StorageReference userPhotosStorageReference;
-    private FirebaseStorage firebaseStorage;
     private String mUserName;
     private String mUid;
     private Users user;
-    private Boolean newUser;
     private String userPhotoUrl;
     private Location locationData;
 
@@ -91,12 +88,12 @@ public class ProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        newUser = intent.getBooleanExtra(NEW_USER, false);
+        Boolean newUser = intent.getBooleanExtra(NEW_USER, false);
         mUserName = intent.getStringExtra(USERNAME);
         mUid = intent.getStringExtra(USER_ID);
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         usersDatabaseReference = firebaseDatabase.getReference().child("users").child(mUid);
         userPhotosStorageReference = firebaseStorage.getReference().child(USER_PROFILE_PICTURES_STORAGE_PATH);
 
@@ -246,7 +243,7 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             editTextCity.setText(location.getCity());
             editTextState.setText(location.getState());
-            editTextCountry.setText("USA");
+            editTextCountry.setText(R.string.str_default_country_name);
         }
     }
 
@@ -264,6 +261,7 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            assert downloadUrl != null;
                             userPhotoUrl = downloadUrl.toString();
                             if (user == null) {
                                 user = new Users(
@@ -289,7 +287,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void onSignedInInitialize() {
 
-        userValueEvenListener = new ValueEventListener() {
+        ValueEventListener userValueEvenListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(Users.class);
@@ -316,11 +314,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         };
         usersDatabaseReference.addValueEventListener(userValueEvenListener);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

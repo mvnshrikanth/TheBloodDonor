@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">The Blood Donor</string>
     <string name="str_content_desc_profile_picture">Profile Picture</string>
     <string name="str_btn_save">Save</string>
@@ -32,18 +32,23 @@
     <string name="empty_view_title_text_my_donation">You never made any donations &#8230;</string>
 
     <string name="empty_view_subtitle_text">Get started by creating a new donation request</string>
-    <string name="empty_view_subtitle_text_my_donation">Get started from the New Donations TAB</string>
+    <string name="empty_view_subtitle_text_my_donation" tools:keep="@string/empty_view_subtitle_text_my_donation">Get started from the New Donations TAB</string>
 
     <string name="str_send_button_label">Send</string>
     <string name="str_profile_image_content_desc">Profile Image</string>
     <string name="str_requested_on_label">On:</string>
     <string name="str_donated_by_label">Donated By:</string>
-    <string name="str_responses_label">Responses:</string>
     <string name="str_location_label">Location</string>
     <string name="str_requested_by_label">By:</string>
-    <string name="str_status_message_content_desc">status message</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="str_zip_code_hint">Zip Code</string>
+    <string name="str_country_hint">Country</string>
+    <string name="str_state_name_hint">State Name</string>
+    <string name="str_city_name_hint">City Name</string>
+    <string name="str_no_data">No data</string>
+    <string name="content_description_approval_button">approval button</string>
+    <string name="str_content_description_line">TODO</string>
+    <string name="str_donors_responded_label">Donors Responded:</string>
+    <string name="str_default_country_name">USA</string>
 
 
 </resources>

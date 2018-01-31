@@ -3,7 +3,6 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,16 +40,12 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
 
     @BindView(R.id.recyclerView_new_donations)
     RecyclerView recyclerViewNewDonations;
-    Unbinder unbinder;
     @BindView(R.id.empty_new_donation_view)
     View emptyView;
-
+    private Unbinder unbinder;
     private View view;
-    private String mUid;
-    private String mUserName;
     private List<DonationRequest> donationRequestList;
 
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestDBReference;
     private ChildEventListener donationRequestChildEventListener;
     private DonationRequestAdapter donationRequestAdapter;
@@ -67,13 +62,13 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         unbinder = ButterKnife.bind(this, view);
 
         savedInstanceState = this.getArguments();
-        mUid = savedInstanceState.getString(USER_ID);
-        mUserName = savedInstanceState.getString(USERNAME);
+        String mUid = savedInstanceState.getString(USER_ID);
+        String mUserName = savedInstanceState.getString(USERNAME);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         donationRequestDBReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_PATH);
 
-        donationRequestList = new ArrayList<DonationRequest>();
+        donationRequestList = new ArrayList<>();
 
         attachDatabaseReadListener();
 
@@ -81,7 +76,6 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
 
-        //TODO 5) Work on animation and item divider
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
         recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
 
@@ -176,9 +170,6 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
             intent.putExtra(USERNAME, mUserName);
             intent.putExtra(CHAT_ID_KEY, (String) null);
             startActivity(intent);
-        } else {
-            //TODO 4) Modify the message to a shorter message.
-            Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
         }
     }
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="horizontal">
 
     <ImageView
@@ -26,6 +27,13 @@
             android:textSize="24sp"
             tools:text="AB-ve" />
 
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/str_content_description_line"
+            android:src="@android:color/darker_gray" />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -35,13 +43,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="Requested date: " />
+                android:text="Requested on: " />
 
             <TextView
                 android:id="@+id/textView_widget_requested_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/textView_widget_requested_date_view"
+                android:textColor="@android:color/black"
                 android:textStyle="italic|bold"
                 tools:text="25th May, 2018" />
 
@@ -50,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textView_widget_requested_date_view"
-                android:text="Response count: " />
+                android:text="Donor Responses: " />
 
             <TextView
                 android:id="@+id/textView_widget_response_count"
@@ -58,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textView_widget_requested_date"
                 android:layout_toEndOf="@id/textView_widget_response_count_view"
+                android:textColor="@android:color/black"
                 android:textStyle="bold|italic"
                 tools:text="2" />
 

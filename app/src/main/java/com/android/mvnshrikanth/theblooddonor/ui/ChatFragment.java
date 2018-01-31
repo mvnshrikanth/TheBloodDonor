@@ -40,12 +40,10 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
     RecyclerView recyclerViewUserChatList;
 
     private View view;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference donationRequestsChatsDatabaseReference;
     private ChildEventListener donationRequestsChatsChildEventListener;
     private List<ChatMessage> chatList;
     private ChatListAdapter chatListAdapter;
-    private DonationRequest donationRequest;
 
     private Unbinder unbinder;
 
@@ -62,7 +60,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
 
         savedInstanceState = this.getArguments();
         String donationRequestKey;
-        donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST_DATA);
+        DonationRequest donationRequest = savedInstanceState.getParcelable(MY_DONATION_REQUEST_DATA);
 
         assert donationRequest != null;
         donationRequestKey = donationRequest.getDonationRequestKey();
@@ -70,8 +68,8 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
         String mUid = savedInstanceState.getString(USER_ID);
         String mUserName = savedInstanceState.getString(USERNAME);
 
-        chatList = new ArrayList<ChatMessage>();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        chatList = new ArrayList<>();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
         donationRequestsChatsDatabaseReference = firebaseDatabase.getReference().child(DONATION_REQUESTS_CHATS_PATH).child(donationRequestKey);
 
@@ -101,6 +99,7 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
 
                     for (ListIterator<ChatMessage> listIterator = chatList.listIterator(); listIterator.hasNext(); ) {
                         ChatMessage chatMessage1 = listIterator.next();
+                        assert chatMessage != null;
                         if (chatMessage1.getChatUserId().equals(chatMessage.getChatUserId()) && chatMessage1.getChatUserName().equals(chatMessage.getChatUserName())) {
                             listIterator.remove();
                             listIterator.add(chatMessage);

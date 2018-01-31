@@ -18,8 +18,8 @@ public class DonorAppWidget extends AppWidgetProvider {
 
     public static final String KEY_POSITION = "position";
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                        int appWidgetId) {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.donor_app_widget);
 
