@@ -44,6 +44,14 @@
     <string name="str_status_message_content_desc">status message</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="str_zip_code_hint">Zip Code</string>
+    <string name="str_country_hint">Country</string>
+    <string name="str_state_name_hint">State Name</string>
+    <string name="str_city_name_hint">City Name</string>
+    <string name="str_no_data">No data</string>
+    <string name="content_description_approval_button">approval button</string>
+    <string name="str_content_description_line">TODO</string>
+    <string name="str_donors_responded_label">Donors Responded:</string>
 
 
 </resources>

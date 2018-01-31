@@ -222,7 +222,7 @@ public class ChatMessageFragment extends Fragment {
                         .setNegativeButton(R.string.str_dialog_cancel_request, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //TODO 1) add cancellation message.
+
                             }
                         })
                         .setPositiveButton(R.string.str_dialog_complete_request, new DialogInterface.OnClickListener() {

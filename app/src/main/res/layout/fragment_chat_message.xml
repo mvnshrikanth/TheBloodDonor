@@ -25,6 +25,7 @@
             android:id="@+id/button_approve_donor"
             android:layout_width="50dp"
             android:layout_height="match_parent"
+            android:contentDescription="@string/content_description_approval_button"
             android:scaleType="fitXY"
             android:src="@drawable/blood_icon"
             android:visibility="gone" />
@@ -46,5 +47,4 @@
             android:text="@string/str_send_button_label" />
 
     </LinearLayout>
-
 </RelativeLayout>

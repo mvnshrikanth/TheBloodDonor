@@ -1,5 +1,6 @@
 package com.android.mvnshrikanth.theblooddonor.utilities;
 
+import com.android.mvnshrikanth.theblooddonor.BuildConfig;
 import com.android.mvnshrikanth.theblooddonor.data.Location;
 
 import org.json.JSONException;
@@ -25,7 +26,8 @@ public class Utils {
     public static final String DONATION_REQUESTS_CHATS_PATH = "donationRequestChats";
     public static final String DONATION_CHAT_USER_PATH = "donationChatUser";
     public static final String USER_PROFILE_PICTURES_STORAGE_PATH = "user_profile_photos";
-    private static final String ZIP_CODE_API_KEY = "hfkV4NMoQjXfJn4vXKPDhgCu9g1OTXw32zCKj4iYCrK919tgqT5kZuOcr4Cgt1y9";
+    private static final String ZIP_CODE_API_KEY = BuildConfig.API_KEY;
+
     public static final String ZIP_CODE_API_BASE_URL = "https://www.zipcodeapi.com/rest/" + ZIP_CODE_API_KEY;
 
     public static String getCurrentDate() {

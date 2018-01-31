@@ -3,7 +3,6 @@ package com.android.mvnshrikanth.theblooddonor.ui;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -81,7 +80,6 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
         recyclerViewNewDonations.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewNewDonations.setAdapter(donationRequestAdapter);
 
-        //TODO 5) Work on animation and item divider
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
         recyclerViewNewDonations.addItemDecoration(dividerItemDecoration);
 
@@ -176,9 +174,6 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
             intent.putExtra(USERNAME, mUserName);
             intent.putExtra(CHAT_ID_KEY, (String) null);
             startActivity(intent);
-        } else {
-            //TODO 4) Modify the message to a shorter message.
-            Snackbar.make(view, "You are the requester for this donation.", Snackbar.LENGTH_SHORT).show();
         }
     }
 }

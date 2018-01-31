@@ -11,17 +11,17 @@
         style="@style/CategoryTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/margin_tablayout"
+        android:layout_marginStart="@dimen/margin_tablayout"
+        android:layout_marginTop="@dimen/margin_tablayout"
         app:tabGravity="fill" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginEnd="@dimen/margin_viewpager"
+        android:layout_marginStart="@dimen/margin_viewpager"
+        android:layout_marginTop="@dimen/margin_viewpager" />
 
 </LinearLayout>
