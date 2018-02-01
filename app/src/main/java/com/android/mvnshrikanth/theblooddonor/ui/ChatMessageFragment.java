@@ -176,7 +176,7 @@ public class ChatMessageFragment extends Fragment {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if (databaseError != null) {
-                            Snackbar.make(mView, "Issue while sending the message.", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(mView, R.string.str_snackbar_issue_in_sending_message, Snackbar.LENGTH_SHORT).show();
                         } else {
                             if (blnNewChatId) {
                                 blnNewChatId = false;
@@ -217,8 +217,8 @@ public class ChatMessageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                        .setTitle("Complete Donation Request")
-                        .setMessage(mDonorName + " will be the donor for your requested blood type.")
+                        .setTitle(R.string.str_alertdialog_title)
+                        .setMessage(mDonorName + getString(R.string.str_alert_dialog_message))
                         .setNegativeButton(R.string.str_dialog_cancel_request, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -240,9 +240,9 @@ public class ChatMessageFragment extends Fragment {
                                     @Override
                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                         if (databaseError != null) {
-                                            Snackbar.make(mView, "Issue while completing the request", Snackbar.LENGTH_SHORT).show();
+                                            Snackbar.make(mView, R.string.str_snackbar_issue_completing_request, Snackbar.LENGTH_SHORT).show();
                                         } else {
-                                            Snackbar.make(mView, "Completed request successfully", Snackbar.LENGTH_SHORT).show();
+                                            Snackbar.make(mView, R.string.str_snackbar_completed_request, Snackbar.LENGTH_SHORT).show();
                                         }
                                     }
                                 });

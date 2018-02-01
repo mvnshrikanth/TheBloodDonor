@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class Utils {
+public final class Utils {
 
     public static final String USERS_PATH = "users";
     public static final String DONATION_REQUESTS_PATH = "donationRequests";
@@ -25,6 +25,10 @@ public class Utils {
     private static final String ZIP_CODE_API_KEY = BuildConfig.API_KEY;
 
     public static final String ZIP_CODE_API_BASE_URL = "https://www.zipcodeapi.com/rest/" + ZIP_CODE_API_KEY;
+
+    public Utils() {
+        throw new AssertionError();
+    }
 
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.US);

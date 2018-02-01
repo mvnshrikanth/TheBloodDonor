@@ -10,6 +10,7 @@
         android:id="@+id/imageView_status_line_widget"
         android:layout_width="5dp"
         android:layout_height="match_parent"
+        android:contentDescription="@null"
         android:src="@color/green" />
 
     <LinearLayout
@@ -31,7 +32,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:contentDescription="@string/str_content_description_line"
+            android:contentDescription="@null"
             android:src="@android:color/darker_gray" />
 
         <RelativeLayout

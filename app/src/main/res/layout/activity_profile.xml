@@ -116,6 +116,7 @@
         android:layout_marginEnd="@dimen/margin_between_items"
         android:layout_marginStart="@dimen/margin_between_items"
         android:layout_marginTop="@dimen/margin_between_items"
+        android:contentDescription="@string/str_content_description_save_profile_information"
         android:text="@string/str_btn_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

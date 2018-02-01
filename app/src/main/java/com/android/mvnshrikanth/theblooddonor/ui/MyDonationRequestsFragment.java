@@ -106,7 +106,7 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 final String[] array = getResources().getStringArray(R.array.blood_type_array);
                 final int[] selectedBloodType = new int[1];
-                builder.setTitle("Select blood type for new donation request.");
+                builder.setTitle(R.string.str_alertdialog_title_donation_request);
 
                 builder.setSingleChoiceItems(R.array.blood_type_array, 0, new DialogInterface.OnClickListener() {
                     @Override
@@ -145,9 +145,9 @@ public class MyDonationRequestsFragment extends Fragment implements MyDonationRe
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                 if (databaseError != null) {
-                                    Snackbar.make(view, "Issue while submitting the request", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view, R.string.str_snackbar_submitting_request, Snackbar.LENGTH_SHORT).show();
                                 } else {
-                                    Snackbar.make(view, "Submitted request for " + array[selectedBloodType[0]] + " blood type", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view, getString(R.string.str_snackbar_completed_request_sucessfully) + array[selectedBloodType[0]] + " blood type", Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         });
