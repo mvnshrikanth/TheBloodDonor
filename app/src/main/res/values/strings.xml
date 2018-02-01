@@ -46,9 +46,19 @@
     <string name="str_city_name_hint">City Name</string>
     <string name="str_no_data">No data</string>
     <string name="content_description_approval_button">approval button</string>
-    <string name="str_content_description_line">TODO</string>
     <string name="str_donors_responded_label">Donors Responded:</string>
     <string name="str_default_country_name">USA</string>
+    <string name="str_content_description_fab_button">Create a new donation request.</string>
+    <string name="str_content_description_send_message_button">Send message</string>
+    <string name="str_content_description_save_profile_information">Save profile information</string>
+    <string name="str_snackbar_issue_in_sending_message">Issue while sending the message.</string>
+    <string name="str_alertdialog_title">Complete Donation Request</string>
+    <string name="str_alert_dialog_message">will be the donor for your requested blood type.</string>
+    <string name="str_snackbar_issue_completing_request">Issue while completing the request</string>
+    <string name="str_snackbar_completed_request">Completed request successfully</string>
+    <string name="str_alertdialog_title_donation_request">Select blood type for new donation request.</string>
+    <string name="str_snackbar_submitting_request">Issue while submitting the request</string>
+    <string name="str_snackbar_completed_request_sucessfully">Submitted request for</string>
 
 
 </resources>
