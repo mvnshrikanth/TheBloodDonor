@@ -13,4 +13,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="line_width">1dp</dimen>
     <dimen name="status_line_width">10dp</dimen>
     <dimen name="image_view_size">48dp</dimen>
+    <dimen name="image_button_width">150dp</dimen>
+    <dimen name="image_button_height">200dp</dimen>
+    <dimen name="layout_width">380dp</dimen>
 </resources>
