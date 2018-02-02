@@ -59,6 +59,7 @@
     <string name="str_alertdialog_title_donation_request">Select blood type for new donation request.</string>
     <string name="str_snackbar_submitting_request">Issue while submitting the request</string>
     <string name="str_snackbar_completed_request_sucessfully">Submitted request for</string>
+    <string name="str_toast_message_user_input_validation">Please fill the listed information,</string>
 
 
 </resources>

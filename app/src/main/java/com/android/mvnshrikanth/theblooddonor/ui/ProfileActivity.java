@@ -51,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String NEW_USER = "new_user";
     public static final String USERNAME = "username";
     public static final String USER_ID = "user_id";
+    public static final String USER_DATA_KEY = "user_data";
     private static final int RC_PHOTO_PICKER = 2;
 
     @BindView(R.id.button_save)
@@ -107,8 +108,10 @@ public class ProfileActivity extends AppCompatActivity {
         adapterBloodType.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner_blood_type.setAdapter(adapterBloodType);
         userPhotoUrl = null;
-        onSignedInInitialize();
 
+        if (user == null) {
+            onSignedInInitialize();
+        }
         button_save.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -192,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity {
             toastMessage = toastMessage + ", " + "Gender";
         }
         if (toastMessage.length() > 0) {
-            Toast.makeText(ProfileActivity.this, "Please fill the listed information, " + toastMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfileActivity.this, getString(R.string.str_toast_message_user_input_validation) + toastMessage, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -293,18 +296,7 @@ public class ProfileActivity extends AppCompatActivity {
                 user = dataSnapshot.getValue(Users.class);
                 textViewName.setText(mUserName);
                 if ((user != null) && (user.getUserName().equals(mUserName))) {
-                    editTextCity.setText(user.getCity());
-                    editTextState.setText(user.getState());
-                    editTextCountry.setText(user.getCountry());
-                    editTextZipCode.setText(user.getLocationZip());
-                    spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
-                    spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
-                    userPhotoUrl = user.getPhotoUrl();
-                    if (user.getPhotoUrl() != null) {
-                        Glide.with(getApplicationContext())
-                                .load(userPhotoUrl)
-                                .into(imageButtonProfilePicture);
-                    }
+                    loadProfileActivityUI(user);
                 }
             }
 
@@ -316,6 +308,22 @@ public class ProfileActivity extends AppCompatActivity {
         usersDatabaseReference.addValueEventListener(userValueEvenListener);
     }
 
+    private void loadProfileActivityUI(Users users) {
+
+        editTextCity.setText(users.getCity());
+        editTextState.setText(users.getState());
+        editTextCountry.setText(users.getCountry());
+        editTextZipCode.setText(users.getLocationZip());
+        spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(users.getGender()));
+        spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(users.getBloodType()));
+        userPhotoUrl = users.getPhotoUrl();
+        if (users.getPhotoUrl() != null) {
+            Glide.with(getApplicationContext())
+                    .load(userPhotoUrl)
+                    .into(imageButtonProfilePicture);
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -323,5 +331,18 @@ public class ProfileActivity extends AppCompatActivity {
             usersDatabaseReference.removeEventListener(userChildEventListener);
             userChildEventListener = null;
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(USER_DATA_KEY, user);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        user = savedInstanceState.getParcelable(USER_DATA_KEY);
+        loadProfileActivityUI(user);
     }
 }
