@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,11 +23,15 @@
         </activity>
         <activity
             android:name=".ui.ProfileActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ChatActivity"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity android:name=".ui.ChatMessageActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ChatMessageActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".widget.DonorAppWidget">
             <intent-filter>
