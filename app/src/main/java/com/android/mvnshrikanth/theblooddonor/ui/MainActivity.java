@@ -1,8 +1,12 @@
 package com.android.mvnshrikanth.theblooddonor.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,31 +46,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        if (!networkAvailable()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("No network connection available to fetch donation data.")
+                    .setTitle("Network Connection Unavailable")
+                    .create()
+                    .show();
+        } else {
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        usersDatabaseReference = firebaseDatabase.getReference().child("users");
+            firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            usersDatabaseReference = firebaseDatabase.getReference().child("users");
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    onSignedInInitialize(user.getDisplayName(), user.getUid());
-                } else {
-                    onSignedOutCleanup();
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(
-                                            Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                                    .build(),
-                            RC_SIGN_IN);
+            authStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        onSignedInInitialize(user.getDisplayName(), user.getUid());
+                    } else {
+                        onSignedOutCleanup();
+                        startActivityForResult(
+                                AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setIsSmartLockEnabled(false)
+                                        .setAvailableProviders(
+                                                Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                        .build(),
+                                RC_SIGN_IN);
+                    }
                 }
-            }
-        };
+            };
+        }
+    }
+
+    public boolean networkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @Override
@@ -148,21 +169,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        firebaseAuth.addAuthStateListener(authStateListener);
+        if (networkAvailable()) {
+            firebaseAuth.addAuthStateListener(authStateListener);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_show_profile:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra(NEW_USER, false);
-                intent.putExtra(USER_ID, mUid);
-                intent.putExtra(USERNAME, mUsername);
-                startActivity(intent);
-                break;
-            default:
-                AuthUI.getInstance().signOut(this);
+        if (networkAvailable()) {
+            switch (item.getItemId()) {
+                case R.id.item_show_profile:
+                    Intent intent = new Intent(this, ProfileActivity.class);
+                    intent.putExtra(NEW_USER, false);
+                    intent.putExtra(USER_ID, mUid);
+                    intent.putExtra(USERNAME, mUsername);
+                    startActivity(intent);
+                    break;
+                default:
+                    AuthUI.getInstance().signOut(this);
+            }
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("No network connection available.")
+                    .setTitle("Network Connection Unavailable")
+                    .create()
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }

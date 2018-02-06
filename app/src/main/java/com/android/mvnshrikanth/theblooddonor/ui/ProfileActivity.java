@@ -1,19 +1,21 @@
 package com.android.mvnshrikanth.theblooddonor.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mvnshrikanth.theblooddonor.R;
@@ -35,14 +37,10 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USER_PROFILE_PICTURES_STORAGE_PATH;
 
@@ -51,7 +49,9 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String NEW_USER = "new_user";
     public static final String USERNAME = "username";
     public static final String USER_ID = "user_id";
+    public static final String USER_DATA_KEY = "user_data";
     private static final int RC_PHOTO_PICKER = 2;
+    private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
 
     @BindView(R.id.button_save)
     Button button_save;
@@ -69,8 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
     EditText editTextState;
     @BindView(R.id.imageButton_profile_picture)
     ImageButton imageButtonProfilePicture;
-    @BindView(R.id.textView_name)
-    TextView textViewName;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolBarUserName;
 
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener userChildEventListener;
@@ -79,7 +79,6 @@ public class ProfileActivity extends AppCompatActivity {
     private String mUid;
     private Users user;
     private String userPhotoUrl;
-    private Location locationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +106,10 @@ public class ProfileActivity extends AppCompatActivity {
         adapterBloodType.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner_blood_type.setAdapter(adapterBloodType);
         userPhotoUrl = null;
-        onSignedInInitialize();
 
+        if (user == null) {
+            onSignedInInitialize();
+        }
         button_save.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -150,7 +151,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() == 5) {
-                    loadLocationInfo(charSequence.toString().trim());
+//                    loadLocationInfo(charSequence.toString().trim());
+                    new LocationAsyncTask().execute(charSequence.toString().trim());
                 }
             }
 
@@ -192,47 +194,10 @@ public class ProfileActivity extends AppCompatActivity {
             toastMessage = toastMessage + ", " + "Gender";
         }
         if (toastMessage.length() > 0) {
-            Toast.makeText(ProfileActivity.this, "Please fill the listed information, " + toastMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfileActivity.this, getString(R.string.str_toast_message_user_input_validation) + toastMessage, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
-    }
-
-    private void loadLocationInfo(String zipCode) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        String url = Utils.ZIP_CODE_API_BASE_URL + "/info.json/" + zipCode + "/radians";
-        locationData = null;
-
-        final Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-                final String responseData = response.body().string();
-
-                if (response.isSuccessful()) {
-                    try {
-                        locationData = Utils.getCityStateFromJSONString(responseData);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showLocation(locationData);
-                    }
-                });
-            }
-        });
     }
 
     private void showLocation(Location location) {
@@ -291,20 +256,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(Users.class);
-                textViewName.setText(mUserName);
+                collapsingToolBarUserName.setTitle(mUserName);
                 if ((user != null) && (user.getUserName().equals(mUserName))) {
-                    editTextCity.setText(user.getCity());
-                    editTextState.setText(user.getState());
-                    editTextCountry.setText(user.getCountry());
-                    editTextZipCode.setText(user.getLocationZip());
-                    spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(user.getGender()));
-                    spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(user.getBloodType()));
-                    userPhotoUrl = user.getPhotoUrl();
-                    if (user.getPhotoUrl() != null) {
-                        Glide.with(getApplicationContext())
-                                .load(userPhotoUrl)
-                                .into(imageButtonProfilePicture);
-                    }
+                    loadProfileActivityUI(user);
                 }
             }
 
@@ -316,12 +270,66 @@ public class ProfileActivity extends AppCompatActivity {
         usersDatabaseReference.addValueEventListener(userValueEvenListener);
     }
 
+    private void loadProfileActivityUI(Users users) {
+
+        editTextCity.setText(users.getCity());
+        editTextState.setText(users.getState());
+        editTextCountry.setText(users.getCountry());
+        editTextZipCode.setText(users.getLocationZip());
+        spinner_gender.setSelection(((ArrayAdapter) spinner_gender.getAdapter()).getPosition(users.getGender()));
+        spinner_blood_type.setSelection(((ArrayAdapter) spinner_blood_type.getAdapter()).getPosition(users.getBloodType()));
+        userPhotoUrl = users.getPhotoUrl();
+        if (users.getPhotoUrl() != null) {
+            Glide.with(getApplicationContext())
+                    .load(userPhotoUrl)
+                    .into(imageButtonProfilePicture);
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         if (userChildEventListener != null) {
             usersDatabaseReference.removeEventListener(userChildEventListener);
             userChildEventListener = null;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(USER_DATA_KEY, user);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        user = savedInstanceState.getParcelable(USER_DATA_KEY);
+        loadProfileActivityUI(user);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LocationAsyncTask extends AsyncTask<String, Void, Location> {
+
+        @Override
+        protected Location doInBackground(String... strings) {
+            String strUrl = Utils.ZIP_CODE_API_BASE_URL + "/info.json/" + strings[0] + "/radians";
+            Location location = null;
+            try {
+                URL url = new URL(strUrl);
+                String responseData = Utils.getResponseFromHttpUrl(url);
+                location = Utils.getCityStateFromJSONString(responseData);
+            } catch (IOException | JSONException e) {
+                Log.e(LOG_TAG, "Error in retrieving data." + e.getMessage());
+            }
+
+            return location;
+        }
+
+        @Override
+        protected void onPostExecute(Location location) {
+            super.onPostExecute(location);
+            showLocation(location);
         }
     }
 }

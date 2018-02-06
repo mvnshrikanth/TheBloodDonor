@@ -1,11 +1,19 @@
 package com.android.mvnshrikanth.theblooddonor.utilities;
 
+import android.util.Log;
+
 import com.android.mvnshrikanth.theblooddonor.BuildConfig;
 import com.android.mvnshrikanth.theblooddonor.data.Location;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,6 +30,7 @@ public final class Utils {
     public static final String DONATION_REQUESTS_CHATS_PATH = "donationRequestChats";
     public static final String DONATION_CHAT_USER_PATH = "donationChatUser";
     public static final String USER_PROFILE_PICTURES_STORAGE_PATH = "user_profile_photos";
+    private static final String LOG_TAG = Utils.class.getSimpleName();
     private static final String ZIP_CODE_API_KEY = BuildConfig.API_KEY;
 
     public static final String ZIP_CODE_API_BASE_URL = "https://www.zipcodeapi.com/rest/" + ZIP_CODE_API_KEY;
@@ -95,6 +104,48 @@ public final class Utils {
         JSONObject jsonObjectLocationInfo = new JSONObject(locationInfoStr);
         return new Location(jsonObjectLocationInfo.getString("city"),
                 jsonObjectLocationInfo.getString("state"));
+    }
+
+    public static String getResponseFromHttpUrl(URL url) throws IOException {
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.connect();
+
+        BufferedReader bufferedReader = null;
+
+        try {
+            InputStream inputStream = httpURLConnection.getInputStream();
+            StringBuffer stringBuffer = new StringBuffer();
+
+            if (inputStream == null) {
+                return null;
+            }
+
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line + "\n");
+            }
+
+            if (stringBuffer.length() == 0) {
+                return null;
+            }
+
+            return stringBuffer.toString();
+
+        } finally {
+
+            httpURLConnection.disconnect();
+
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "Error closing stream", e);
+                }
+            }
+        }
     }
 
 }
