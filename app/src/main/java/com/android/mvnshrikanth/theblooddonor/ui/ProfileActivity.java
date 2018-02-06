@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mvnshrikanth.theblooddonor.R;
@@ -69,8 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
     EditText editTextState;
     @BindView(R.id.imageButton_profile_picture)
     ImageButton imageButtonProfilePicture;
-    @BindView(R.id.textView_name)
-    TextView textViewName;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolBarUserName;
 
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener userChildEventListener;
@@ -256,7 +256,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(Users.class);
-                textViewName.setText(mUserName);
+                collapsingToolBarUserName.setTitle(mUserName);
                 if ((user != null) && (user.getUserName().equals(mUserName))) {
                     loadProfileActivityUI(user);
                 }
