@@ -1,12 +1,14 @@
 package com.android.mvnshrikanth.theblooddonor.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,14 +37,10 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import static com.android.mvnshrikanth.theblooddonor.utilities.Utils.USER_PROFILE_PICTURES_STORAGE_PATH;
 
@@ -53,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String USER_ID = "user_id";
     public static final String USER_DATA_KEY = "user_data";
     private static final int RC_PHOTO_PICKER = 2;
+    private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
 
     @BindView(R.id.button_save)
     Button button_save;
@@ -80,7 +79,6 @@ public class ProfileActivity extends AppCompatActivity {
     private String mUid;
     private Users user;
     private String userPhotoUrl;
-    private Location locationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +151,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() == 5) {
-                    loadLocationInfo(charSequence.toString().trim());
+//                    loadLocationInfo(charSequence.toString().trim());
+                    new LocationAsyncTask().execute(charSequence.toString().trim());
                 }
             }
 
@@ -199,43 +198,6 @@ public class ProfileActivity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    private void loadLocationInfo(String zipCode) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        String url = Utils.ZIP_CODE_API_BASE_URL + "/info.json/" + zipCode + "/radians";
-        locationData = null;
-
-        final Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-                final String responseData = response.body().string();
-
-                if (response.isSuccessful()) {
-                    try {
-                        locationData = Utils.getCityStateFromJSONString(responseData);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showLocation(locationData);
-                    }
-                });
-            }
-        });
     }
 
     private void showLocation(Location location) {
@@ -344,5 +306,30 @@ public class ProfileActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         user = savedInstanceState.getParcelable(USER_DATA_KEY);
         loadProfileActivityUI(user);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LocationAsyncTask extends AsyncTask<String, Void, Location> {
+
+        @Override
+        protected Location doInBackground(String... strings) {
+            String strUrl = Utils.ZIP_CODE_API_BASE_URL + "/info.json/" + strings[0] + "/radians";
+            Location location = null;
+            try {
+                URL url = new URL(strUrl);
+                String responseData = Utils.getResponseFromHttpUrl(url);
+                location = Utils.getCityStateFromJSONString(responseData);
+            } catch (IOException | JSONException e) {
+                Log.e(LOG_TAG, "Error in retrieving data." + e.getMessage());
+            }
+
+            return location;
+        }
+
+        @Override
+        protected void onPostExecute(Location location) {
+            super.onPostExecute(location);
+            showLocation(location);
+        }
     }
 }
