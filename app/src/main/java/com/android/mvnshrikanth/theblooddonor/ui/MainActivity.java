@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (!networkAvailable()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("No network connection available to fetch donation data.")
-                    .setTitle("Network Connection Unavailable")
+            builder.setMessage(R.string.str_network_connection_not_available)
+                    .setTitle(R.string.str_no_connection_alert_title)
                     .create()
                     .show();
         } else {
@@ -190,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("No network connection available.")
-                    .setTitle("Network Connection Unavailable")
+            builder.setMessage(R.string.str_network_connection_not_available)
+                    .setTitle(R.string.str_no_connection_alert_title)
                     .create()
                     .show();
         }

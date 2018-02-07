@@ -176,22 +176,22 @@ public class ProfileActivity extends AppCompatActivity {
     private Boolean verifyUserInputs() {
         String toastMessage = "";
         if (spinner_blood_type.getSelectedItem().toString().trim().length() == 0) {
-            toastMessage = "Blood type";
+            toastMessage = getString(R.string.str_toast_blood_type);
         }
         if (editTextZipCode.getText().toString().trim().length() != 5) {
-            toastMessage = toastMessage + ", " + "Zip code";
+            toastMessage = toastMessage + ", " + getString(R.string.str_toast_zip_code);
         }
         if (editTextCity.getText().toString().length() == 0) {
-            toastMessage = toastMessage + ", " + "City";
+            toastMessage = toastMessage + ", " + getString(R.string.str_toast_city);
         }
         if (editTextState.getText().toString().length() == 0) {
-            toastMessage = toastMessage + ", " + "State";
+            toastMessage = toastMessage + ", " + getString(R.string.str_toast_state);
         }
         if (editTextCountry.getText().toString().length() == 0) {
-            toastMessage = toastMessage + ", " + "Country";
+            toastMessage = toastMessage + ", " + getString(R.string.str_country_toast);
         }
         if (spinner_gender.getSelectedItem().toString().length() == 0) {
-            toastMessage = toastMessage + ", " + "Gender";
+            toastMessage = toastMessage + ", " + getString(R.string.str_toast_gender);
         }
         if (toastMessage.length() > 0) {
             Toast.makeText(ProfileActivity.this, getString(R.string.str_toast_message_user_input_validation) + toastMessage, Toast.LENGTH_SHORT).show();
