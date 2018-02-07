@@ -130,7 +130,9 @@ public class ChatFragment extends Fragment implements ChatListAdapter.ChatListAd
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         chatList.clear();
         detachDatabaseReadListener();
     }

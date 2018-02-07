@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -49,7 +50,6 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String NEW_USER = "new_user";
     public static final String USERNAME = "username";
     public static final String USER_ID = "user_id";
-    public static final String USER_DATA_KEY = "user_data";
     private static final int RC_PHOTO_PICKER = 2;
     private static final String LOG_TAG = ProfileActivity.class.getSimpleName();
 
@@ -107,9 +107,8 @@ public class ProfileActivity extends AppCompatActivity {
         spinner_blood_type.setAdapter(adapterBloodType);
         userPhotoUrl = null;
 
-        if (user == null) {
-            onSignedInInitialize();
-        }
+        onSignedInInitialize();
+
         button_save.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -173,6 +172,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @NonNull
     private Boolean verifyUserInputs() {
         String toastMessage = "";
         if (spinner_blood_type.getSelectedItem().toString().trim().length() == 0) {
@@ -293,19 +293,6 @@ public class ProfileActivity extends AppCompatActivity {
             usersDatabaseReference.removeEventListener(userChildEventListener);
             userChildEventListener = null;
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(USER_DATA_KEY, user);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        user = savedInstanceState.getParcelable(USER_DATA_KEY);
-        loadProfileActivityUI(user);
     }
 
     @SuppressLint("StaticFieldLeak")

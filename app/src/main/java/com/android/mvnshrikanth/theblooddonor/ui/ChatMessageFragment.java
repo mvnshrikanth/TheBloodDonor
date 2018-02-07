@@ -294,7 +294,7 @@ public class ChatMessageFragment extends Fragment {
                     ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
                     chatMessageList.add(chatMessage);
                     chatMessageAdapter.prepareChatMessageList(chatMessageList);
-                    recyclerViewChatMessage.smoothScrollToPosition(chatMessageList.size());
+//                    recyclerViewChatMessage.smoothScrollToPosition(chatMessageList.size());
                 }
 
                 @Override
@@ -345,7 +345,9 @@ public class ChatMessageFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         chatMessageList.clear();
         detachDatabaseReadListener();
     }

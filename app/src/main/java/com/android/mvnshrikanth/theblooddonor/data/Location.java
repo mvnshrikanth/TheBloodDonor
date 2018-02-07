@@ -9,6 +9,9 @@ public class Location {
         this.state = state;
     }
 
+    public Location() {
+    }
+
     public String getCity() {
         return city;
     }

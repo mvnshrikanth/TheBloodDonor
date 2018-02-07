@@ -150,7 +150,9 @@ public class NewDonationsFragment extends Fragment implements DonationRequestAda
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
 
     }
 
